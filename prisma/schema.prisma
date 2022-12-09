@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model Club {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  color     String   @default("#3e80bd")
+  members   User[]
+  events    Event[]
+}
+
+model User {
+  id        Int       @default(autoincrement()) @id
+  isSuper   Boolean   @default(false)
+  isAdmin   Boolean   @default(false)
+  name      String    @unique
+  password  String
+  events    Event[]
+  clubId    Int?
+  club      Club?     @relation(fields: [clubId], references: [id])
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  start       DateTime?
+  end         DateTime?
+  startTime   String?
+  endTime     String?
+  startRecur  DateTime?
+  endRecur    DateTime?
+  daysOfWeek  Int[] 
+  groupId     String?
+  allDay      Boolean
+  color       String    @default("#f76e11")
+  desc        String?
+  creatorId   Int
+  creator     User      @relation(fields: [creatorId], references: [id])
+  clubId      Int?
+  club        Club?     @relation(fields: [clubId], references: [id])
+}

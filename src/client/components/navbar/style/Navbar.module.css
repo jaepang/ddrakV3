@@ -1,0 +1,103 @@
+.navbar {
+  width: 100%;
+  height: 70px;
+  background-color: var(--color-bg-primary);
+  backdrop-filter: saturate(180%) blur(5px);
+  box-shadow: inset 0 -1px 0 0 var(--color-light-gray-border);
+
+  .content-wrapper {
+    width: calc(100% - 2em);
+    height: 100%;
+    padding: 0 1em;
+    margin: 0 auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 1024px) {
+      width: calc(100% - 1em);
+      padding: 0 0.5em;
+    }
+
+    .left-area {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+
+      .week-navigator {
+        display: flex;
+        align-items: center;
+
+        .button {
+          width: 2.5em;
+          height: 2.5em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border-radius: 50%;
+
+          &:hover {
+            background-color: var(--color-light-gray-border);
+          }
+        }
+
+        .today {
+          padding: 0 0.2em;
+          height: 2.5em;
+          margin-right: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border-radius: 10px;
+          border: 2px solid var(--color-gray-dimmed);
+          font-size: 1em;
+          color: var(--color-text-dimmed);
+
+          &:hover {
+            background-color: var(--color-gray-dimmed);
+          }
+
+          &:disabled {
+            color: var(--color-gray-dimmed);
+            background-color: var(--color-bg-primary);
+            border: 2px solid var(--color-light-gray-border);
+            pointer-events: none;
+          }
+        }
+
+        svg {
+          path {
+            stroke-width: 36px;
+          }
+        }
+      }
+
+      .date {
+        display: flex;
+        column-gap: 0.5em;
+
+        .preview {
+          color: var(--color-primary);
+        }
+      }
+
+      .logo-wrapper {
+        height: 30px;
+        padding: 10px 0;
+      }
+    }
+
+    .right-area {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      column-gap: 10px;
+
+      .icon-wrapper {
+        cursor: pointer;
+      }
+    }
+  }
+}

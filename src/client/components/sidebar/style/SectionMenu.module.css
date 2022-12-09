@@ -1,0 +1,200 @@
+.menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+
+  .header {
+    height: 1.5em;
+    padding-left: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .buttons {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .icon-wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        color: var(--color-primary);
+
+        &:disabled {
+          color: var(--color-primary-dimmed);
+          pointer-events: none;
+        }
+      }
+    }
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    .menu-item {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      row-gap: 1em;
+      cursor: pointer;
+      color: var(--color-text-default);
+
+      .label {
+        height: 2em;
+        font-size: 1em;
+        text-align: center;
+        line-height: 1.1;
+      }
+    }
+  }
+}
+
+.time-slots-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .time-slots-header {
+    width: 100%;
+    margin-bottom: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .time-picker-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.3em;
+      align-items: center;
+
+      .label {
+        font-size: 0.8em;
+        color: var(--color-text-dimmed);
+      }
+
+      .time-picker {
+        width: 80%;
+        height: 30px;
+        padding: 0.1em 0.5em;
+        border: 1px solid var(--color-primary);
+        border-radius: 10px;
+        font-family: 'Pretendard', sans-serif;
+      }
+    }
+  }
+
+  .time-slots {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    .time-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      row-gap: 1em;
+      cursor: pointer;
+      color: var(--color-text-default);
+
+      .day {
+        color: var(--color-gray-dimmed);
+      }
+
+      .club {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1em;
+        text-align: center;
+        line-height: 1.1;
+        border-radius: 50%;
+
+        .inner {
+          width: 32px;
+          border-radius: 50%;
+          aspect-ratio: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          position: relative;
+
+          &:hover {
+            box-shadow: 0 0 0 2px var(--color-primary);
+            background-color: var(--color-bg-primary);
+          }
+        }
+
+        &:disabled .inner {
+          background-color: var(--color-primary);
+          color: white;
+          pointer-events: none;
+        }
+      }
+    }
+  }
+}
+
+.drag-event-menu-body {
+  width: calc(100% - 1em);
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+
+  .duration-select {
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    column-gap: 0.5em;
+
+    .duration-select-body {
+      display: flex;
+      align-items: center;
+
+      select {
+        height: 30px;
+        padding: 0.1em 0.5em;
+        border: 1px solid var(--color-primary);
+        border-radius: 10px;
+        font-family: 'Pretendard', sans-serif;
+        cursor: pointer;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+
+  .draggable-events {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 0.5em;
+
+    div {
+      /* why class doesn't work? */
+      width: calc(100% - 1em);
+      height: 20px;
+      padding: 0.5em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5em;
+      border-radius: 15px;
+      cursor: pointer;
+      color: white;
+    }
+  }
+}

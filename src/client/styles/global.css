@@ -1,0 +1,115 @@
+@import './base/vars.css';
+@import './base/reset.css';
+
+html {
+  font-family: 'Pretendard', sans-serif;
+  height: 100%;
+  font-size: 16px;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 12px;
+  }
+}
+
+body {
+  font-family: 'Pretendard', sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-default);
+  height: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+#__next {
+  height: 100%;
+}
+
+/* fullcalendar */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.fc-scrollgrid {
+  border: none !important;
+}
+
+.fc-scrollgrid td:last-of-type {
+  border-right: none !important;
+}
+
+.fc-col-header {
+  background-color: var(--color-bg-secondary);
+}
+
+.fc-col-header-cell-cushion {
+  height: 70px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-day-today h2 {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.fc-timegrid-col.fc-day-today {
+  background-color: #fff !important;
+}
+
+.fc-timegrid-slot-label-cushion p {
+  margin: 0 auto;
+  font-size: 0.9rem;
+  letter-spacing: -1px;
+}
+
+.fc-event-main-frame {
+  padding-left: 0.7rem;
+}
+
+.fc-timegrid-event {
+  border-radius: 15px;
+
+  p {
+    margin: 0.7rem 0 0.3rem 0;
+    font-weight: 400;
+    font-size: 0.8rem;
+  }
+}
+
+.fc-event-title {
+  margin-top: 0.1rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* overlapped event */
+.fc-timegrid-event-harness-inset {
+  .fc-event-main-frame {
+    padding-left: 0.4rem !important;
+  }
+
+  .fc-event-title {
+    font-size: 0.9rem !important;
+  }
+
+  p {
+    font-size: 0.5rem !important;
+  }
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid var(--color-light-gray-border);
+}
+
+.fc-theme-standard th:last-of-type {
+  border-right: none !important;
+}

@@ -1,0 +1,46 @@
+/* 기본 속성 */
+:root {
+  --color-primary: rgba(247, 110, 17, 1);
+  --color-primary-dimmed: rgba(247, 110, 17, 0.3);
+  --color-primary-deep-dimmed: rgba(247, 109, 17, 0.1);
+  --color-light: rgba(255, 255, 255, 0.9);
+  --color-light-dimmed: #fffaf7;
+  --color-light-deep-dimmed: rgba(255, 250, 247, 0.3);
+  --color-dark: #1a1b1e;
+  --color-dark-dimmed: #2b2c31;
+  --color-gray-dimmed: #cac6c4;
+  --color-light-gray-border: #ededed;
+  --color-light-gray: #f8f8f8;
+  --color-red: #fc4f4f;
+  --color-yellow: #ffce00;
+  --color-blue: #277bc0;
+
+  --color-text-black: rgba(0, 0, 0, 1);
+  --color-text-black-dimmed: rgba(0, 0, 0, 0.6);
+  --color-text-white: rgba(255, 255, 255, 1);
+  --color-text-white-dimmed: rgba(255, 255, 255, 0.4);
+}
+
+/* 테마 속성 */
+:root {
+  --color-bg-primary: var(--color-light);
+  --color-bg-secondary: var(--color-light-dimmed);
+  --color-bg-third: var(--color-light-deep-dimmed);
+  --color-text-default: var(--color-text-black);
+  --color-text-dimmed: var(--color-text-black-dimmed);
+
+  .theme-dark {
+    --color-bg-primary: var(--color-dark);
+    --color-bg-secondary: var(--color-dark-dimmed);
+    --color-text-default: var(--color-text-white);
+    --color-text-dimmed: var(--color-text-white-dimmed);
+  }
+}
+
+/* 고정 속성 */
+:root {
+  --size-content-width: 1280px;
+  --color-bg-header: var(--color-dark);
+  --color-text-header: var(--color-text-white);
+  --color-text-header-dimmed: var(--color-text-white-dimmed);
+}

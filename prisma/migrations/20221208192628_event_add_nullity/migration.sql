@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Event" ALTER COLUMN "groupId" DROP NOT NULL,
+ALTER COLUMN "desc" DROP NOT NULL;
