@@ -95,43 +95,6 @@
       justify-content: space-between;
       column-gap: 1.5em;
 
-      .switch-calendar-buttons {
-        display: flex;
-        align-items: center;
-
-        .button {
-          width: 4em;
-          padding: 0 0.2em;
-          height: 2.5em;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          border: 2px solid var(--color-light-gray-border);
-          font-size: 1em;
-          color: var(--color-text-dimmed);
-
-          &.left {
-            border-radius: 10px 0 0 10px;
-            border-right: none;
-          }
-
-          &.right {
-            border-radius: 0 10px 10px 0;
-          }
-
-          &:hover {
-            background-color: var(--color-light-gray-border);
-          }
-
-          &:disabled {
-            color: var(--color-gray-dimmed);
-            background-color: var(--color-bg-primary);
-            pointer-events: none;
-          }
-        }
-      }
-
       .account-button {
         font-size: 1em;
         color: var(--color-text-default);

@@ -29,7 +29,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
             {mode === 'setCalendar' && !isMobile && <DragEventMenu />}
           </div>
           <div className={cx('section', 'bottom')}>
-            {(mode === 'default' || mode === 'clubCalendar') && <Menu />}
+            {(mode === 'default' || mode === 'clubCalendar') && <Menu setShowSidebar={setShowSidebar} />}
             {mode === 'setCalendar' && <SetMonthlyScheduleSlot />}
           </div>
           <div className={cx('section', 'footer')}>

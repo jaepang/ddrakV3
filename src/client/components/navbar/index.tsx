@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import WeekNavigator from './WeekNavigator'
+import SwitchCalendarButtons from '@components/SwitchCalendarButtons'
 import { IoIosMenu } from 'react-icons/io'
 import { calendarHeaderDateString } from '@client/utils'
 
@@ -17,7 +18,7 @@ interface Props {
 
 export default function Navbar({ isMobile, setShowSidebar }: Props) {
   const { isLoggedIn, me, logout } = useAccount()
-  const { date, mode, enableDefaultMode, enableClubCalendarMode } = useCalendar()
+  const { date, mode } = useCalendar()
   const dateString = calendarHeaderDateString(date, isMobile)
 
   return (
@@ -30,19 +31,7 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
           </h2>
         </div>
         <div className={cx('right-area')}>
-          {isLoggedIn && me?.club && (
-            <div className={cx('switch-calendar-buttons')}>
-              <button disabled={mode === 'default'} className={cx('button', 'left')} onClick={enableDefaultMode}>
-                default
-              </button>
-              <button
-                disabled={mode === 'clubCalendar'}
-                className={cx('button', 'right', { active: mode === 'clubCalendar' })}
-                onClick={enableClubCalendarMode}>
-                club
-              </button>
-            </div>
-          )}
+          {!isMobile && isLoggedIn && me?.club && <SwitchCalendarButtons />}
           {isMobile ? (
             <div className={cx('icon-wrapper')} onClick={() => setShowSidebar(true)}>
               <IoIosMenu size={35} />

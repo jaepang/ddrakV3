@@ -1,22 +1,33 @@
-import { useAccount } from '@client/hooks'
+import SwitchCalendarButtons from '@components/SwitchCalendarButtons'
+
+import { useAccount, useWindowSize } from '@client/hooks'
 import { useMenuItems } from '@root/src/client/hooks/useMenuItems'
 
 import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'
 const cx = classNames.bind(styles)
 
-export default function Menu() {
+interface Props {
+  setShowSidebar: (showSidebar: boolean) => void
+}
+
+export default function Menu({ setShowSidebar }: Props) {
   const { me, isMeLoading, isLoggedIn, userType } = useAccount()
   const { menuItems } = useMenuItems()
   const menuContent = menuItems[userType]
+  const { width } = useWindowSize()
+  const isMobile = width <= 1024
 
   return (
     <>
       {!isMeLoading && (
         <div className={cx('menu')}>
-          <h2 className={cx('header')}>
-            {isLoggedIn ? `${me?.club?.name + ((me?.isAdmin || me?.isSuper) && ' Admin')}` : 'Welcome to DDrak!'}
-          </h2>
+          <div className={cx('header')}>
+            <h2>
+              {isLoggedIn ? `${me?.club?.name + ((me?.isAdmin || me?.isSuper) && ' Admin')}` : 'Welcome to DDrak!'}
+            </h2>
+            {isMobile && isLoggedIn && me?.club && <SwitchCalendarButtons isMobile setShowSidebar={setShowSidebar} />}
+          </div>
           <div className={cx('body')}>
             {menuContent.map(item => (
               <div key={item.label} className={cx('menu-item')} onClick={() => item.handler()}>
