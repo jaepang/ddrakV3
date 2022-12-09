@@ -18,8 +18,13 @@ interface Props {
 
 export default function Navbar({ isMobile, setShowSidebar }: Props) {
   const { isLoggedIn, me, logout } = useAccount()
-  const { date, mode } = useCalendar()
+  const { date, mode, enableDefaultMode } = useCalendar()
   const dateString = calendarHeaderDateString(date, isMobile)
+
+  function handleLogout() {
+    logout()
+    enableDefaultMode()
+  }
 
   return (
     <div className={cx('navbar')}>
@@ -31,13 +36,13 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
           </h2>
         </div>
         <div className={cx('right-area')}>
-          {!isMobile && isLoggedIn && me?.club && <SwitchCalendarButtons />}
+          {!isMobile && isLoggedIn && me?.club && mode !== 'setCalendar' && <SwitchCalendarButtons />}
           {isMobile ? (
             <div className={cx('icon-wrapper')} onClick={() => setShowSidebar(true)}>
               <IoIosMenu size={35} />
             </div>
           ) : isLoggedIn ? (
-            <button className={cx('account-button')} onClick={logout}>
+            <button className={cx('account-button')} onClick={handleLogout}>
               Logout
             </button>
           ) : (

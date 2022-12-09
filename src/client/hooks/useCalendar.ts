@@ -155,9 +155,12 @@ export function useCalendar() {
 
   /** handle mode */
   function enableSetCalendarMode() {
-    const firstMondayOfMonth = findFirstMondayOfMonth(global.date)
-    goToDate(firstMondayOfMonth)
-    setGlobal({ ...global, date: firstMondayOfMonth, mode: 'setCalendar' })
+    let newDate = new Date(global.date)
+    if (me?.isSuper) {
+      newDate = findFirstMondayOfMonth(global.date)
+      goToDate(newDate)
+    }
+    setGlobal({ ...global, date: newDate, mode: 'setCalendar' })
   }
 
   function enableBorrowMode() {

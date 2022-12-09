@@ -1,7 +1,6 @@
 import SwitchCalendarButtons from '@components/SwitchCalendarButtons'
 
-import { useAccount, useWindowSize } from '@client/hooks'
-import { useMenuItems } from '@root/src/client/hooks/useMenuItems'
+import { useAccount, useMenuItems, useWindowSize } from '@client/hooks'
 
 import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'

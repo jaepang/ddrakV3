@@ -2,6 +2,7 @@ import Calendar from './Calendar'
 import DragEventMenu from './DragEventMenu'
 import Menu from './Menu'
 import SetMonthlyScheduleSlot from './SetMonthlySchedule'
+import AddNewEvent from './AddNewEvent'
 
 import { useAccount, useCalendar } from '@client/hooks'
 
@@ -30,7 +31,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
           </div>
           <div className={cx('section', 'bottom')}>
             {(mode === 'default' || mode === 'clubCalendar') && <Menu setShowSidebar={setShowSidebar} />}
-            {mode === 'setCalendar' && <SetMonthlyScheduleSlot />}
+            {mode === 'setCalendar' && (me?.isSuper ? <SetMonthlyScheduleSlot /> : <AddNewEvent />)}
           </div>
           <div className={cx('section', 'footer')}>
             {mode === 'setCalendar' && (

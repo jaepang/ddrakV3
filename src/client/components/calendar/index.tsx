@@ -60,7 +60,7 @@ export default function Calendar() {
     ],
     clubEventsQuery,
     {
-      enabled: !!date && mode === 'clubCalendar',
+      enabled: !!date && (mode === 'clubCalendar' || (!!me?.club && mode === 'setCalendar')),
       onSuccess(data) {
         const { clubEvents } = data ?? {}
         clubEvents?.forEach((event, idx) => {
@@ -74,6 +74,7 @@ export default function Calendar() {
       },
     },
   )
+
   const events = mode === 'default' ? defaultData?.defaultEvents : clubData?.clubEvents
 
   useEffect(() => {
@@ -150,12 +151,12 @@ export default function Calendar() {
         {/** ko */}
         {/*<p>{moment(arg.date).format('ddd')}</p>
         <h2>{moment(arg.date).format('D')}</h2>*/}
-        <div className={cx('day', { 'set-calendar-mode': mode === 'setCalendar' })}>
+        <div className={cx('day', { 'set-calendar-mode': mode === 'setCalendar' && me?.isSuper })}>
           {arg.date.toLocaleString('en-Us', {
             weekday: 'short',
           })}
         </div>
-        {mode !== 'setCalendar' && (
+        {!(me?.isSuper && mode === 'setCalendar') && (
           <h2>
             {arg.date.toLocaleString('en-Us', {
               day: 'numeric',

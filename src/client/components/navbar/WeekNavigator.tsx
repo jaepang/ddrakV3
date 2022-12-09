@@ -7,7 +7,7 @@ import styles from './style/Navbar.module.css'
 const cx = classNames.bind(styles)
 
 export default function WeekNavigator() {
-  const { date, mode, handlePrevWeek, handleNextWeek, handleToday, handleGoToDate, renderMonthlyEvents } = useCalendar()
+  const { date, mode, handlePrevWeek, handleNextWeek, handleToday, handleGoToDate } = useCalendar()
   const { me } = useAccount()
   const adminTimeSetMode = mode === 'setCalendar' && me?.isSuper
   const disableTodayButton = adminTimeSetMode ? date.getMonth() === new Date().getMonth() : isSameDate(date, new Date())

@@ -7,7 +7,7 @@ import {
   setAuthTokenForLocalStorage,
   removeAuthTokenFromLocalStorage,
   getIsLoggedInFromLocalStorage,
-} from '../utils'
+} from '@client/utils'
 import { meQuery } from '@client/shared/queries'
 import { useQuery } from 'react-query'
 import { graphQLClient } from '@client/utils'

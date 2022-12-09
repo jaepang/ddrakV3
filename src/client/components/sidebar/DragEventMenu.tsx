@@ -12,11 +12,9 @@ export default function DragEventMenu() {
     hour: 2,
     minute: 0,
   })
-  const [durationHour, setDurationHour] = useState(2)
-  const [durationMinute, setDurationMinute] = useState(0)
   const { me } = useAccount()
   const { mode, setDraggableDuration } = useCalendar()
-  const { data } = useQuery('clubs', clubsQuery, { enabled: !!me && me?.isSuper })
+  const { data } = useQuery('clubs', clubsQuery, { enabled: me?.isSuper })
   const { clubs } = data ?? {}
 
   function handleDurationChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -62,11 +60,6 @@ export default function DragEventMenu() {
               <div
                 key={club.name}
                 draggable
-                data-value={`${durationHour.toLocaleString('en-Us', {
-                  minimumIntegerDigits: 2,
-                })}:${durationMinute.toLocaleString('en-Us', {
-                  minimumIntegerDigits: 2,
-                })}`}
                 style={{
                   backgroundColor: club.color,
                 }}
