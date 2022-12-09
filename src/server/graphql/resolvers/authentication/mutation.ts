@@ -15,7 +15,6 @@ import { ApolloError } from 'apollo-server-micro'
 import { compare, hash } from 'bcryptjs'
 import { generateToken } from '@server/apollo/utils'
 import prisma from '@server/prisma'
-import { sendPasswordRecoveryEmail } from './utils'
 
 export const AuthenticationMutation = extendType({
   type: 'Mutation',
@@ -31,7 +30,7 @@ export const AuthenticationMutation = extendType({
         try {
           const hashedPassword = await hash(password, 10)
 
-          // 이메일로 유저 검색
+          /** search user by name */
           const existingUser = await prisma.user.findUnique({
             where: {
               name,
@@ -39,7 +38,6 @@ export const AuthenticationMutation = extendType({
           })
 
           if (!existingUser) {
-            // 탈퇴한 적 없고 신규 유저라면
             const data = {
               name,
               password: hashedPassword,
@@ -73,7 +71,6 @@ export const AuthenticationMutation = extendType({
               console.log(e)
             }
           } else {
-            // 탈퇴한 적 있다면
             const user = await prisma.user.update({
               where: {
                 name,
@@ -107,7 +104,7 @@ export const AuthenticationMutation = extendType({
         password: nonNull(stringArg()),
       },
       resolve: async (_, { name, password }, ctx) => {
-        // 이메일로 유저 검색
+        /** search user by name */
         const user = await prisma.user.findUnique({
           where: {
             name,
@@ -119,7 +116,7 @@ export const AuthenticationMutation = extendType({
           })
         }
 
-        // 패스워드 비교
+        /** compare password */
         const isPasswordValid = await compare(password, user.password)
         if (!isPasswordValid) {
           throw new ApolloError('Invalid password', null, {
@@ -127,7 +124,7 @@ export const AuthenticationMutation = extendType({
           })
         }
 
-        // 토큰 생성 후 전달
+        /** generate token and return */
         const token = generateToken({ userId: user.id })
         return {
           token,
@@ -159,30 +156,6 @@ export const AuthenticationMutation = extendType({
             password: hashedPassword,
           },
         })
-      },
-    })
-
-    t.field('passwordRecovery', {
-      type: 'Boolean',
-      args: {
-        name: nonNull(stringArg()),
-      },
-      resolve: async (_, { name }, ctx) => {
-        try {
-          const user = await prisma.user.findUnique({
-            where: {
-              name,
-            },
-          })
-
-          if (!user) {
-            throw new ApolloError('USER_NOT_FOUND')
-          }
-
-          return await sendPasswordRecoveryEmail(user)
-        } catch (e: any) {
-          throw new ApolloError(e)
-        }
       },
     })
 
