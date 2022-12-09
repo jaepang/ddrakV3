@@ -1,10 +1,10 @@
+import Link from 'next/link'
 import WeekNavigator from './WeekNavigator'
 import { IoIosMenu } from 'react-icons/io'
 import { calendarHeaderDateString } from '@client/utils'
-import dynamic from 'next/dynamic'
-const AccountMenu = dynamic(() => import('./AccountMenu'), { ssr: false })
 
 import { useAccount, useCalendar } from '@client/hooks'
+import { PATHNAME } from '@client/consts'
 
 import classNames from 'classnames/bind'
 import styles from './style/Navbar.module.css'
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function Navbar({ isMobile, setShowSidebar }: Props) {
-  const { me } = useAccount()
+  const { isLoggedIn, me, logout } = useAccount()
   const { date, mode, enableDefaultMode, enableClubCalendarMode } = useCalendar()
   const dateString = calendarHeaderDateString(date, isMobile)
 
@@ -30,7 +30,7 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
           </h2>
         </div>
         <div className={cx('right-area')}>
-          {me?.club && (
+          {isLoggedIn && me?.club && (
             <div className={cx('switch-calendar-buttons')}>
               <button disabled={mode === 'default'} className={cx('button', 'left')} onClick={enableDefaultMode}>
                 default
@@ -47,8 +47,14 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
             <div className={cx('icon-wrapper')} onClick={() => setShowSidebar(true)}>
               <IoIosMenu size={35} />
             </div>
+          ) : isLoggedIn ? (
+            <button className={cx('account-button')} onClick={logout}>
+              Logout
+            </button>
           ) : (
-            <AccountMenu />
+            <Link href={PATHNAME.LOGIN}>
+              <div className={cx('account-button')}>Login</div>
+            </Link>
           )}
         </div>
       </div>

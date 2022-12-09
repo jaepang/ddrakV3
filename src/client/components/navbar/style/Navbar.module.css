@@ -132,6 +132,16 @@
         }
       }
 
+      .account-button {
+        font-size: 1em;
+        color: var(--color-text-default);
+        cursor: pointer;
+
+        &:hover {
+          color: var(--color-text-dimmed);
+        }
+      }
+
       .icon-wrapper {
         cursor: pointer;
       }
