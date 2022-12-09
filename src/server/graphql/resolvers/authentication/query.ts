@@ -11,6 +11,9 @@ export const AuthenticationQuery = extendType({
           where: {
             id: ctx.userId,
           },
+          include: {
+            club: true,
+          },
         })
       },
     })

@@ -64,9 +64,6 @@ export function useAccount({
     ? USER_TYPE.CLUB_ADMIN
     : USER_TYPE.CLUB_MEMBER
 
-  const displayName =
-    account.isLoggedIn && (data?.me?.club?.name ?? '' + (data?.me?.isAdmin || data?.me?.isSuper ? ' Admin' : ''))
-
   function syncHeaders() {
     graphQLClient.setHeaders({
       authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,
@@ -93,7 +90,6 @@ export function useAccount({
     isLoggedIn: account.isLoggedIn,
     me: data?.me,
     isMeLoading: isLoading,
-    displayName,
     userType,
     refetchMe: refetch,
     login,

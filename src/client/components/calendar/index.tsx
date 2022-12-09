@@ -60,7 +60,7 @@ export default function Calendar() {
     ],
     clubEventsQuery,
     {
-      enabled: !!date && mode === 'club',
+      enabled: !!date && mode === 'clubCalendar',
       onSuccess(data) {
         const { clubEvents } = data ?? {}
         clubEvents?.forEach((event, idx) => {

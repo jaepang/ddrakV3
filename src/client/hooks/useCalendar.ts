@@ -169,6 +169,10 @@ export function useCalendar() {
     setGlobal({ ...global, date: new Date(), mode: 'default' })
   }
 
+  function enableClubCalendarMode() {
+    setGlobal({ ...global, mode: 'clubCalendar' })
+  }
+
   return {
     date: global.date,
     mode: global.mode,
@@ -181,6 +185,7 @@ export function useCalendar() {
     enableSetCalendarMode,
     enableBorrowMode,
     enableDefaultMode,
+    enableClubCalendarMode,
     addEvent,
     renderMonthlyEvents,
     mutateMonthlyEvents,

@@ -6,7 +6,7 @@ import styles from './style/SectionMenu.module.css'
 const cx = classNames.bind(styles)
 
 export default function Menu() {
-  const { me, isMeLoading, displayName, userType } = useAccount()
+  const { me, isMeLoading, isLoggedIn, userType } = useAccount()
   const { menuItems } = useMenuItems()
   const menuContent = menuItems[userType]
 
@@ -14,7 +14,9 @@ export default function Menu() {
     <>
       {!isMeLoading && (
         <div className={cx('menu')}>
-          <h2 className={cx('header')}>{displayName?.length > 0 ? `${displayName}` : 'Welcome to DDrak!'}</h2>
+          <h2 className={cx('header')}>
+            {isLoggedIn ? `${me?.club?.name + ((me?.isAdmin || me?.isSuper) && ' Admin')}` : 'Welcome to DDrak!'}
+          </h2>
           <div className={cx('body')}>
             {menuContent.map(item => (
               <div key={item.label} className={cx('menu-item')} onClick={() => item.handler()}>

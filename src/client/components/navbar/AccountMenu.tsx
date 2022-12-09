@@ -17,21 +17,7 @@ export default function AccountMenu() {
 
   return (
     <div className={cx('right-area')}>
-      {isLoggedIn && !isMeLoading && (
-        <>
-          <Link href={PATHNAME.CHAT}>
-            <div className={cx('icon-wrapper')}>
-              <IoChatbubblesOutline size={25} />
-            </div>
-          </Link>
-          <Link href={PATHNAME.MY}>
-            <div className={cx('icon-wrapper')}>
-              <AiOutlineUser size={25} />
-            </div>
-          </Link>
-          <button onClick={handleLogout}>로그아웃</button>
-        </>
-      )}
+      {isLoggedIn && !isMeLoading && <button onClick={handleLogout}>로그아웃</button>}
       {!isLoggedIn && <Link href={PATHNAME.LOGIN}>로그인</Link>}
     </div>
   )

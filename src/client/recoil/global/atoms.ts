@@ -2,7 +2,7 @@ import { atom } from 'recoil'
 
 export interface Global {
   date: Date
-  mode: 'default' | 'club' | 'borrow' | 'setCalendar'
+  mode: 'default' | 'clubCalendar' | 'borrow' | 'setCalendar'
   draggableDuration: string
 }
 

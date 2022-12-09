@@ -25,11 +25,11 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
       <div className={cx('sidebar', mode, { show: showSidebar })}>
         <div className={cx('body')}>
           <div className={cx('section', 'top')}>
-            {mode === 'default' && <Calendar setShowSidebar={setShowSidebar} />}
+            {(mode === 'default' || mode === 'clubCalendar') && <Calendar setShowSidebar={setShowSidebar} />}
             {mode === 'setCalendar' && !isMobile && <DragEventMenu />}
           </div>
           <div className={cx('section', 'bottom')}>
-            {mode === 'default' && <Menu />}
+            {(mode === 'default' || mode === 'clubCalendar') && <Menu />}
             {mode === 'setCalendar' && <SetMonthlyScheduleSlot />}
           </div>
           <div className={cx('section', 'footer')}>
