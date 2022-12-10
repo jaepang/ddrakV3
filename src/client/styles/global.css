@@ -70,13 +70,7 @@ a {
   letter-spacing: -1px;
 }
 
-.fc-event-main-frame {
-  padding-left: 0.7rem;
-}
-
 .fc-timegrid-event {
-  border-radius: 15px;
-
   p {
     margin: 0.7rem 0 0.3rem 0;
     font-weight: 400;
@@ -90,19 +84,56 @@ a {
   font-size: 1rem;
 }
 
-/* overlapped event */
-.fc-timegrid-event-harness-inset {
-  .fc-event-main-frame {
-    padding-left: 0.4rem !important;
+/* event */
+.fc-timegrid-col-events {
+  margin: 0 !important;
+}
+
+.fc-event-main-frame {
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column-reverse !important;
+  align-items: flex-start;
+  justify-content: flex-end;
+  row-gap: 0.5em;
+
+  @media (max-width: 1024px) {
+    padding: 0.3em;
   }
 
-  .fc-event-title {
-    font-size: 0.9rem !important;
+  .fc-event-title-container {
+    flex-grow: 0;
+
+    .fc-event-title {
+      min-height: 1.2em !important;
+      height: max-content !important;
+      font-size: 1.1em !important;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+
+      @media (max-width: 600px) {
+        font-size: 0.9em !important;
+      }
+    }
   }
 
-  p {
-    font-size: 0.5rem !important;
+  .fc-event-time {
+    width: 100%;
+    font-size: 0.9em;
+    font-weight: 500;
+    white-space: normal !important;
+    line-height: 1.1;
   }
+}
+
+p {
+  font-size: 0.5rem !important;
 }
 
 .fc-theme-standard td,
