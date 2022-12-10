@@ -115,7 +115,7 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
             className={cx('title-input')}
             placeholder="New Event"
             type="text"
-            value={timeSlots[timeSlotIndex]?.title}
+            value={timeSlots[timeSlotIndex]?.title ?? ''}
             onChange={handleTitleChange}
           />
         </div>

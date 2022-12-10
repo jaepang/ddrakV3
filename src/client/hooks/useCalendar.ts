@@ -6,7 +6,7 @@ import { queryClient } from '@client/shared/react-query'
 import { useQuery, useMutation } from 'react-query'
 import { createEventsMutation, deleteEventsMutation, monthlyEventsQuery } from '@client/shared/queries'
 
-import { RecurringEventApiArg, feToBeArg, isSameDateTime } from '@client/utils'
+import { RecurringEventApiArg, feToBeArg, isSameDateTime, leftPadZero } from '@client/utils'
 import { NexusGenObjects } from '@root/src/shared/generated/nexus-typegen'
 
 export function useCalendar() {
@@ -87,6 +87,18 @@ export function useCalendar() {
     const { event } = info
 
     if (me?.isSuper) {
+      const newTimeSlots = timeSlots.map((timeSlot, idx) => {
+        if (idx.toString() === event.groupId) {
+          const { start, end } = event
+          return {
+            ...timeSlot,
+            start: [leftPadZero(start.getHours()), leftPadZero(start.getMinutes())].join(':'),
+            end: [leftPadZero(end.getHours()), leftPadZero(end.getMinutes())].join(':'),
+          }
+        }
+        return timeSlot
+      })
+      setTimeSlots(newTimeSlots)
     } else {
       const newTimeSlots = timeSlots.map((timeSlot, idx) => {
         if (idx.toString() === event.id) {

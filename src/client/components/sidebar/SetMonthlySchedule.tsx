@@ -43,32 +43,46 @@ export default function SetMonthlyScheduleSlot() {
   function handleNextSlot() {
     if (timeSlotIndex + 1 === timeSlotLength) {
       setTimeSlotLength(timeSlotLength + 1)
-      timeSlots.push({
-        start: timeSlots[timeSlotIndex].end,
-        end: timeSlots[timeSlotIndex].end,
-        club: ['', '', '', '', '', '', ''],
-      })
+      setTimeSlots([
+        ...timeSlots,
+        {
+          start: timeSlots[timeSlotIndex].end,
+          end: timeSlots[timeSlotIndex].end,
+          club: ['', '', '', '', '', '', ''],
+        },
+      ])
     }
     setTimeSlotIndex(timeSlotIndex + 1)
   }
 
   function handleClickClub(day: number, clubName: string) {
     const newSlot = [...timeSlots]
-    newSlot[timeSlotIndex].club[day] = clubName
+    const newClub = [...newSlot[timeSlotIndex].club]
+    newClub[day] = clubName
+    newSlot[timeSlotIndex] = {
+      ...newSlot[timeSlotIndex],
+      club: newClub,
+    }
     setTimeSlots(newSlot)
   }
 
   function handleStartTimeChange(value: string) {
     const newSlot = [...timeSlots]
     const [hour, minute] = value.split(':')
-    newSlot[timeSlotIndex].start = [leftPadZero(hour), leftPadZero(minute)].join(':')
+    newSlot[timeSlotIndex] = {
+      ...newSlot[timeSlotIndex],
+      start: [leftPadZero(hour), leftPadZero(minute)].join(':'),
+    }
     setTimeSlots(newSlot)
   }
 
   function handleEndTimeChange(value: string) {
     const newSlot = [...timeSlots]
     const [hour, minute] = value.split(':')
-    newSlot[timeSlotIndex].end = [leftPadZero(hour), leftPadZero(minute)].join(':')
+    newSlot[timeSlotIndex] = {
+      ...newSlot[timeSlotIndex],
+      end: [leftPadZero(hour), leftPadZero(minute)].join(':'),
+    }
     setTimeSlots(newSlot)
   }
 
