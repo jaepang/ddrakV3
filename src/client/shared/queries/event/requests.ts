@@ -7,7 +7,7 @@ import {
   MONTHLY_EVENTS_QUERY,
   EVENT_QUERY,
   CREATE_SINGLE_EVENT_MUTATION,
-  CREATE_MONTHLY_EVENT_MUTATION,
+  CREATE_EVENTS_MUTATION,
   UPDATE_EVENT_MUTATION,
   DELETE_EVENT_MUTATION,
   DELETE_EVENTS_MUTATION,
@@ -43,10 +43,10 @@ export const createSingleEventMutation = async (
   return await graphQLClient.request(CREATE_SINGLE_EVENT_MUTATION, variables)
 }
 
-export const createMonthlyEventMutation = async (
-  variables: NexusGenArgTypes['Mutation']['createMonthlyEvent'],
+export const createEventsMutation = async (
+  variables: NexusGenArgTypes['Mutation']['createEvents'],
 ): Promise<number> => {
-  return await graphQLClient.request(CREATE_MONTHLY_EVENT_MUTATION, variables)
+  return await graphQLClient.request(CREATE_EVENTS_MUTATION, variables)
 }
 
 export const updateEventMutation = async (

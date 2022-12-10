@@ -5,7 +5,12 @@ import { useAccount } from './useAccount'
 
 import { queryClient } from '@client/shared/react-query'
 import { useQuery, useMutation } from 'react-query'
-import { createMonthlyEventMutation, deleteEventsMutation, monthlyEventsQuery } from '@client/shared/queries'
+import {
+  createEventsMutation,
+  createSingleEventMutation,
+  deleteEventsMutation,
+  monthlyEventsQuery,
+} from '@client/shared/queries'
 
 import { feToBeArg } from '@client/utils'
 import { findFirstMondayOfMonth } from '@client/utils'
@@ -16,7 +21,7 @@ export function useCalendar() {
   const { prev, next, today, goToDate, addEvent, getEvents, clearCalendar } = useRecoilValue(calendarState)
   const { me } = useAccount()
 
-  const { mutate: createMonthlyEvent } = useMutation(createMonthlyEventMutation, {
+  const { mutate: createEvents } = useMutation(createEventsMutation, {
     onSuccess: () => {
       enableDefaultMode()
       queryClient.refetchQueries(['events'])
@@ -171,7 +176,7 @@ export function useCalendar() {
 
     try {
       await deleteEventsMutation({ ids: oldMonthlyEventIds })
-      createMonthlyEvent({ eventsInput })
+      createEvents({ eventsInput })
     } catch (e) {
       alert('Monthly Event creation failed')
     }

@@ -49,9 +49,9 @@ export const CREATE_SINGLE_EVENT_MUTATION = gql`
   }
 `
 
-export const CREATE_MONTHLY_EVENT_MUTATION = gql`
+export const CREATE_EVENTS_MUTATION = gql`
   mutation Mutation($eventsInput: [EventInput]) {
-    createMonthlyEvent(eventsInput: $eventsInput)
+    createEvents(eventsInput: $eventsInput)
   }
 `
 

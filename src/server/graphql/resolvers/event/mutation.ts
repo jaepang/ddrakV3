@@ -46,7 +46,7 @@ export const EventMutation = extendType({
       },
     })
 
-    t.int('createMonthlyEvent', {
+    t.int('createEvents', {
       args: {
         eventsInput: list(arg({ type: 'EventInput' })),
       },
