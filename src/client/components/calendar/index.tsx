@@ -82,7 +82,7 @@ export default function Calendar() {
   const events = mode === 'default' ? defaultEventApiArgs : clubEventApiArgs
 
   useEffect(() => {
-    setCalendar({ prev, next, today, goToDate, addEvent, getEvents, clearCalendar })
+    setCalendar({ prev, next, today, goToDate, addEvent, getEvents, clearCalendar, clearAddedEvents })
   }, [])
 
   useEffect(() => {
@@ -146,6 +146,16 @@ export default function Calendar() {
     const events = getEvents()
     events?.forEach((event: EventApi) => {
       event.remove()
+    })
+  }
+
+  /** remove events except global events */
+  function clearAddedEvents() {
+    const events = getEvents()
+    events?.forEach((event: EventApi) => {
+      if (!event.extendedProps.clubId) {
+        event.remove()
+      }
     })
   }
 

@@ -3,14 +3,16 @@ import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
 import { useEffect, useState } from 'react'
 import { useCalendar } from '@client/hooks'
-import { useQuery } from 'react-query'
-import { clubsQuery } from '@client/shared/queries'
 
 import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'
 const cx = classNames.bind(styles)
 
-export default function AddNewEventsSlot() {
+interface Props {
+  isRental?: boolean
+}
+
+export default function AddNewEventsSlot({ isRental = false }: Props) {
   const [timeSlotLength, setTimeSlotLength] = useState(1)
   const [timeSlotIndex, setTimeSlotIndex] = useState(0)
   const [timeSlot, setTimeSlot] = useState([
@@ -20,13 +22,11 @@ export default function AddNewEventsSlot() {
       title: '',
     },
   ])
-  const { date } = useCalendar()
-  const { data } = useQuery('clubs', clubsQuery)
-  const { clubs } = data ?? {}
+  const { date, renderNewEvents } = useCalendar()
 
   useEffect(() => {
-    // renderMonthlyEvents(timeSlot, clubs)
-  }, [timeSlot, clubs, date])
+    renderNewEvents(timeSlot)
+  }, [timeSlot, date])
 
   function handlePrevSlot() {
     setTimeSlotIndex(timeSlotIndex - 1)
@@ -60,10 +60,18 @@ export default function AddNewEventsSlot() {
     })
   }
 
+  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setTimeSlot(prev => {
+      const newSlot = [...prev]
+      newSlot[timeSlotIndex].title = e.target.value
+      return newSlot
+    })
+  }
+
   return (
     <div className={cx('menu')}>
       <div className={cx('header')}>
-        <h2>Add New Event</h2>
+        <h2>{isRental ? 'Add New Rental' : 'Add New Event'}</h2>
         <div className={cx('buttons')}>
           <button onClick={handlePrevSlot} disabled={timeSlotIndex === 0} className={cx('icon-wrapper', 'back')}>
             <IoChevronBack size={20} />
@@ -90,7 +98,13 @@ export default function AddNewEventsSlot() {
         </div>
         <div className={cx('new-event-title')}>
           <div className={cx('label')}>Title</div>
-          <input className={cx('title-input')} placeholder="New Event" type="text" />
+          <input
+            className={cx('title-input')}
+            placeholder="New Event"
+            type="text"
+            value={timeSlot[timeSlotIndex].title}
+            onChange={handleTitleChange}
+          />
         </div>
       </div>
     </div>

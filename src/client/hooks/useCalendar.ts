@@ -13,7 +13,8 @@ import { NexusGenObjects } from '@root/src/shared/generated/nexus-typegen'
 
 export function useCalendar() {
   const [global, setGlobal] = useRecoilState(globalState)
-  const { prev, next, today, goToDate, addEvent, getEvents, clearCalendar } = useRecoilValue(calendarState)
+  const { prev, next, today, goToDate, addEvent, getEvents, clearCalendar, clearAddedEvents } =
+    useRecoilValue(calendarState)
   const { me } = useAccount()
 
   const { mutate: createMonthlyEvent } = useMutation(createMonthlyEventMutation, {
@@ -27,7 +28,7 @@ export function useCalendar() {
     },
   })
 
-  const { data } = useQuery(
+  const { data: monthlyEventsData } = useQuery(
     [
       'monthlyEvents',
       {
@@ -130,9 +131,34 @@ export function useCalendar() {
     })
   }
 
+  function renderNewEvents(timeSlots: any[]) {
+    const events = getEvents()
+
+    timeSlots?.forEach((timeSlot, idx) => {
+      /** update event if there is already created event */
+      const target = events?.find(event => event.id === idx.toString())
+      if (target) {
+        target.setProp('title', timeSlot.title)
+        target.setStart(timeSlot.start)
+        target.setEnd(timeSlot.end)
+        return
+      }
+
+      /** if not, create new one */
+      if (!timeSlot.start || !timeSlot.end) return
+
+      addEvent({
+        id: idx,
+        title: timeSlot.title,
+        start: timeSlot.start,
+        end: timeSlot.end,
+      })
+    })
+  }
+
   async function mutateMonthlyEvents() {
     /** if there are remained old monthly data, remove them */
-    const oldMonthlyEventIds = data?.monthlyEvents.map(event => event.id)
+    const oldMonthlyEventIds = monthlyEventsData?.monthlyEvents.map(event => event.id)
     const renderedEvents = getEvents()
     const clubNames = new Set(renderedEvents.map(event => event.title))
     const groupIds = new Set(renderedEvents.map(event => event.groupId))
@@ -169,6 +195,7 @@ export function useCalendar() {
 
   function enableDefaultMode() {
     today()
+    clearCalendar()
     setGlobal({ ...global, date: new Date(), mode: 'default' })
   }
 
@@ -192,5 +219,6 @@ export function useCalendar() {
     addEvent,
     renderMonthlyEvents,
     mutateMonthlyEvents,
+    renderNewEvents,
   }
 }

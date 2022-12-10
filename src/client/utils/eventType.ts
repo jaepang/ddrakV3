@@ -18,7 +18,7 @@ export interface EventApiArg {
   desc?: string
   clubId?: number
   className?: string
-  editable: boolean
+  editable?: boolean
 
   extendedProps?: {
     startTime?: string

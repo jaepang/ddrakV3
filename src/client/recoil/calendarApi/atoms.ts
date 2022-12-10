@@ -11,6 +11,7 @@ export interface CalendarApiFunctions {
   addEvent: (event: EventApiArg & NexusGenObjects['Event']) => void
   getEvents: () => EventApi[]
   clearCalendar: () => void
+  clearAddedEvents: () => void
 }
 
 export const calendarState = atom<CalendarApiFunctions>({
@@ -23,5 +24,6 @@ export const calendarState = atom<CalendarApiFunctions>({
     addEvent: null,
     getEvents: null,
     clearCalendar: null,
+    clearAddedEvents: null,
   },
 })

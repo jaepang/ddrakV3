@@ -67,7 +67,7 @@ export default function DragEventMenu() {
         </div>
         <div id="draggable-events" className={cx('draggable-events')}>
           {me?.isSuper
-            ? clubs.map(club => (
+            ? clubs?.map(club => (
                 <div
                   key={club.name}
                   draggable

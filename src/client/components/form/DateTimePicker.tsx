@@ -55,7 +55,9 @@ export default function DateTimePicker({
   return (
     <div className={cx('root')} onClick={() => setShowDropdown(true)} ref={dropdownDom}>
       <div className={cx('input')}>
-        <div className={cx('data')}>{value?.toLocaleString('en-US', { dateStyle: 'medium' })}</div>
+        <div className={cx('data')}>
+          {value?.toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short', hour12: false })}
+        </div>
         <div className={cx('icon-wrapper')}>
           <TbCalendarTime size={15} />
         </div>
