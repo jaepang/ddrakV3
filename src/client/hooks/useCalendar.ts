@@ -18,6 +18,7 @@ export function useCalendar() {
   const { mutate: createEvents } = useMutation(createEventsMutation, {
     onSuccess: () => {
       me?.isSuper ? enableDefaultMode() : enableClubCalendarMode()
+      setTimeSlots([])
       queryClient.refetchQueries(['events'])
     },
     onError: () => {
@@ -65,6 +66,40 @@ export function useCalendar() {
     setDate(date)
     /** fullcalendar api */
     goToDate(date)
+  }
+
+  function eventReceive(info: any) {
+    const { event } = info
+
+    setTimeSlots([
+      ...timeSlots,
+      {
+        start: event.start,
+        end: event.end,
+        title: event.title,
+        color: event.backgroundColor,
+      },
+    ])
+    event.remove()
+  }
+
+  function eventChange(info: any) {
+    const { event } = info
+
+    if (me?.isSuper) {
+    } else {
+      const newTimeSlots = timeSlots.map((timeSlot, idx) => {
+        if (idx.toString() === event.id) {
+          return {
+            ...timeSlot,
+            start: event.start,
+            end: event.end,
+          }
+        }
+        return timeSlot
+      })
+      setTimeSlots(newTimeSlots)
+    }
   }
 
   /** handle new monthly events; used at super's setCalendar mode */
@@ -148,6 +183,10 @@ export function useCalendar() {
     }
   }
 
+  function isDatesInvalid(start: Date | string, end: Date | string) {
+    return !start || !end || end < start || isSameDateTime(start as Date, end as Date)
+  }
+
   /** handle new events; used at club admin's setCalendar mode */
   function renderNewEvents() {
     const events = getEvents()
@@ -156,7 +195,7 @@ export function useCalendar() {
       /** update event if there is already created event */
       const target = events?.find(event => event.id === idx.toString())
       if (target) {
-        if (!timeSlot.start || !timeSlot.end || timeSlot.end < timeSlot.start) {
+        if (isDatesInvalid(timeSlot.start, timeSlot.end)) {
           target.remove()
           return
         }
@@ -166,13 +205,14 @@ export function useCalendar() {
         return
       }
 
-      if (!timeSlot.start || !timeSlot.end || timeSlot.end < timeSlot.start) return
+      if (isDatesInvalid(timeSlot.start, timeSlot.end)) return
       /** if not, create new one */
       addEvent({
         id: idx,
         title: timeSlot.title,
         start: timeSlot.start as Date,
         end: timeSlot.end as Date,
+        color: timeSlot.color,
       })
     })
   }
@@ -180,12 +220,7 @@ export function useCalendar() {
   function mutateNewEvents() {
     const eventsInput = timeSlots
       ?.map(timeSlot => {
-        if (
-          timeSlot.end < timeSlot.start ||
-          isSameDateTime(timeSlot.start as Date, timeSlot.end as Date) ||
-          !timeSlot.title
-        )
-          return
+        if (isDatesInvalid(timeSlot.start, timeSlot.end) || !timeSlot.title) return
         return { ...timeSlot, clubId: me?.club?.id } as RecurringEventApiArg
       })
       .filter(event => !!event)
@@ -201,6 +236,8 @@ export function useCalendar() {
     handleToday,
     handleGoToDate,
     addEvent,
+    eventReceive,
+    eventChange,
     renderMonthlyEvents,
     mutateMonthlyEvents,
     renderNewEvents,

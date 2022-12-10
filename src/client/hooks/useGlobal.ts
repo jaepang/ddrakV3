@@ -1,12 +1,13 @@
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { globalState } from '@client/recoil/global/atoms'
 import { calendarState } from '@client/recoil/calendarApi/atoms'
-import { useAccount } from '@client/hooks'
+import { useAccount, useEvent } from '@client/hooks'
 import { findFirstMondayOfMonth } from '@client/utils'
 
 export function useGlobal() {
   const [global, setGlobal] = useRecoilState(globalState)
   const { me } = useAccount()
+  const { setTimeSlots } = useEvent()
   const { today, goToDate, clearCalendar } = useRecoilValue(calendarState)
 
   function setDate(date: Date) {
@@ -29,10 +30,12 @@ export function useGlobal() {
   function enableDefaultMode() {
     today()
     clearCalendar()
+    setTimeSlots([])
     setGlobal({ ...global, date: new Date(), mode: 'default' })
   }
 
   function enableClubCalendarMode() {
+    clearCalendar()
     setGlobal({ ...global, mode: 'clubCalendar' })
   }
 

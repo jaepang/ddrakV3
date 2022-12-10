@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function AddNewEventsSlot({ isRental = false }: Props) {
-  const [timeSlotLength, setTimeSlotLength] = useState(1)
   const [timeSlotIndex, setTimeSlotIndex] = useState(0)
   const { renderNewEvents, setTimeSlots } = useCalendar()
   const { date } = useGlobal()
@@ -38,13 +37,15 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
   }
 
   function handleNextSlot() {
-    if (timeSlotIndex + 1 === timeSlotLength) {
-      setTimeSlotLength(timeSlotLength + 1)
-      timeSlots.push({
-        start: timeSlots[timeSlotIndex].end,
-        end: timeSlots[timeSlotIndex].end,
-        title: '',
-      })
+    if (timeSlotIndex + 1 === timeSlots?.length) {
+      setTimeSlots([
+        ...timeSlots,
+        {
+          start: timeSlots[timeSlotIndex].end,
+          end: timeSlots[timeSlotIndex].end,
+          title: '',
+        },
+      ])
     }
     setTimeSlotIndex(timeSlotIndex + 1)
   }

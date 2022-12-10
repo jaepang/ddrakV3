@@ -22,6 +22,7 @@ export default function Calendar() {
   const ref = useRef(null)
   const setCalendar = useSetRecoilState(calendarState)
   const { me } = useAccount()
+  const { eventReceive, eventChange } = useCalendar()
   const { date, mode } = useGlobal()
   const { draggableDuration } = useEvent()
   const { width } = useWindowSize()
@@ -195,9 +196,10 @@ export default function Calendar() {
       slotMaxTime="30:00:00"
       editable={me?.isAdmin || me?.isSuper}
       droppable={me?.isAdmin || me?.isSuper}
-      // eventReceive={handleEventReceive}
+      eventReceive={eventReceive}
       // eventClick={handleEventClick}
-      // eventChange={handleEventChange}
+      eventDrop={eventChange}
+      eventResize={eventChange}
       slotDuration="00:30:00"
       // slotLabelFormat={slotLabelFormat}
       dayHeaderContent={DayHeaderContent}
