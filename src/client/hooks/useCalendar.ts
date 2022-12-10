@@ -13,13 +13,11 @@ import { NexusGenObjects } from '@root/src/shared/generated/nexus-typegen'
 
 export function useCalendar() {
   const [global, setGlobal] = useRecoilState(globalState)
-  const { prev, next, today, goToDate, addEvent, getEvents, clearCalendar, clearAddedEvents } =
-    useRecoilValue(calendarState)
+  const { prev, next, today, goToDate, addEvent, getEvents, clearCalendar } = useRecoilValue(calendarState)
   const { me } = useAccount()
 
   const { mutate: createMonthlyEvent } = useMutation(createMonthlyEventMutation, {
     onSuccess: () => {
-      clearCalendar()
       enableDefaultMode()
       queryClient.refetchQueries(['events'])
     },
@@ -120,6 +118,7 @@ export function useCalendar() {
           ),
           allDay: false,
           groupId: idx.toString(),
+          editable: true,
 
           /** for rendering */
           ...extendedProps,
@@ -144,9 +143,8 @@ export function useCalendar() {
         return
       }
 
+      if (!timeSlot.start || !timeSlot.end || timeSlot.end < timeSlot.start) return
       /** if not, create new one */
-      if (!timeSlot.start || !timeSlot.end) return
-
       addEvent({
         id: idx,
         title: timeSlot.title,

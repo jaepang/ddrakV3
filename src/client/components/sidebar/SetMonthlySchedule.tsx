@@ -74,7 +74,7 @@ export default function SetMonthlyScheduleSlot() {
   }
 
   return (
-    <div className={cx('menu')}>
+    <div className={cx('menu', 'padding-top')}>
       <div className={cx('header')}>
         <h2>Set Monthly Schedule</h2>
         <div className={cx('buttons')}>

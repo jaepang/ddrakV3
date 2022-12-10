@@ -69,7 +69,7 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
   }
 
   return (
-    <div className={cx('menu')}>
+    <div className={cx('menu', 'padding-top')}>
       <div className={cx('header')}>
         <h2>{isRental ? 'Add New Rental' : 'Add New Event'}</h2>
         <div className={cx('buttons')}>

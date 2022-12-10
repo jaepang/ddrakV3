@@ -82,11 +82,11 @@ export default function Calendar() {
   const events = mode === 'default' ? defaultEventApiArgs : clubEventApiArgs
 
   useEffect(() => {
-    setCalendar({ prev, next, today, goToDate, addEvent, getEvents, clearCalendar, clearAddedEvents })
+    setCalendar({ prev, next, today, goToDate, addEvent, getEvents, clearCalendar })
   }, [])
 
   useEffect(() => {
-    if (!isMobile && mode === 'setCalendar') {
+    if (!isMobile && !me?.isSuper && mode === 'setCalendar') {
       const draggableCx = classNames.bind(draggableEventsStyles)
       const container = document.getElementById('draggable-events')
 
@@ -146,16 +146,6 @@ export default function Calendar() {
     const events = getEvents()
     events?.forEach((event: EventApi) => {
       event.remove()
-    })
-  }
-
-  /** remove events except global events */
-  function clearAddedEvents() {
-    const events = getEvents()
-    events?.forEach((event: EventApi) => {
-      if (!event.extendedProps.clubId) {
-        event.remove()
-      }
     })
   }
 

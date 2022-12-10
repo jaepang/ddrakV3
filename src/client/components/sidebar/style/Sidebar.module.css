@@ -41,22 +41,27 @@
   }
 
   .body {
+    height: calc(100% - 2em);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: calc(100% - 2em);
     padding: 1em;
     row-gap: 2.5em;
+    position: relative;
 
     .section {
       width: 100%;
       height: auto;
 
       &.footer {
+        width: calc(100% - 2em);
+        padding: 0 1em;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: absolute;
+        bottom: 1em;
 
         .button {
           width: 48%;
@@ -79,12 +84,6 @@
           }
         }
       }
-    }
-  }
-
-  @media (max-width: 1024px) {
-    &.setCalendar .body {
-      justify-content: space-between;
     }
   }
 }

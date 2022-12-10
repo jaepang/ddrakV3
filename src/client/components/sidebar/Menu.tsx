@@ -23,9 +23,7 @@ export default function Menu({ setShowSidebar }: Props) {
         <div className={cx('menu')}>
           <div className={cx('header')}>
             <h2>
-              {isLoggedIn
-                ? `${me?.club?.name ?? '' + ((me?.isAdmin || me?.isSuper) && ' Admin')}`
-                : 'Welcome to DDrak!'}
+              {isLoggedIn ? `${me?.club?.name ?? ''} ${(me?.isAdmin || me?.isSuper) && ' Admin'}` : 'Welcome to DDrak!'}
             </h2>
             {isMobile && isLoggedIn && me?.club && <SwitchCalendarButtons isMobile setShowSidebar={setShowSidebar} />}
           </div>
