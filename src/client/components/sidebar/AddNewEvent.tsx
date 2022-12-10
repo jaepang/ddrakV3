@@ -2,7 +2,7 @@ import { DateTimePicker } from '@components/form'
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
 import React, { useEffect, useState } from 'react'
-import { useCalendar } from '@client/hooks'
+import { useCalendar, useEvent, useGlobal } from '@client/hooks'
 
 import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'
@@ -15,7 +15,9 @@ interface Props {
 export default function AddNewEventsSlot({ isRental = false }: Props) {
   const [timeSlotLength, setTimeSlotLength] = useState(1)
   const [timeSlotIndex, setTimeSlotIndex] = useState(0)
-  const { date, renderNewEvents, timeSlots, setTimeSlots } = useCalendar()
+  const { renderNewEvents, setTimeSlots } = useCalendar()
+  const { date } = useGlobal()
+  const { timeSlots } = useEvent()
 
   useEffect(() => {
     setTimeSlots([

@@ -1,4 +1,4 @@
-import { useCalendar } from '@client/hooks'
+import { useGlobal } from '@client/hooks'
 
 import classNames from 'classnames/bind'
 import styles from './style/SwitchCalendarButtons.module.css'
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function SwitchCalendarButtons({ isMobile = false, setShowSidebar }: Props) {
-  const { mode, enableDefaultMode, enableClubCalendarMode } = useCalendar()
+  const { mode, enableDefaultMode, enableClubCalendarMode } = useGlobal()
 
   function handleSwitchMode() {
     mode === 'clubCalendar' && enableDefaultMode()

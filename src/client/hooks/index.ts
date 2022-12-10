@@ -1,5 +1,7 @@
 export * from './useWindowSize'
 export * from './useAccount'
+export * from './useGlobal'
+export * from './useEvent'
 export * from './useCalendar'
 export * from './useMenuItems'
 export * from './useOutsideClickHandler'

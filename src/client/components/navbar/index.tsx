@@ -4,7 +4,7 @@ import SwitchCalendarButtons from '@components/SwitchCalendarButtons'
 import { IoIosMenu } from 'react-icons/io'
 import { calendarHeaderDateString } from '@client/utils'
 
-import { useAccount, useCalendar } from '@client/hooks'
+import { useAccount, useGlobal } from '@client/hooks'
 import { PATHNAME } from '@client/consts'
 
 import classNames from 'classnames/bind'
@@ -18,7 +18,7 @@ interface Props {
 
 export default function Navbar({ isMobile, setShowSidebar }: Props) {
   const { isLoggedIn, me, logout } = useAccount()
-  const { date, mode, enableDefaultMode } = useCalendar()
+  const { date, mode, enableDefaultMode } = useGlobal()
   const dateString = calendarHeaderDateString(date, isMobile)
 
   function handleLogout() {

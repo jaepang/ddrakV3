@@ -24,7 +24,7 @@ export default function DragEventMenu() {
     minute: 0,
   })
   const { isLoggedIn, me } = useAccount()
-  const { mode, setDraggableDuration } = useCalendar()
+  const { setDraggableDuration } = useCalendar()
   const { data } = useQuery('clubs', clubsQuery, { enabled: isLoggedIn && me?.isSuper })
   const { clubs } = data ?? {}
 

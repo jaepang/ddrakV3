@@ -6,7 +6,7 @@ import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 import { useRef, useState, useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { calendarState } from '@client/recoil/calendarApi/atoms'
-import { useWindowSize, useAccount, useCalendar } from '@client/hooks'
+import { useWindowSize, useAccount, useCalendar, useGlobal, useEvent } from '@client/hooks'
 import { useQuery } from 'react-query'
 import { defaultEventsQuery, clubEventsQuery } from '@client/shared/queries'
 import { NexusGenObjects } from '@shared/generated/nexus-typegen'
@@ -19,10 +19,11 @@ const cx = classNames.bind(styles)
 
 export default function Calendar() {
   const [draggable, setDraggable] = useState<Draggable>(null)
-  const { me } = useAccount()
-  const { date, mode, draggableDuration } = useCalendar()
-  const setCalendar = useSetRecoilState(calendarState)
   const ref = useRef(null)
+  const setCalendar = useSetRecoilState(calendarState)
+  const { me } = useAccount()
+  const { date, mode } = useGlobal()
+  const { draggableDuration } = useEvent()
   const { width } = useWindowSize()
   const isMobile = width <= 1024
 

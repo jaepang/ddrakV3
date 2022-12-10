@@ -2,7 +2,7 @@ import { TimePicker } from '@components/form'
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
 import { useEffect, useState } from 'react'
-import { useCalendar } from '@client/hooks'
+import { useCalendar, useEvent, useGlobal } from '@client/hooks'
 import { useQuery } from 'react-query'
 import { clubsQuery } from '@client/shared/queries'
 import { leftPadZero } from '@client/utils'
@@ -16,7 +16,9 @@ const tableHeader = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 export default function SetMonthlyScheduleSlot() {
   const [timeSlotLength, setTimeSlotLength] = useState(1)
   const [timeSlotIndex, setTimeSlotIndex] = useState(0)
-  const { date, renderMonthlyEvents, timeSlots, setTimeSlots } = useCalendar()
+  const { renderMonthlyEvents, setTimeSlots } = useCalendar()
+  const { timeSlots } = useEvent()
+  const { date } = useGlobal()
   const { data } = useQuery('clubs', clubsQuery)
   const { clubs } = data ?? {}
 

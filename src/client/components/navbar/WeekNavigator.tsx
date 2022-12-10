@@ -1,5 +1,5 @@
 import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5'
-import { useAccount, useCalendar } from '@client/hooks'
+import { useAccount, useCalendar, useGlobal } from '@client/hooks'
 import { isSameDate, findFirstMondayOfMonth } from '@client/utils'
 
 import classNames from 'classnames/bind'
@@ -7,7 +7,8 @@ import styles from './style/Navbar.module.css'
 const cx = classNames.bind(styles)
 
 export default function WeekNavigator() {
-  const { date, mode, handlePrevWeek, handleNextWeek, handleToday, handleGoToDate } = useCalendar()
+  const { handlePrevWeek, handleNextWeek, handleToday, handleGoToDate } = useCalendar()
+  const { date, mode } = useGlobal()
   const { me } = useAccount()
   const adminTimeSetMode = mode === 'setCalendar' && me?.isSuper
   const disableTodayButton = adminTimeSetMode ? date.getMonth() === new Date().getMonth() : isSameDate(date, new Date())

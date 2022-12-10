@@ -1,7 +1,7 @@
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
 import { useState, useEffect } from 'react'
-import { useCalendar } from '@client/hooks'
+import { useCalendar, useGlobal } from '@client/hooks'
 import { isSameDate } from '@client/utils'
 
 import classNames from 'classnames/bind'
@@ -18,7 +18,8 @@ interface Props {
 }
 
 export default function Calendar({ setShowSidebar, isInForm = false, value, setValue }: Props) {
-  const { date: globalDate, handleGoToDate } = useCalendar()
+  const { handleGoToDate } = useCalendar()
+  const { date: globalDate } = useGlobal()
   const [date, setDate] = useState(globalDate)
   const year = date.getFullYear()
   const month = date.getMonth()
