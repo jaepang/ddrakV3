@@ -10,7 +10,7 @@ import { useWindowSize, useAccount, useCalendar } from '@client/hooks'
 import { useQuery } from 'react-query'
 import { defaultEventsQuery, clubEventsQuery } from '@client/shared/queries'
 import { NexusGenObjects } from '@shared/generated/nexus-typegen'
-import { beResponseToEventApiArg } from '@client/utils'
+import { EventApiArg, beResponseToEventApiArg } from '@client/utils'
 
 import classNames from 'classnames/bind'
 import styles from './style/Calendar.module.css'
@@ -28,6 +28,7 @@ export default function Calendar() {
 
   /** Query events before 3 months from current to 1 month after current */
 
+  let eventsApiArg: EventApiArg[] = []
   /** default: show monthly schedule & rental events */
   const { data: defaultData } = useQuery(
     [
@@ -42,12 +43,15 @@ export default function Calendar() {
       enabled: !!date && mode === 'default',
       onSuccess(data) {
         const { defaultEvents } = data ?? {}
+
         defaultEvents?.forEach((event, idx) => {
-          defaultEvents[idx] = beResponseToEventApiArg(event)
+          const eventApiArg = beResponseToEventApiArg(event)
+          eventsApiArg.push(eventApiArg)
         })
       },
     },
   )
+  const defaultEventApiArgs: EventApiArg[] = defaultData?.defaultEvents?.map(beResponseToEventApiArg) ?? []
 
   /** club: show club events and unavailable schedule */
   const { data: clubData } = useQuery(
@@ -61,21 +65,21 @@ export default function Calendar() {
     clubEventsQuery,
     {
       enabled: !!date && (mode === 'clubCalendar' || (!!me?.club && mode === 'setCalendar')),
-      onSuccess(data) {
-        const { clubEvents } = data ?? {}
-        clubEvents?.forEach((event, idx) => {
-          clubEvents[idx] = beResponseToEventApiArg(event)
-
-          if (event.creator.isSuper) {
-            /** gray color; unavailable */
-            clubEvents[idx].color = '#777'
-          }
-        })
-      },
     },
   )
+  const clubEventApiArgs: EventApiArg[] =
+    clubData?.clubEvents?.map(event => {
+      const eventApiArg = beResponseToEventApiArg(event)
 
-  const events = mode === 'default' ? defaultData?.defaultEvents : clubData?.clubEvents
+      if (event.creator.isSuper) {
+        /** gray color; unavailable */
+        eventApiArg.color = '#777'
+        eventApiArg.editable = false
+      }
+      return eventApiArg
+    }) ?? []
+
+  const events = mode === 'default' ? defaultEventApiArgs : clubEventApiArgs
 
   useEffect(() => {
     setCalendar({ prev, next, today, goToDate, addEvent, getEvents, clearCalendar })
@@ -188,7 +192,7 @@ export default function Calendar() {
       slotDuration="00:30:00"
       // slotLabelFormat={slotLabelFormat}
       dayHeaderContent={DayHeaderContent}
-      eventTimeFormat={{ hour: '2-digit', minute: '2-digit', omitZeroMinute: true, omitCommas: true }}
+      eventTimeFormat={{ hour: 'numeric', minute: '2-digit', omitZeroMinute: true, omitCommas: true }}
     />
   )
 }

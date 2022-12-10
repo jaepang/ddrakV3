@@ -17,6 +17,8 @@ export interface EventApiArg {
   color?: string
   desc?: string
   clubId?: number
+  className?: string
+  editable: boolean
 
   extendedProps?: {
     startTime?: string
@@ -65,6 +67,8 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Even
     color: beEvent.color,
     desc: beEvent.desc,
     clubId: beEvent.club.id,
+    className: undefined,
+    editable: false,
 
     extendedProps: {
       startTime: beEvent.startTime,
@@ -76,5 +80,5 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Even
       desc: beEvent.desc,
       clubId: beEvent.club.id,
     },
-  }
+  } as EventApiArg
 }
