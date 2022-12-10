@@ -46,7 +46,6 @@ export const createSingleEventMutation = async (
 export const createMonthlyEventMutation = async (
   variables: NexusGenArgTypes['Mutation']['createMonthlyEvent'],
 ): Promise<number> => {
-  console.log('var:', variables)
   return await graphQLClient.request(CREATE_MONTHLY_EVENT_MUTATION, variables)
 }
 

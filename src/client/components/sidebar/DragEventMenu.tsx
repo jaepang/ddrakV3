@@ -7,14 +7,25 @@ import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'
 const cx = classNames.bind(styles)
 
+const clubEvents = [
+  {
+    name: 'practice',
+    color: '#f76e11',
+  },
+  {
+    name: 'performance',
+    color: '#79A3F4',
+  },
+]
+
 export default function DragEventMenu() {
   const [duration, setDuration] = useState({
     hour: 2,
     minute: 0,
   })
-  const { me } = useAccount()
+  const { isLoggedIn, me } = useAccount()
   const { mode, setDraggableDuration } = useCalendar()
-  const { data } = useQuery('clubs', clubsQuery, { enabled: me?.isSuper })
+  const { data } = useQuery('clubs', clubsQuery, { enabled: isLoggedIn && me?.isSuper })
   const { clubs } = data ?? {}
 
   function handleDurationChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -55,21 +66,29 @@ export default function DragEventMenu() {
           </div>
         </div>
         <div id="draggable-events" className={cx('draggable-events')}>
-          {clubs ? (
-            clubs.map(club => (
-              <div
-                key={club.name}
-                draggable
-                style={{
-                  backgroundColor: club.color,
-                }}
-                className={cx('draggable-event')}>
-                {club.name}
-              </div>
-            ))
-          ) : (
-            <></>
-          )}
+          {me?.isSuper
+            ? clubs.map(club => (
+                <div
+                  key={club.name}
+                  draggable
+                  style={{
+                    backgroundColor: club.color,
+                  }}
+                  className={cx('draggable-event')}>
+                  {club.name}
+                </div>
+              ))
+            : clubEvents.map(event => (
+                <div
+                  key={event.name}
+                  draggable
+                  style={{
+                    backgroundColor: event.color,
+                  }}
+                  className={cx('draggable-event')}>
+                  {event.name}
+                </div>
+              ))}
         </div>
       </div>
     </div>

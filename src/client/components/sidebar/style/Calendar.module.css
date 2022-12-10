@@ -130,4 +130,28 @@
       }
     }
   }
+
+  &.datetime {
+    width: 240px;
+    height: auto;
+    padding: 20px;
+
+    .header {
+      height: 32px;
+
+      .left h2 {
+        font-size: 1.2em;
+      }
+    }
+
+    .body {
+      .thead,
+      .tbody {
+        .day {
+          padding: 0.1em;
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }

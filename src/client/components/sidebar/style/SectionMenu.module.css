@@ -6,7 +6,7 @@
 
   .header {
     height: 1.5em;
-    padding-left: 0.5em;
+    padding: 0 0.5em;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -32,6 +32,7 @@
   }
 
   .body {
+    padding: 0 5%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 
@@ -57,7 +58,8 @@
 }
 
 .time-slots-body {
-  width: 100%;
+  width: calc(100% - 1em);
+  padding: 0 0.5em;
   display: flex;
   flex-direction: column;
 
@@ -67,6 +69,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    column-gap: 1em;
 
     .time-picker-wrapper {
       width: 100%;
@@ -78,15 +81,6 @@
       .label {
         font-size: 0.8em;
         color: var(--color-text-dimmed);
-      }
-
-      .time-picker {
-        width: 80%;
-        height: 30px;
-        padding: 0.1em 0.5em;
-        border: 1px solid var(--color-primary);
-        border-radius: 10px;
-        font-family: 'Pretendard', sans-serif;
       }
     }
   }
@@ -140,6 +134,32 @@
           color: white;
           pointer-events: none;
         }
+      }
+    }
+  }
+
+  .new-event-title {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.3em;
+    align-items: center;
+
+    .label {
+      font-size: 0.8em;
+      color: var(--color-text-dimmed);
+    }
+
+    .title-input {
+      width: calc(100% - 1em);
+      height: 30px;
+      padding: 0.1em 0.5em;
+      border: 1px solid var(--color-primary);
+      border-radius: 10px;
+      font-family: 'Pretendard', sans-serif;
+
+      &:focus {
+        outline: none;
       }
     }
   }

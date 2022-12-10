@@ -10,7 +10,14 @@ const cx = classNames.bind(styles)
 
 const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-export default function Calendar({ setShowSidebar }) {
+interface Props {
+  setShowSidebar?: (show: boolean) => void
+  isInForm?: boolean
+  value?: Date
+  setValue?: (date: Date) => void
+}
+
+export default function Calendar({ setShowSidebar, isInForm = false, value, setValue }: Props) {
   const { date: globalDate, handleGoToDate } = useCalendar()
   const [date, setDate] = useState(globalDate)
   const year = date.getFullYear()
@@ -24,15 +31,21 @@ export default function Calendar({ setShowSidebar }) {
   const nextPadding = 6 - (lastDay > 0 ? lastDay - 1 : 5)
 
   useEffect(() => {
-    setDate(globalDate)
+    !isInForm && setDate(globalDate)
   }, [globalDate])
+
+  useEffect(() => {
+    if (isInForm && value) {
+      setDate(value)
+    }
+  }, [value])
 
   function handleYearChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const year = Number(e.target.value)
     const newDate = new Date(date)
     newDate.setFullYear(year)
     setDate(newDate)
-    setShowSidebar(false)
+    setShowSidebar?.(false)
   }
 
   function handleMonthForward() {
@@ -49,20 +62,20 @@ export default function Calendar({ setShowSidebar }) {
 
   function handleChangeDate(date: Date) {
     setDate(date)
-    handleGoToDate(date)
-    setShowSidebar(false)
+    isInForm ? setValue(date) : handleGoToDate(date)
+    setShowSidebar?.(false)
   }
 
   return (
-    <div className={cx('calendar')}>
+    <div className={cx('calendar', { datetime: isInForm })}>
       <div className={cx('header')}>
         <div className={cx('left')}>
           <div className={cx('icon-wrapper')}>
-            <IoChevronBack size={25} onClick={handleMonthBackward} />
+            <IoChevronBack size={!isInForm ? 25 : 16} onClick={handleMonthBackward} />
           </div>
           <h2>{date.toLocaleString('en-Us', { month: 'long' })}</h2>
           <div className={cx('icon-wrapper')}>
-            <IoChevronForward size={25} onClick={handleMonthForward} />
+            <IoChevronForward size={!isInForm ? 25 : 16} onClick={handleMonthForward} />
           </div>
         </div>
         <div className={cx('select-wrapper')}>
@@ -104,7 +117,7 @@ export default function Calendar({ setShowSidebar }) {
             return (
               <div
                 className={cx('day', 'active', {
-                  current: isSameDate(currDate, globalDate),
+                  current: isSameDate(currDate, isInForm ? value : globalDate),
                   today: isSameDate(currDate, new Date()),
                   sunday: currDate.getDay() === 0,
                 })}

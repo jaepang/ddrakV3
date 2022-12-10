@@ -1,5 +1,5 @@
 .root {
-  width: 8em;
+  width: calc(100% - 1em);
   height: 30px;
   padding: 0.1em 0.5em;
   display: flex;
@@ -124,6 +124,24 @@
         &.top-right {
           border-top-right-radius: 10px;
         }
+      }
+    }
+  }
+
+  &.datetime {
+    width: auto;
+    height: 260px;
+    right: 0;
+
+    .dropdown-column {
+      width: auto;
+      min-width: 50px;
+      height: 100%;
+      padding: 0;
+      overflow-y: scroll;
+
+      .dropdown-item {
+        height: 30px;
       }
     }
   }
