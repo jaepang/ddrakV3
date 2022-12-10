@@ -1,29 +1,26 @@
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { globalState } from '@root/src/client/recoil/global/atoms'
+import { globalState } from '@client/recoil/global/atoms'
 import { calendarState } from '@client/recoil/calendarApi/atoms'
+import { TimeSlot, eventState } from '@client/recoil/event/atom'
 import { useAccount } from './useAccount'
 
 import { queryClient } from '@client/shared/react-query'
 import { useQuery, useMutation } from 'react-query'
-import {
-  createEventsMutation,
-  createSingleEventMutation,
-  deleteEventsMutation,
-  monthlyEventsQuery,
-} from '@client/shared/queries'
+import { createEventsMutation, deleteEventsMutation, monthlyEventsQuery } from '@client/shared/queries'
 
-import { feToBeArg } from '@client/utils'
+import { RecurringEventApiArg, feToBeArg, isSameDateTime } from '@client/utils'
 import { findFirstMondayOfMonth } from '@client/utils'
 import { NexusGenObjects } from '@root/src/shared/generated/nexus-typegen'
 
 export function useCalendar() {
   const [global, setGlobal] = useRecoilState(globalState)
+  const [event, setEvent] = useRecoilState(eventState)
   const { prev, next, today, goToDate, addEvent, getEvents, clearCalendar } = useRecoilValue(calendarState)
   const { me } = useAccount()
 
   const { mutate: createEvents } = useMutation(createEventsMutation, {
     onSuccess: () => {
-      enableDefaultMode()
+      me?.isSuper ? enableDefaultMode() : enableClubCalendarMode()
       queryClient.refetchQueries(['events'])
     },
     onError: () => {
@@ -44,9 +41,13 @@ export function useCalendar() {
     },
   )
 
-  /** handle global state */
+  /** handle event state */
   function setDraggableDuration(draggableDuration: string) {
-    setGlobal({ ...global, draggableDuration })
+    setEvent({ ...event, draggableDuration })
+  }
+
+  function setTimeSlots(timeSlots: TimeSlot[]) {
+    setEvent({ ...event, timeSlots })
   }
 
   /** handle Calendar */
@@ -78,10 +79,11 @@ export function useCalendar() {
     goToDate(date)
   }
 
-  function renderMonthlyEvents(timeSlots: any[], clubs: NexusGenObjects['Club'][]) {
+  /** handle new monthly events; used at super's setCalendar mode */
+  function renderMonthlyEvents(clubs: NexusGenObjects['Club'][]) {
     /** fullcalendar api */
     clearCalendar()
-    timeSlots?.forEach((timeSlot, idx) => {
+    event.timeSlots?.forEach((timeSlot, idx) => {
       if (!timeSlot.start || !timeSlot.end) return
 
       clubs?.forEach(club => {
@@ -91,8 +93,8 @@ export function useCalendar() {
             daysOfWeek.push((i + 1) % 7)
           }
         }
-        const startStrs = timeSlot.start.split(':')
-        const endStrs = timeSlot.end.split(':')
+        const startStrs = (timeSlot.start as string).split(':')
+        const endStrs = (timeSlot.end as string).split(':')
 
         if (daysOfWeek.length === 0) return
 
@@ -135,30 +137,6 @@ export function useCalendar() {
     })
   }
 
-  function renderNewEvents(timeSlots: any[]) {
-    const events = getEvents()
-
-    timeSlots?.forEach((timeSlot, idx) => {
-      /** update event if there is already created event */
-      const target = events?.find(event => event.id === idx.toString())
-      if (target) {
-        target.setProp('title', timeSlot.title)
-        target.setStart(timeSlot.start)
-        target.setEnd(timeSlot.end)
-        return
-      }
-
-      if (!timeSlot.start || !timeSlot.end || timeSlot.end < timeSlot.start) return
-      /** if not, create new one */
-      addEvent({
-        id: idx,
-        title: timeSlot.title,
-        start: timeSlot.start,
-        end: timeSlot.end,
-      })
-    })
-  }
-
   async function mutateMonthlyEvents() {
     /** if there are remained old monthly data, remove them */
     const oldMonthlyEventIds = monthlyEventsData?.monthlyEvents.map(event => event.id)
@@ -180,6 +158,51 @@ export function useCalendar() {
     } catch (e) {
       alert('Monthly Event creation failed')
     }
+  }
+
+  /** handle new events; used at club admin's setCalendar mode */
+  function renderNewEvents() {
+    const events = getEvents()
+
+    event.timeSlots?.forEach((timeSlot, idx) => {
+      /** update event if there is already created event */
+      const target = events?.find(event => event.id === idx.toString())
+      if (target) {
+        if (!timeSlot.start || !timeSlot.end || timeSlot.end < timeSlot.start) {
+          target.remove()
+          return
+        }
+        target.setProp('title', timeSlot.title)
+        target.setStart(timeSlot.start)
+        target.setEnd(timeSlot.end)
+        return
+      }
+
+      if (!timeSlot.start || !timeSlot.end || timeSlot.end < timeSlot.start) return
+      /** if not, create new one */
+      addEvent({
+        id: idx,
+        title: timeSlot.title,
+        start: timeSlot.start as Date,
+        end: timeSlot.end as Date,
+      })
+    })
+  }
+
+  function mutateNewEvents() {
+    const eventsInput = event.timeSlots
+      ?.map(timeSlot => {
+        if (
+          timeSlot.end < timeSlot.start ||
+          isSameDateTime(timeSlot.start as Date, timeSlot.end as Date) ||
+          !timeSlot.title
+        )
+          return
+        return { ...timeSlot, clubId: me?.club?.id } as RecurringEventApiArg
+      })
+      .filter(event => !!event)
+
+    eventsInput?.length > 0 && createEvents({ eventsInput })
   }
 
   /** handle mode */
@@ -209,7 +232,9 @@ export function useCalendar() {
   return {
     date: global.date,
     mode: global.mode,
-    draggableDuration: global.draggableDuration,
+    timeSlots: event.timeSlots,
+    setTimeSlots,
+    draggableDuration: event.draggableDuration,
     setDraggableDuration,
     handlePrevWeek,
     handleNextWeek,
@@ -223,5 +248,6 @@ export function useCalendar() {
     renderMonthlyEvents,
     mutateMonthlyEvents,
     renderNewEvents,
+    mutateNewEvents,
   }
 }

@@ -16,20 +16,23 @@ const tableHeader = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 export default function SetMonthlyScheduleSlot() {
   const [timeSlotLength, setTimeSlotLength] = useState(1)
   const [timeSlotIndex, setTimeSlotIndex] = useState(0)
-  const [timeSlot, setTimeSlot] = useState([
-    {
-      start: '00:00',
-      end: '00:00',
-      club: ['', '', '', '', '', '', ''],
-    },
-  ])
-  const { date, renderMonthlyEvents } = useCalendar()
+  const { date, renderMonthlyEvents, timeSlots, setTimeSlots } = useCalendar()
   const { data } = useQuery('clubs', clubsQuery)
   const { clubs } = data ?? {}
 
   useEffect(() => {
-    renderMonthlyEvents(timeSlot, clubs)
-  }, [timeSlot, clubs, date])
+    setTimeSlots([
+      {
+        start: '00:00',
+        end: '00:00',
+        club: ['', '', '', '', '', '', ''],
+      },
+    ])
+  }, [])
+
+  useEffect(() => {
+    renderMonthlyEvents(clubs)
+  }, [timeSlots, clubs, date])
 
   function handlePrevSlot() {
     setTimeSlotIndex(timeSlotIndex - 1)
@@ -38,9 +41,9 @@ export default function SetMonthlyScheduleSlot() {
   function handleNextSlot() {
     if (timeSlotIndex + 1 === timeSlotLength) {
       setTimeSlotLength(timeSlotLength + 1)
-      timeSlot.push({
-        start: timeSlot[timeSlotIndex].end,
-        end: timeSlot[timeSlotIndex].end,
+      timeSlots.push({
+        start: timeSlots[timeSlotIndex].end,
+        end: timeSlots[timeSlotIndex].end,
         club: ['', '', '', '', '', '', ''],
       })
     }
@@ -48,29 +51,23 @@ export default function SetMonthlyScheduleSlot() {
   }
 
   function handleClickClub(day: number, clubName: string) {
-    setTimeSlot(prev => {
-      const newSlot = [...prev]
-      newSlot[timeSlotIndex].club[day] = clubName
-      return newSlot
-    })
+    const newSlot = [...timeSlots]
+    newSlot[timeSlotIndex].club[day] = clubName
+    setTimeSlots(newSlot)
   }
 
   function handleStartTimeChange(value: string) {
-    setTimeSlot(prev => {
-      const newSlot = [...prev]
-      const [hour, minute] = value.split(':')
-      newSlot[timeSlotIndex].start = [leftPadZero(hour), leftPadZero(minute)].join(':')
-      return newSlot
-    })
+    const newSlot = [...timeSlots]
+    const [hour, minute] = value.split(':')
+    newSlot[timeSlotIndex].start = [leftPadZero(hour), leftPadZero(minute)].join(':')
+    setTimeSlots(newSlot)
   }
 
   function handleEndTimeChange(value: string) {
-    setTimeSlot(prev => {
-      const newSlot = [...prev]
-      const [hour, minute] = value.split(':')
-      newSlot[timeSlotIndex].end = [leftPadZero(hour), leftPadZero(minute)].join(':')
-      return newSlot
-    })
+    const newSlot = [...timeSlots]
+    const [hour, minute] = value.split(':')
+    newSlot[timeSlotIndex].end = [leftPadZero(hour), leftPadZero(minute)].join(':')
+    setTimeSlots(newSlot)
   }
 
   return (
@@ -90,11 +87,19 @@ export default function SetMonthlyScheduleSlot() {
         <div className={cx('time-slots-header')}>
           <div className={cx('time-picker-wrapper')}>
             <div className={cx('label')}>Start Time</div>
-            <TimePicker value={timeSlot[timeSlotIndex].start} minuteInterval={10} setValue={handleStartTimeChange} />
+            <TimePicker
+              value={timeSlots[timeSlotIndex]?.start as string}
+              minuteInterval={10}
+              setValue={handleStartTimeChange}
+            />
           </div>
           <div className={cx('time-picker-wrapper')}>
             <div className={cx('label')}>End Time</div>
-            <TimePicker value={timeSlot[timeSlotIndex].end} minuteInterval={10} setValue={handleEndTimeChange} />
+            <TimePicker
+              value={timeSlots[timeSlotIndex]?.end as string}
+              minuteInterval={10}
+              setValue={handleEndTimeChange}
+            />
           </div>
         </div>
         <div className={cx('time-slots')}>
@@ -104,7 +109,7 @@ export default function SetMonthlyScheduleSlot() {
               {clubs?.map(club => (
                 <button
                   key={club.name}
-                  disabled={timeSlot[timeSlotIndex].club[index] === club.name}
+                  disabled={timeSlots[timeSlotIndex].club[index] === club.name}
                   onClick={() => handleClickClub(index, club.name)}
                   className={cx('club')}>
                   <div className={cx('inner')}>{club.name[0]}</div>

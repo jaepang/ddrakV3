@@ -5,6 +5,20 @@ export interface EventApiArg {
   title: string
   start: Date
   end: Date
+  color?: string
+  desc?: string
+  clubId?: number
+  className?: string
+  editable?: boolean
+
+  extendedProps?: {
+    color?: string
+    desc?: string
+    clubId?: number
+  }
+}
+
+export interface RecurringEventApiArg extends EventApiArg {
   groupId?: string
   allDay?: boolean
 
@@ -14,11 +28,6 @@ export interface EventApiArg {
   startRecur?: Date
   endRecur?: Date
   daysOfWeek?: number[]
-  color?: string
-  desc?: string
-  clubId?: number
-  className?: string
-  editable?: boolean
 
   extendedProps?: {
     startTime?: string
@@ -51,7 +60,7 @@ export function feToBeArg(feEvent: EventApi): NexusGenInputs['EventInput'] {
   }
 }
 
-export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): EventApiArg {
+export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): RecurringEventApiArg {
   return {
     title: beEvent.title,
     start: beEvent.start,
@@ -80,5 +89,5 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Even
       desc: beEvent.desc,
       clubId: beEvent.club.id,
     },
-  } as EventApiArg
+  } as RecurringEventApiArg
 }

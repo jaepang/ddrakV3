@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Event" ALTER COLUMN "allDay" DROP NOT NULL;

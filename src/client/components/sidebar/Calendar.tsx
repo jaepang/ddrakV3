@@ -117,7 +117,7 @@ export default function Calendar({ setShowSidebar, isInForm = false, value, setV
             return (
               <div
                 className={cx('day', 'active', {
-                  current: isSameDate(currDate, isInForm ? value : globalDate),
+                  current: isSameDate(currDate, isInForm ? value ?? new Date() : globalDate),
                   today: isSameDate(currDate, new Date()),
                   sunday: currDate.getDay() === 0,
                 })}

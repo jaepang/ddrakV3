@@ -29,8 +29,10 @@ export default function DateTimePicker({
 
   /** Synchronize value and local state */
   useEffect(() => {
-    const meridiem = value.getHours() >= 12 ? 'PM' : 'AM'
-    setMeridiem(meridiem)
+    if (value) {
+      const meridiem = value.getHours() >= 12 ? 'PM' : 'AM'
+      setMeridiem(meridiem)
+    }
   }, [value])
 
   function handleDateChange(date: Date) {
@@ -106,20 +108,22 @@ export default function DateTimePicker({
         </div>
         {!use24Hour && (
           <div className={cx('dropdown-column')}>
-            <div
+            <button
               className={cx('dropdown-item', 'top-right', {
                 selected: meridiem === 'AM',
               })}
+              disabled={meridiem === 'AM'}
               onClick={() => handleMeridiemChange('AM')}>
               {'AM'}
-            </div>
-            <div
+            </button>
+            <button
               className={cx('dropdown-item', {
                 selected: meridiem === 'PM',
               })}
+              disabled={meridiem === 'PM'}
               onClick={() => handleMeridiemChange('PM')}>
               {'PM'}
-            </div>
+            </button>
           </div>
         )}
       </div>

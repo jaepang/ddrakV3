@@ -1,6 +1,6 @@
 import { atom } from 'recoil'
 import { EventApi } from '@fullcalendar/common'
-import { EventApiArg } from '@client/utils'
+import { RecurringEventApiArg } from '@client/utils'
 import { NexusGenObjects } from '@shared/generated/nexus-typegen'
 
 export interface CalendarApiFunctions {
@@ -8,7 +8,7 @@ export interface CalendarApiFunctions {
   next: () => void
   today: () => void
   goToDate: (date: Date) => void
-  addEvent: (event: EventApiArg & NexusGenObjects['Event']) => void
+  addEvent: (event: RecurringEventApiArg & NexusGenObjects['Event']) => void
   getEvents: () => EventApi[]
   clearCalendar: () => void
 }

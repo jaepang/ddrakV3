@@ -37,7 +37,7 @@ model Event {
   endRecur    DateTime?
   daysOfWeek  Int[] 
   groupId     String?
-  allDay      Boolean
+  allDay      Boolean?  @default(false)
   color       String    @default("#f76e11")
   desc        String?
   creatorId   Int

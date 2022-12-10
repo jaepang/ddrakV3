@@ -10,7 +10,7 @@ import { useWindowSize, useAccount, useCalendar } from '@client/hooks'
 import { useQuery } from 'react-query'
 import { defaultEventsQuery, clubEventsQuery } from '@client/shared/queries'
 import { NexusGenObjects } from '@shared/generated/nexus-typegen'
-import { EventApiArg, beResponseToEventApiArg } from '@client/utils'
+import { RecurringEventApiArg, beResponseToEventApiArg, EventApiArg } from '@client/utils'
 
 import classNames from 'classnames/bind'
 import styles from './style/Calendar.module.css'
@@ -28,7 +28,7 @@ export default function Calendar() {
 
   /** Query events before 3 months from current to 1 month after current */
 
-  let eventsApiArg: EventApiArg[] = []
+  let eventsApiArg: RecurringEventApiArg[] = []
   /** default: show monthly schedule & rental events */
   const { data: defaultData } = useQuery(
     [
@@ -51,7 +51,7 @@ export default function Calendar() {
       },
     },
   )
-  const defaultEventApiArgs: EventApiArg[] = defaultData?.defaultEvents?.map(beResponseToEventApiArg) ?? []
+  const defaultEventApiArgs: RecurringEventApiArg[] = defaultData?.defaultEvents?.map(beResponseToEventApiArg) ?? []
 
   /** club: show club events and unavailable schedule */
   const { data: clubData } = useQuery(
@@ -67,14 +67,22 @@ export default function Calendar() {
       enabled: !!date && (mode === 'clubCalendar' || (!!me?.club && mode === 'setCalendar')),
     },
   )
-  const clubEventApiArgs: EventApiArg[] =
+  const clubEventApiArgs: EventApiArg[] | RecurringEventApiArg[] =
     clubData?.clubEvents?.map(event => {
-      const eventApiArg = beResponseToEventApiArg(event)
+      let eventApiArg = beResponseToEventApiArg(event)
 
       if (event.creator.isSuper) {
         /** gray color; unavailable */
         eventApiArg.color = '#777'
         eventApiArg.editable = false
+      } else {
+        eventApiArg = {
+          title: event.title,
+          start: event.start,
+          end: event.end,
+          color: event.color,
+          editable: true,
+        }
       }
       return eventApiArg
     }) ?? []
@@ -184,8 +192,8 @@ export default function Calendar() {
       events={events as EventSourceInput}
       slotMinTime="06:00:00"
       slotMaxTime="30:00:00"
-      editable={me?.isAdmin}
-      droppable={me?.isAdmin}
+      editable={me?.isAdmin || me?.isSuper}
+      droppable={me?.isAdmin || me?.isSuper}
       // eventReceive={handleEventReceive}
       // eventClick={handleEventClick}
       // eventChange={handleEventChange}

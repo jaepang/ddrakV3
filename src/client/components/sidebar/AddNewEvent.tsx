@@ -1,7 +1,7 @@
 import { DateTimePicker } from '@components/form'
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCalendar } from '@client/hooks'
 
 import classNames from 'classnames/bind'
@@ -15,18 +15,21 @@ interface Props {
 export default function AddNewEventsSlot({ isRental = false }: Props) {
   const [timeSlotLength, setTimeSlotLength] = useState(1)
   const [timeSlotIndex, setTimeSlotIndex] = useState(0)
-  const [timeSlot, setTimeSlot] = useState([
-    {
-      start: new Date(),
-      end: new Date(),
-      title: '',
-    },
-  ])
-  const { date, renderNewEvents } = useCalendar()
+  const { date, renderNewEvents, timeSlots, setTimeSlots } = useCalendar()
 
   useEffect(() => {
-    renderNewEvents(timeSlot)
-  }, [timeSlot, date])
+    setTimeSlots([
+      {
+        start: date,
+        end: date,
+        title: '',
+      },
+    ])
+  }, [])
+
+  useEffect(() => {
+    renderNewEvents()
+  }, [timeSlots, date])
 
   function handlePrevSlot() {
     setTimeSlotIndex(timeSlotIndex - 1)
@@ -35,9 +38,9 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
   function handleNextSlot() {
     if (timeSlotIndex + 1 === timeSlotLength) {
       setTimeSlotLength(timeSlotLength + 1)
-      timeSlot.push({
-        start: timeSlot[timeSlotIndex].end,
-        end: timeSlot[timeSlotIndex].end,
+      timeSlots.push({
+        start: timeSlots[timeSlotIndex].end,
+        end: timeSlots[timeSlotIndex].end,
         title: '',
       })
     }
@@ -45,27 +48,30 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
   }
 
   function handleStartTimeChange(value: Date) {
-    setTimeSlot(prev => {
-      const newSlot = [...prev]
-      newSlot[timeSlotIndex].start = value
-      return newSlot
-    })
+    const newSlot = [...timeSlots]
+    newSlot[timeSlotIndex] = {
+      ...newSlot[timeSlotIndex],
+      start: value,
+    }
+    setTimeSlots(newSlot)
   }
 
   function handleEndTimeChange(value: Date) {
-    setTimeSlot(prev => {
-      const newSlot = [...prev]
-      newSlot[timeSlotIndex].end = value
-      return newSlot
-    })
+    const newSlot = [...timeSlots]
+    newSlot[timeSlotIndex] = {
+      ...newSlot[timeSlotIndex],
+      end: value,
+    }
+    setTimeSlots(newSlot)
   }
 
   function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setTimeSlot(prev => {
-      const newSlot = [...prev]
-      newSlot[timeSlotIndex].title = e.target.value
-      return newSlot
-    })
+    const newSlot = [...timeSlots]
+    newSlot[timeSlotIndex] = {
+      ...newSlot[timeSlotIndex],
+      title: e.target.value,
+    }
+    setTimeSlots(newSlot)
   }
 
   return (
@@ -86,14 +92,18 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
           <div className={cx('time-picker-wrapper')}>
             <div className={cx('label')}>Start Date / Time</div>
             <DateTimePicker
-              value={timeSlot[timeSlotIndex].start}
+              value={timeSlots[timeSlotIndex]?.start as Date}
               minuteInterval={10}
               setValue={handleStartTimeChange}
             />
           </div>
           <div className={cx('time-picker-wrapper')}>
             <div className={cx('label')}>End Date / Time</div>
-            <DateTimePicker value={timeSlot[timeSlotIndex].end} minuteInterval={10} setValue={handleEndTimeChange} />
+            <DateTimePicker
+              value={timeSlots[timeSlotIndex]?.end as Date}
+              minuteInterval={10}
+              setValue={handleEndTimeChange}
+            />
           </div>
         </div>
         <div className={cx('new-event-title')}>
@@ -102,7 +112,7 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
             className={cx('title-input')}
             placeholder="New Event"
             type="text"
-            value={timeSlot[timeSlotIndex].title}
+            value={timeSlots[timeSlotIndex]?.title}
             onChange={handleTitleChange}
           />
         </div>

@@ -18,7 +18,7 @@ interface Props {
 
 export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props) {
   const { me } = useAccount()
-  const { mode, enableDefaultMode, mutateMonthlyEvents } = useCalendar()
+  const { mode, timeSlots, enableDefaultMode, mutateMonthlyEvents, mutateNewEvents } = useCalendar()
 
   return (
     <>
@@ -37,7 +37,9 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
           <div className={cx('section', 'footer')}>
             {mode === 'setCalendar' && (
               <>
-                <button className={cx('button', 'success')} onClick={mutateMonthlyEvents}>
+                <button
+                  className={cx('button', 'success')}
+                  onClick={me?.isSuper ? mutateMonthlyEvents : mutateNewEvents}>
                   Apply
                 </button>
                 <button className={cx('button', 'cancel')} onClick={enableDefaultMode}>

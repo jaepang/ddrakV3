@@ -93,7 +93,7 @@ export const EventQuery = extendType({
                   lte: to,
                 },
                 creator: {
-                  isAdmin: true,
+                  // isAdmin: true,
                   club: {
                     id: me.club.id,
                   },
