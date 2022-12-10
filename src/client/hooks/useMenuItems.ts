@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useCalendar, useAccount } from '@client/hooks'
+import { useAccount, useGlobal } from '@client/hooks'
 import { IconType } from 'react-icons'
 import {
   FaTools,
@@ -26,7 +26,7 @@ type MenuItem = {
 }
 
 export function useMenuItems() {
-  const { enableDefaultMode, enableSetCalendarMode } = useCalendar()
+  const { enableDefaultMode, enableSetCalendarMode } = useGlobal()
   const { logout: logoutFunc } = useAccount()
   const router = useRouter()
 
