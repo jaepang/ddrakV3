@@ -50,9 +50,9 @@ export function useMenuItems() {
 
   const menuItems: { [key in USER_TYPE]: MenuItem[] } = {
     [USER_TYPE.SUPER]: [adminPage, setCalendar, changePassword, logout],
-    [USER_TYPE.CLUB_ADMIN]: [setCalendar, borrowSubmit, borrowRequest, help, changePassword, logout],
-    [USER_TYPE.CLUB_MEMBER]: [help, changePassword, logout],
-    [USER_TYPE.GUEST]: [login, borrowRequest, help],
+    [USER_TYPE.CLUB_ADMIN]: [setCalendar, borrowSubmit, borrowRequest, changePassword, logout],
+    [USER_TYPE.CLUB_MEMBER]: [changePassword, logout],
+    [USER_TYPE.GUEST]: [login, borrowRequest],
   }
   return {
     menuItems,

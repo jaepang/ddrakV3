@@ -83,7 +83,7 @@ export default function Calendar() {
           start: event.start,
           end: event.end,
           color: event.color,
-          editable: true,
+          editable: me?.isAdmin,
         }
       }
       return eventApiArg
