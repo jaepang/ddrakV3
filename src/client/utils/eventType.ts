@@ -2,6 +2,7 @@ import { EventApi } from '@fullcalendar/common'
 import { NexusGenObjects, NexusGenInputs } from '@root/src/shared/generated/nexus-typegen'
 
 export interface EventApiArg {
+  id: string | number
   title: string
   start: Date
   end: Date
@@ -62,6 +63,7 @@ export function feToBeArg(feEvent: EventApi): NexusGenInputs['EventInput'] {
 
 export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): RecurringEventApiArg {
   return {
+    id: beEvent.id,
     title: beEvent.title,
     start: beEvent.start,
     end: beEvent.end,

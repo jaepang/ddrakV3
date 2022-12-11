@@ -14,6 +14,7 @@ interface Props {
   hourInterval?: number
   minuteInterval?: number
   use24Hour?: boolean
+  rightAlignDropdown?: boolean
 }
 
 export default function DateTimePicker({
@@ -22,10 +23,12 @@ export default function DateTimePicker({
   hourInterval,
   minuteInterval = 10,
   use24Hour = false,
+  rightAlignDropdown,
 }: Props) {
   const [showDropdown, setShowDropdown] = useState(false)
   const [meridiem, setMeridiem] = useState<'AM' | 'PM'>('AM')
   const dropdownDom = useOutsideClickHandler<HTMLDivElement>(() => setShowDropdown(false), [setShowDropdown])
+  const hours = use24Hour ? 24 : 12
 
   /** Synchronize value and local state */
   useEffect(() => {
@@ -64,14 +67,18 @@ export default function DateTimePicker({
           <TbCalendarTime size={15} />
         </div>
       </div>
-      <div className={cx('dropdown', 'datetime', { show: showDropdown })}>
+      <div
+        className={cx('dropdown', 'datetime', {
+          show: showDropdown,
+          right: rightAlignDropdown,
+        })}>
         <div className={cx('dropdown-column')}>
           <div className={cx('calendar')}>
             <Calendar isInForm value={value} setValue={handleDateChange} />
           </div>
         </div>
         <div className={cx('dropdown-column')}>
-          {Array.from({ length: hourInterval ? Math.ceil(12 / hourInterval) : 12 }, (_, idx) =>
+          {Array.from({ length: hourInterval ? Math.ceil(hours / hourInterval) : hours }, (_, idx) =>
             hourInterval ? (idx + 1) * hourInterval : idx + 1,
           ).map(hour => {
             const hourString = hour.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })

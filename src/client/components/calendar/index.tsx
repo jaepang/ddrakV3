@@ -1,7 +1,10 @@
 import FullCalendar, { EventSourceInput, DayHeaderContentArg } from '@fullcalendar/react'
-import { EventApi } from '@fullcalendar/common'
+import { EventApi, EventClickArg } from '@fullcalendar/common'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
+
+import Modal from '@components/modal'
+import EventModal from './EventModal'
 
 import { useRef, useState, useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
@@ -19,6 +22,8 @@ const cx = classNames.bind(styles)
 
 export default function Calendar() {
   const [draggable, setDraggable] = useState<Draggable>(null)
+  const [openEventModal, setOpenEventModal] = useState(false)
+  const [clickedEventId, setClickedEventId] = useState<number>(null)
   const ref = useRef(null)
   const setCalendar = useSetRecoilState(calendarState)
   const { me } = useAccount()
@@ -79,11 +84,12 @@ export default function Calendar() {
         eventApiArg.editable = false
       } else {
         eventApiArg = {
+          id: event.id,
           title: event.title,
           start: event.start,
           end: event.end,
           color: event.color,
-          editable: me?.isAdmin,
+          editable: false,
         }
       }
       return eventApiArg
@@ -181,29 +187,40 @@ export default function Calendar() {
     )
   }
 
+  function handleEventClick(info: EventClickArg) {
+    const event = info.event
+    setClickedEventId(parseInt(event.id))
+    setOpenEventModal(true)
+  }
+
   return (
-    <FullCalendar
-      ref={ref}
-      plugins={[timeGridPlugin, interactionPlugin]}
-      initialView="timeGridWeek"
-      firstDay={1}
-      headerToolbar={false}
-      allDaySlot={false}
-      height={'calc(100vh - 70px)'}
-      contentHeight={'100%'}
-      events={events as EventSourceInput}
-      slotMinTime="06:00:00"
-      slotMaxTime="30:00:00"
-      editable={me?.isAdmin || me?.isSuper}
-      droppable={me?.isAdmin || me?.isSuper}
-      eventReceive={eventReceive}
-      // eventClick={handleEventClick}
-      eventDrop={eventChange}
-      eventResize={eventChange}
-      slotDuration="00:30:00"
-      // slotLabelFormat={slotLabelFormat}
-      dayHeaderContent={DayHeaderContent}
-      eventTimeFormat={{ hour: 'numeric', minute: '2-digit', omitZeroMinute: true, omitCommas: true }}
-    />
+    <>
+      <FullCalendar
+        ref={ref}
+        plugins={[timeGridPlugin, interactionPlugin]}
+        initialView="timeGridWeek"
+        firstDay={1}
+        headerToolbar={false}
+        allDaySlot={false}
+        height={'calc(100vh - 70px)'}
+        contentHeight={'100%'}
+        events={events as EventSourceInput}
+        slotMinTime="06:00:00"
+        slotMaxTime="30:00:00"
+        editable={me?.isAdmin || me?.isSuper}
+        droppable={me?.isAdmin || me?.isSuper}
+        eventReceive={eventReceive}
+        eventClick={handleEventClick}
+        eventDrop={eventChange}
+        eventResize={eventChange}
+        slotDuration="00:30:00"
+        // slotLabelFormat={slotLabelFormat}
+        dayHeaderContent={DayHeaderContent}
+        eventTimeFormat={{ hour: 'numeric', minute: '2-digit', omitZeroMinute: true, omitCommas: true }}
+      />
+      <Modal onClose={() => setOpenEventModal(false)}>
+        {openEventModal && <EventModal onClose={() => setOpenEventModal(false)} eventId={clickedEventId} />}
+      </Modal>
+    </>
   )
 }

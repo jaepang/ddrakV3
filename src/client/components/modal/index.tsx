@@ -36,10 +36,8 @@ export default function Modal({ children, onClose, options = {} }: Props) {
     ? createPortal(
         isDefaultLayout ? (
           <div className={cx('modal-root', { dimmed })}>
-            <div className={cx('content-wrapper')}>
-              <div ref={modalContentDom} className={cx('inner-wrapper')}>
-                {children}
-              </div>
+            <div className={cx('content-wrapper')} ref={modalContentDom}>
+              <div className={cx('inner-wrapper')}>{children}</div>
             </div>
           </div>
         ) : (

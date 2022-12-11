@@ -132,9 +132,9 @@
   }
 
   &.datetime {
-    width: 240px;
+    width: 18em;
     height: auto;
-    padding: 20px;
+    padding: 1em;
 
     .header {
       height: 32px;
@@ -148,6 +148,7 @@
       .thead,
       .tbody {
         .day {
+          width: 2em;
           padding: 0.1em;
           font-size: 12px;
         }

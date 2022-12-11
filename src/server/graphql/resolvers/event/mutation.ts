@@ -103,12 +103,7 @@ export const EventMutation = extendType({
               allDay: eventInput.allDay,
               color: eventInput.color,
               desc: eventInput.desc,
-
-              club: {
-                connect: {
-                  id: eventInput.clubId,
-                },
-              },
+              clubId: eventInput.clubId,
             },
           })
           return event

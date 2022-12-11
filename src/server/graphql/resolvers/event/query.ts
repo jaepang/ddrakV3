@@ -12,6 +12,10 @@ export const EventQuery = extendType({
       resolve: async (_parent, { id }, _ctx) => {
         return await prisma.event.findUnique({
           where: { id },
+          include: {
+            club: true,
+            creator: true,
+          },
         })
       },
     })

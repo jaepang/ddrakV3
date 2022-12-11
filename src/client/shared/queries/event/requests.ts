@@ -33,7 +33,8 @@ export const monthlyEventsQuery = async ({ queryKey }): Promise<{ monthlyEvents:
   return await graphQLClient.request(MONTHLY_EVENTS_QUERY, variables)
 }
 
-export const eventQuery = async (variables: NexusGenArgTypes['Query']['event']): Promise<NexusGenObjects['Event']> => {
+export const eventQuery = async ({ queryKey }): Promise<{ event: NexusGenObjects['Event'] }> => {
+  const [_, variables] = queryKey
   return await graphQLClient.request(EVENT_QUERY, variables)
 }
 
