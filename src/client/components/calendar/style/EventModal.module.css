@@ -14,6 +14,25 @@
     padding: 0 1rem;
     margin-bottom: 1rem;
 
+    .head-wrapper {
+      display: flex;
+      align-items: center;
+      column-gap: 1em;
+
+      .delete-button {
+        padding: 0.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background-color: var(--color-red);
+        cursor: pointer;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+    }
+
     .close {
       font-size: 1.5rem;
       cursor: pointer;

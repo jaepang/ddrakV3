@@ -3,7 +3,7 @@ import { GrClose } from 'react-icons/gr'
 
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-query'
-import { eventQuery, updateEventMutation } from '@client/shared/queries'
+import { eventQuery, updateEventMutation, deleteEventMutation } from '@client/shared/queries'
 import { useAccount, useWindowSize } from '@client/hooks'
 import { isSameDateTime } from '@client/utils'
 
@@ -29,7 +29,14 @@ export default function EventModal({ eventId, onClose }: Props) {
   const isMobile = width <= 1024
   const { data } = useQuery(['event', { id: eventId }], eventQuery, { enabled: !!eventId })
   const event = data?.event
+
   const { mutate: updateEvent } = useMutation(updateEventMutation, {
+    onSuccess: () => {
+      onClose()
+      queryClient.refetchQueries(['events'])
+    },
+  })
+  const { mutate: deleteEvent } = useMutation(deleteEventMutation, {
     onSuccess: () => {
       onClose()
       queryClient.refetchQueries(['events'])
@@ -79,6 +86,9 @@ export default function EventModal({ eventId, onClose }: Props) {
         {editable ? (
           <div className={cx('head-wrapper')}>
             <h1>Edit Event</h1>
+            <button className={cx('delete-button')} onClick={() => deleteEvent({ id: eventId as number })}>
+              Delete Event
+            </button>
           </div>
         ) : (
           <h1>{event?.title}</h1>
