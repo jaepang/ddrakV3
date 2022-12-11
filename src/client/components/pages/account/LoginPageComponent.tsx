@@ -86,6 +86,11 @@ export default function LoginPageComponent() {
     return isValid
   }
 
+  function goHome(e) {
+    e.preventDefault()
+    router.push(PATHNAME.HOME)
+  }
+
   return (
     <Row>
       <div className={cx('root')}>
@@ -118,6 +123,9 @@ export default function LoginPageComponent() {
               />
             </div>
             <div className={cx('buttons-container')}>
+              <button className={cx('button', 'home')} onClick={goHome}>
+                Back
+              </button>
               <button className={cx('button', 'login')} type="submit" onClick={handleSubmit} disabled={isLoading}>
                 Login
               </button>

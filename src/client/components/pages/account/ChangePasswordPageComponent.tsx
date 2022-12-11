@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Row from '@components/layout/shared/Row'
 import { Input } from '@components/form'
 
@@ -83,12 +84,17 @@ export default function ChangePasswordPageComponent() {
     return isValid
   }
 
+  function goHome(e) {
+    e.preventDefault()
+    router.push(PATHNAME.HOME)
+  }
+
   return (
     <Row>
       <div className={cx('root')}>
         <div className={cx('container')}>
           <div className={cx('header-title')}>
-            <h1>Login</h1>
+            <h1>Change Password</h1>
           </div>
           <form className={cx('login-form')} name="login">
             <div className={cx('input-wrapper')}>
@@ -128,6 +134,9 @@ export default function ChangePasswordPageComponent() {
               />
             </div>
             <div className={cx('buttons-container')}>
+              <button className={cx('button', 'home')} onClick={goHome}>
+                Back
+              </button>
               <button className={cx('button')} type="submit" onClick={handleSubmit} disabled={isLoading}>
                 Change Password
               </button>

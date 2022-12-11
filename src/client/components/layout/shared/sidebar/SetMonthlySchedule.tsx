@@ -125,7 +125,7 @@ export default function SetMonthlyScheduleSlot() {
               {clubs?.map(club => (
                 <button
                   key={club.name}
-                  disabled={timeSlots[timeSlotIndex].club[index] === club.name}
+                  disabled={timeSlots[timeSlotIndex]?.club[index] === club.name}
                   onClick={() => handleClickClub(index, club.name)}
                   className={cx('club')}>
                   <div className={cx('inner')}>{club.name[0]}</div>

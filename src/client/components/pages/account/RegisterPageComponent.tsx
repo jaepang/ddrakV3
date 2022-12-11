@@ -119,6 +119,11 @@ export default function RegisterPageComponent() {
     return isValid
   }
 
+  function goHome(e) {
+    e.preventDefault()
+    router.push(PATHNAME.HOME)
+  }
+
   if (!isLoggedIn || !me?.isSuper) {
     return (
       <Row>
@@ -205,6 +210,9 @@ export default function RegisterPageComponent() {
               />
             </div>
             <div className={cx('buttons-container', { disabled: isLoading })}>
+              <button className={cx('button', 'home')} onClick={goHome}>
+                Back
+              </button>
               <button className={cx('button', 'signup')} type="submit" onClick={handleSubmit} disabled={isLoading}>
                 Register
               </button>
