@@ -24,9 +24,10 @@ export const AuthenticationMutation = extendType({
       args: {
         name: nonNull(stringArg()),
         password: nonNull(stringArg()),
-        clubName: stringArg(),
+        clubId: intArg(),
+        isAdmin: booleanArg(),
       },
-      resolve: async (_, { name, password, clubName }, ctx) => {
+      resolve: async (_, { name, password, clubId, isAdmin }, ctx) => {
         try {
           const hashedPassword = await hash(password, 10)
 
@@ -42,18 +43,14 @@ export const AuthenticationMutation = extendType({
               name,
               password: hashedPassword,
               club: undefined,
+              isAdmin,
             }
 
             try {
-              if (clubName) {
-                const club = await prisma.club.findUnique({
-                  where: {
-                    name: clubName ?? 'undefined',
-                  },
-                })
+              if (clubId) {
                 data.club = {
                   connect: {
-                    id: club?.id,
+                    id: clubId,
                   },
                 }
               }

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Row from '@components/layout/shared/Row'
 import { Input } from '@components/form'
 
@@ -92,7 +91,7 @@ export default function LoginPageComponent() {
       <div className={cx('root')}>
         <div className={cx('container')}>
           <div className={cx('header-title')}>
-            <h1>로그인</h1>
+            <h1>Login</h1>
           </div>
           <form className={cx('login-form')} name="login">
             <div className={cx('input-wrapper')}>
@@ -118,14 +117,9 @@ export default function LoginPageComponent() {
                 errorMsg={formErrorState.password}
               />
             </div>
-            <div className={cx('misc-container')}>
-              <Link href={PATHNAME.SIGNUP}>
-                <a>Sign Up</a>
-              </Link>
-            </div>
             <div className={cx('buttons-container')}>
               <button className={cx('button', 'login')} type="submit" onClick={handleSubmit} disabled={isLoading}>
-                로그인
+                Login
               </button>
             </div>
           </form>

@@ -21,8 +21,8 @@ export const LOGIN_MUTATION = gql`
 `
 
 export const SIGNUP_MUTATION = gql`
-  mutation signup($email: String!, $password: String!, $name: String!) {
-    signup(email: $email, password: $password, name: $name) {
+  mutation signup($name: String!, $password: String!, $clubId: Int, $isAdmin: Boolean) {
+    signup(password: $password, name: $name, clubId: $clubId, isAdmin: $isAdmin) {
       token
       user {
         ${USER_FRAGMENT}
