@@ -1,4 +1,4 @@
-import SwitchCalendarButtons from '@components/SwitchCalendarButtons'
+import SwitchCalendarButtons from '@components/layout/shared/SwitchCalendarButtons'
 
 import { useAccount, useMenuItems, useWindowSize } from '@client/hooks'
 

@@ -14,7 +14,7 @@ import { RecurringEventApiArg, beResponseToEventApiArg, EventApiArg } from '@cli
 
 import classNames from 'classnames/bind'
 import styles from './style/Calendar.module.css'
-import draggableEventsStyles from '@components/sidebar/style/SectionMenu.module.css'
+import draggableEventsStyles from '@components/layout/shared/sidebar/style/SectionMenu.module.css'
 const cx = classNames.bind(styles)
 
 export default function Calendar() {

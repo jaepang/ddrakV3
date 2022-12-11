@@ -1,4 +1,4 @@
-import Calendar from '@components/sidebar/Calendar'
+import Calendar from '@components/layout/shared/sidebar/Calendar'
 import { TbCalendarTime } from 'react-icons/tb'
 
 import { useState, useEffect } from 'react'

@@ -1,5 +1,5 @@
-import Navbar from '@components/navbar'
-import Sidebar from '@components/sidebar'
+import Navbar from '@components/layout/shared/navbar'
+import Sidebar from '@components/layout/shared/sidebar'
 import { useState } from 'react'
 import { useWindowSize } from '@client/hooks'
 

@@ -1,15 +1,17 @@
-import { useRouter } from 'next/router'
+import Link from 'next/link'
+import Row from '@components/layout/shared/Row'
 import { Input } from '@components/form'
+
+import { useRouter } from 'next/router'
 import { useMutation } from 'react-query'
 import { useState } from 'react'
 import { useAccount } from '@client/hooks'
 import { InputChangeParams } from '@shared/types'
 import { loginMutation } from '@client/shared/queries'
 import { PATHNAME } from '@root/src/client/consts'
-import Link from 'next/link'
 
 import classNames from 'classnames/bind'
-import styles from '@components/pages/acount/style/Account.module.css'
+import styles from './style/Account.module.css'
 const cx = classNames.bind(styles)
 
 export default function LoginPageComponent() {
@@ -68,19 +70,25 @@ export default function LoginPageComponent() {
   function getIsFormValid() {
     let isValid = true
     const curFormErrorState = {
-      email: undefined,
+      name: undefined,
       password: undefined,
     }
 
-    /*if (formState.password.length < 8) {
-      curFormErrorState.password = '비밀번호는 8자 이상이어야 합니다.'
+    if (formState.password.length < 1) {
+      curFormErrorState.password = 'Enter Password'
       isValid = false
-    }*/
+    }
+    if (formState.name.length < 1) {
+      curFormErrorState.name = 'Enter Username'
+      isValid = false
+    }
+
+    setFormErrorState(curFormErrorState)
     return isValid
   }
 
   return (
-    <div>
+    <Row>
       <div className={cx('root')}>
         <div className={cx('container')}>
           <div className={cx('header-title')}>
@@ -123,6 +131,6 @@ export default function LoginPageComponent() {
           </form>
         </div>
       </div>
-    </div>
+    </Row>
   )
 }

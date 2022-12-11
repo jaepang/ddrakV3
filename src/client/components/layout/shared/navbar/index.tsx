@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import WeekNavigator from './WeekNavigator'
-import SwitchCalendarButtons from '@components/SwitchCalendarButtons'
+import SwitchCalendarButtons from '@components/layout/shared/SwitchCalendarButtons'
 import { IoIosMenu } from 'react-icons/io'
 import { calendarHeaderDateString } from '@client/utils'
 

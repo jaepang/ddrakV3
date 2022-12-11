@@ -1,0 +1,16 @@
+/* Row type 분기 */
+.full-screen {
+  width: 100%;
+  margin-bottom: 80px;
+}
+
+.normal {
+  max-width: var(--size-content-width);
+  padding: 0 16px;
+  margin: 0 auto;
+  margin-bottom: 80px;
+}
+
+.no_margin {
+  margin: 0;
+}
