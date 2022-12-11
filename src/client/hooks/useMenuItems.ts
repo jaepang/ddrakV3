@@ -54,10 +54,10 @@ export function useMenuItems() {
   const logout: MenuItem = { handler: handleLogout, label: 'Logout', icon: FaSignOutAlt }
 
   const menuItems: { [key in USER_TYPE]: MenuItem[] } = {
-    [USER_TYPE.SUPER]: [adminPage, setCalendar, changePassword, logout],
-    [USER_TYPE.CLUB_ADMIN]: [setCalendar, rentalSubmit, rentalRequest, changePassword, logout],
+    [USER_TYPE.SUPER]: [setCalendar, changePassword, logout],
+    [USER_TYPE.CLUB_ADMIN]: [setCalendar, changePassword, logout],
     [USER_TYPE.CLUB_MEMBER]: [changePassword, logout],
-    [USER_TYPE.GUEST]: [login, rentalRequest],
+    [USER_TYPE.GUEST]: [login],
   }
   return {
     menuItems,
