@@ -15,7 +15,6 @@ export const loginMutation = async (
 export const signupMutation = async (
   variables: NexusGenArgTypes['Mutation']['signup'],
 ): Promise<{ signup: NexusGenObjects['AuthPayload'] }> => {
-  console.log(variables)
   return await graphQLClient.request(SIGNUP_MUTATION, variables)
 }
 

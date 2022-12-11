@@ -6,47 +6,36 @@ import { useMutation } from 'react-query'
 import { useState } from 'react'
 import { useAccount } from '@client/hooks'
 import { InputChangeParams } from '@shared/types'
-import { loginMutation } from '@client/shared/queries'
+import { changePasswordMutation } from '@client/shared/queries'
 import { PATHNAME } from '@root/src/client/consts'
 
 import classNames from 'classnames/bind'
 import styles from './style/Account.module.css'
 const cx = classNames.bind(styles)
 
-export default function LoginPageComponent() {
+export default function ChangePasswordPageComponent() {
   const router = useRouter()
   const [formState, setFormState] = useState({
-    name: '',
     password: '',
+    newPassword: '',
+    newPasswordConfirm: '',
   })
   const [formErrorState, setFormErrorState] = useState({
-    name: undefined,
     password: undefined,
+    newPassword: undefined,
+    newPasswordConfirm: undefined,
   })
-  const { isLoggedIn, login } = useAccount({
-    isUnauthRequired: true,
-    unauthRequiredRedirectUrl: getRedirectUrl(),
-  })
+  const { isLoggedIn, me } = useAccount()
 
-  const { mutate, isLoading, isError, error, isSuccess } = useMutation(loginMutation, {
+  const { mutate, isLoading, isError, error, isSuccess } = useMutation(changePasswordMutation, {
     onSuccess: (data, _variables, _context) => {
-      const {
-        login: { token },
-      } = data
-      login(token)
+      alert('Password successfully changed!')
+      router.push(PATHNAME.HOME)
     },
     onError: (_error, _variables, _context) => {
-      alert('Login failed. Please try again.')
+      alert('Password Change failed. Please try again.')
     },
   })
-
-  function getRedirectUrl(): string {
-    if (router.query && router.query.redirect) {
-      return router.query.redirect as string
-    } else {
-      return PATHNAME.HOME
-    }
-  }
 
   function handleInputChange({ name, value }: InputChangeParams) {
     setFormState(prevState => ({
@@ -61,6 +50,7 @@ export default function LoginPageComponent() {
 
     if (getIsFormValid()) {
       mutate({
+        id: me?.id,
         ...formState,
       })
     }
@@ -69,16 +59,23 @@ export default function LoginPageComponent() {
   function getIsFormValid() {
     let isValid = true
     const curFormErrorState = {
-      name: undefined,
       password: undefined,
+      newPassword: undefined,
+      newPasswordConfirm: undefined,
     }
 
     if (formState.password.length < 1) {
       curFormErrorState.password = 'Enter Password'
       isValid = false
     }
-    if (formState.name.length < 1) {
-      curFormErrorState.name = 'Enter Username'
+
+    if (formState.newPassword.length < 1) {
+      curFormErrorState.newPassword = 'Enter New Password'
+      isValid = false
+    }
+
+    if (formState.newPassword !== formState.newPasswordConfirm) {
+      curFormErrorState.newPasswordConfirm = 'New Password does not match'
       isValid = false
     }
 
@@ -95,31 +92,44 @@ export default function LoginPageComponent() {
           </div>
           <form className={cx('login-form')} name="login">
             <div className={cx('input-wrapper')}>
-              <label>Club Name</label>
-              <Input
-                value={formState.name}
-                name="name"
-                onChange={handleInputChange}
-                placeholder="enter club name"
-                disabled={isLoading}
-                errorMsg={formErrorState.name}
-              />
-            </div>
-            <div className={cx('input-wrapper')}>
               <label>Password</label>
               <Input
                 type="password"
                 value={formState.password}
                 name="password"
                 onChange={handleInputChange}
-                disabled={isLoading}
                 placeholder="enter password"
+                disabled={isLoading}
                 errorMsg={formErrorState.password}
               />
             </div>
+            <div className={cx('input-wrapper')}>
+              <label>New Password</label>
+              <Input
+                type="password"
+                value={formState.newPassword}
+                name="newPassword"
+                onChange={handleInputChange}
+                disabled={isLoading}
+                placeholder="enter new password"
+                errorMsg={formErrorState.newPassword}
+              />
+            </div>
+            <div className={cx('input-wrapper')}>
+              <label>New Password Confirm</label>
+              <Input
+                type="password"
+                value={formState.newPasswordConfirm}
+                name="newPasswordConfirm"
+                onChange={handleInputChange}
+                disabled={isLoading}
+                placeholder="enter new password again"
+                errorMsg={formErrorState.newPasswordConfirm}
+              />
+            </div>
             <div className={cx('buttons-container')}>
-              <button className={cx('button', 'login')} type="submit" onClick={handleSubmit} disabled={isLoading}>
-                Login
+              <button className={cx('button')} type="submit" onClick={handleSubmit} disabled={isLoading}>
+                Change Password
               </button>
             </div>
           </form>
