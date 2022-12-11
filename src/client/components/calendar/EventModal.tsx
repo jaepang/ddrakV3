@@ -115,9 +115,8 @@ export default function EventModal({ eventId, onClose }: Props) {
             ) : (
               <div className={cx('value')}>
                 {new Date(event?.start).toLocaleString('en-Us', {
-                  dateStyle: 'short',
+                  dateStyle: 'long',
                   timeStyle: 'short',
-                  hour12: false,
                 })}
               </div>
             )}
@@ -135,8 +134,7 @@ export default function EventModal({ eventId, onClose }: Props) {
               <div className={cx('value')}>
                 {new Date(event?.end).toLocaleString('en-Us', {
                   dateStyle: 'long',
-                  timeStyle: 'long',
-                  hour12: false,
+                  timeStyle: 'short',
                 })}
               </div>
             )}
