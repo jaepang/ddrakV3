@@ -57,6 +57,12 @@ export default function ChangePasswordPageComponent() {
     }
   }
 
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
+    }
+  }
+
   function getIsFormValid() {
     let isValid = true
     const curFormErrorState = {
@@ -106,6 +112,7 @@ export default function ChangePasswordPageComponent() {
                 onChange={handleInputChange}
                 placeholder="enter password"
                 disabled={isLoading}
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.password}
               />
             </div>
@@ -118,6 +125,7 @@ export default function ChangePasswordPageComponent() {
                 onChange={handleInputChange}
                 disabled={isLoading}
                 placeholder="enter new password"
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.newPassword}
               />
             </div>
@@ -130,6 +138,7 @@ export default function ChangePasswordPageComponent() {
                 onChange={handleInputChange}
                 disabled={isLoading}
                 placeholder="enter new password again"
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.newPasswordConfirm}
               />
             </div>

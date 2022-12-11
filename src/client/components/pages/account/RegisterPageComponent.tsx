@@ -151,6 +151,12 @@ export default function RegisterPageComponent() {
     )
   }
 
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
+    }
+  }
+
   return (
     <Row>
       <div className={cx('root')}>
@@ -182,6 +188,7 @@ export default function RegisterPageComponent() {
                 name="name"
                 onChange={handleInputChange}
                 placeholder="Enter Username"
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.name}
               />
             </div>
@@ -194,6 +201,7 @@ export default function RegisterPageComponent() {
                 onChange={handleInputChange}
                 placeholder="English, Number, Special Character 2 or more, 8 or more total"
                 maxLength={PASSWORD_INPUT_MAX_LENGTH}
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.password}
               />
             </div>
@@ -206,6 +214,7 @@ export default function RegisterPageComponent() {
                 onChange={handleInputChange}
                 placeholder="Re-enter Password"
                 maxLength={PASSWORD_INPUT_MAX_LENGTH}
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.passwordConfirm}
               />
             </div>

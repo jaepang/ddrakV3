@@ -55,6 +55,12 @@ export default function LoginPageComponent() {
     }))
   }
 
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
+    }
+  }
+
   function handleSubmit(e) {
     e.preventDefault()
     if (isLoading) return
@@ -107,6 +113,7 @@ export default function LoginPageComponent() {
                 onChange={handleInputChange}
                 placeholder="enter club name"
                 disabled={isLoading}
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.name}
               />
             </div>
@@ -119,6 +126,7 @@ export default function LoginPageComponent() {
                 onChange={handleInputChange}
                 disabled={isLoading}
                 placeholder="enter password"
+                onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.password}
               />
             </div>
