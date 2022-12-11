@@ -2,7 +2,7 @@ import { EventApi } from '@fullcalendar/common'
 import { NexusGenObjects, NexusGenInputs } from '@root/src/shared/generated/nexus-typegen'
 
 export interface EventApiArg {
-  id: string | number
+  id?: string | number
   title: string
   start: Date
   end: Date
