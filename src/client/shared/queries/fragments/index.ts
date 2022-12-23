@@ -28,6 +28,7 @@ export const EVENT_FRAGMENT = `
   daysOfWeek
   groupId
   allDay
+  isRental
   color
   desc
   club {

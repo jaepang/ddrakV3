@@ -40,6 +40,7 @@ model Event {
   allDay      Boolean?  @default(false)
   color       String    @default("#f76e11")
   desc        String?
+  isRental    Boolean   @default(false)
   creatorId   Int
   creator     User      @relation(fields: [creatorId], references: [id])
   clubId      Int?

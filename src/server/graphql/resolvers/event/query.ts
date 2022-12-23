@@ -52,16 +52,23 @@ export const EventQuery = extendType({
         from: arg({ type: 'DateTime' }),
         to: arg({ type: 'DateTime' }),
       },
-      resolve: async (_parent, { from, to }, _ctx) => {
+      resolve: async (_parent, { from, to }, _ctx): Promise<any> => {
         return await prisma.event.findMany({
           where: {
             start: {
               gte: from,
               lte: to,
             },
-            creator: {
-              isSuper: true,
-            },
+            OR: [
+              {
+                creator: {
+                  isSuper: true,
+                },
+              },
+              {
+                isRental: true,
+              },
+            ],
           },
           include: {
             club: true,

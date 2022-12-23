@@ -6,6 +6,8 @@ import { beResponseToEventApiArg, EventApiArg, RecurringEventApiArg } from '@roo
 export function useCalendarDataQuery() {
   const { date, mode } = useGlobal()
   const { me } = useAccount()
+  const enableDefaultCalendar = mode === 'default'
+  const enableClubCalendar = mode === 'clubCalendar' || mode === 'rental' || (!!me?.club && mode === 'setCalendar')
 
   /** Query events before 3 months from current to 1 month after current */
   let eventsApiArg: RecurringEventApiArg[] = []
@@ -21,18 +23,19 @@ export function useCalendarDataQuery() {
     ],
     defaultEventsQuery,
     {
-      enabled: !!date && mode === 'default',
-      onSuccess(data) {
-        const { defaultEvents } = data ?? {}
-
-        defaultEvents?.forEach((event, idx) => {
-          const eventApiArg = beResponseToEventApiArg(event)
-          eventsApiArg.push(eventApiArg)
-        })
-      },
+      enabled: !!date && enableDefaultCalendar,
     },
   )
-  const defaultEventApiArgs: RecurringEventApiArg[] = defaultData?.defaultEvents?.map(beResponseToEventApiArg) ?? []
+  const defaultEventApiArgs: RecurringEventApiArg[] =
+    defaultData?.defaultEvents?.map(event => {
+      const eventApiArg = beResponseToEventApiArg(event)
+      if (event.isRental) {
+        eventApiArg.backgroundColor = 'var(--color-light-dimmed)'
+        eventApiArg.borderColor = eventApiArg.color
+        eventApiArg.textColor = eventApiArg.color
+      }
+      return eventApiArg
+    }) ?? []
 
   /** club: show club events and unavailable schedule */
   const { data: clubData } = useQuery(
@@ -45,14 +48,15 @@ export function useCalendarDataQuery() {
     ],
     clubEventsQuery,
     {
-      enabled: !!date && (mode === 'clubCalendar' || (!!me?.club && mode === 'setCalendar')),
+      enabled: !!date && enableClubCalendar,
     },
   )
+
   const clubEventApiArgs: EventApiArg[] | RecurringEventApiArg[] =
     clubData?.clubEvents?.map(event => {
       let eventApiArg = beResponseToEventApiArg(event)
 
-      if (event.creator.isSuper) {
+      if (event.creator.isSuper || (event.isRental && event.club.id !== me?.club?.id)) {
         /** gray color; unavailable */
         eventApiArg.color = '#777'
         eventApiArg.editable = false
@@ -70,6 +74,7 @@ export function useCalendarDataQuery() {
     }) ?? []
 
   const events = mode === 'default' ? defaultEventApiArgs : clubEventApiArgs
+  console.log(events)
 
   return events
 }

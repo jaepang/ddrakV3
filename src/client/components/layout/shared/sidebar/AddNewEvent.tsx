@@ -8,17 +8,14 @@ import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'
 const cx = classNames.bind(styles)
 
-interface Props {
-  isRental?: boolean
-}
-
-export default function AddNewEventsSlot({ isRental = false }: Props) {
+export default function AddNewEventsSlot() {
   const [timeSlotIndex, setTimeSlotIndex] = useState(0)
   const { renderNewEvents, setTimeSlots } = useCalendar()
-  const { date } = useGlobal()
+  const { mode, date } = useGlobal()
   const { timeSlots } = useEvent()
   const { width } = useWindowSize()
   const isMobile = width <= 670
+  const isRental = mode === 'rental'
 
   useEffect(() => {
     setTimeSlots([
@@ -117,7 +114,7 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
           <div className={cx('label')}>{isRental ? '대여 대상' : '제목'}</div>
           <input
             className={cx('title-input')}
-            placeholder="새로운 이벤트"
+            placeholder={isRental ? '타 동아리 / 단체에 뜨락을 대여합니다' : '동아리 내 새로운 일정을 설정합니다'}
             type="text"
             value={timeSlots[timeSlotIndex]?.title ?? ''}
             onChange={handleTitleChange}

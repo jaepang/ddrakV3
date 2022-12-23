@@ -7,6 +7,9 @@ export interface EventApiArg {
   start: Date
   end: Date
   color?: string
+  backgroundColor?: string
+  borderColor?: string
+  textColor?: string
   desc?: string
   clubId?: number
   className?: string
@@ -74,7 +77,7 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Recu
     endTime: beEvent.endTime,
     startRecur: beEvent.startRecur,
     endRecur: beEvent.endRecur,
-    daysOfWeek: beEvent.daysOfWeek,
+    daysOfWeek: beEvent.daysOfWeek.length > 0 ? beEvent.daysOfWeek : undefined,
     color: beEvent.color,
     desc: beEvent.desc,
     clubId: beEvent.club.id,
@@ -90,6 +93,7 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Recu
       color: beEvent.color,
       desc: beEvent.desc,
       clubId: beEvent.club.id,
+      isRental: beEvent.isRental,
     },
   } as RecurringEventApiArg
 }

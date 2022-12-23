@@ -35,7 +35,7 @@ export default function Calendar() {
   }, [])
 
   useEffect(() => {
-    if (!isMobile && !me?.isSuper && mode === 'setCalendar') {
+    if (!isMobile && !me?.isSuper && (mode === 'setCalendar' || mode === 'rental')) {
       const draggableCx = classNames.bind(draggableEventsStyles)
       const container = document.getElementById('draggable-events')
 

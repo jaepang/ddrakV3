@@ -24,6 +24,7 @@ export function useGlobal() {
   }
 
   function enableRentalMode() {
+    clearCalendar()
     setGlobal({ ...global, mode: 'rental' })
   }
 

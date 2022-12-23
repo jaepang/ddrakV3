@@ -18,7 +18,7 @@ export function useEvent() {
     setEvent({ ...event, timeSlots })
   }
 
-  function isTimeSlotsValid() {
+  function isTimeSlotsValid(): boolean {
     if (event.timeSlots.length === 0) return false
 
     for (const timeSlot of event.timeSlots) {

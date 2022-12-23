@@ -4,9 +4,9 @@ import { useAccount, useGlobal, useEvent } from '@client/hooks'
 
 import { queryClient } from '@client/shared/react-query'
 import { useQuery, useMutation } from 'react-query'
-import { createEventsMutation, deleteEventsMutation, monthlyEventsQuery } from '@client/shared/queries'
+import { clubsQuery, createEventsMutation, deleteEventsMutation, monthlyEventsQuery } from '@client/shared/queries'
 
-import { RecurringEventApiArg, feToBeArg, isSameDateTime, leftPadZero } from '@client/utils'
+import { EventApiArg, feToBeArg, isSameDateTime, leftPadZero } from '@client/utils'
 import { NexusGenObjects } from '@root/src/shared/generated/nexus-typegen'
 
 export function useCalendar() {
@@ -14,6 +14,8 @@ export function useCalendar() {
   const { me } = useAccount()
   const { timeSlots, setDraggableDuration, setTimeSlots } = useEvent()
   const { date, mode, setDate, enableDefaultMode, enableClubCalendarMode } = useGlobal()
+  const { data } = useQuery('clubs', clubsQuery)
+  const { clubs } = data ?? {}
 
   const { mutate: createEvents } = useMutation(createEventsMutation, {
     onSuccess: () => {
@@ -232,8 +234,10 @@ export function useCalendar() {
   function mutateNewEvents() {
     const eventsInput = timeSlots
       ?.map(timeSlot => {
+        const rentalClubId = mode === 'rental' && clubs?.find(club => club.name === timeSlot.title)?.id
+
         if (isDatesInvalid(timeSlot.start, timeSlot.end) || !timeSlot.title) return
-        return { ...timeSlot, clubId: me?.club?.id } as RecurringEventApiArg
+        return { ...timeSlot, clubId: mode === 'rental' ? rentalClubId : me?.club?.id } as EventApiArg
       })
       .filter(event => !!event)
 

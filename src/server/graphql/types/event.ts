@@ -14,6 +14,7 @@ export const Event = objectType({
     t.list.int('daysOfWeek')
     t.string('groupId')
     t.boolean('allDay')
+    t.boolean('isRental')
     t.string('color')
     t.string('desc')
     t.field('creator', { type: 'User' })

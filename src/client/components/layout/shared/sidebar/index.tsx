@@ -21,6 +21,8 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
   const { mutateMonthlyEvents, mutateNewEvents } = useCalendar()
   const { timeSlotsValid } = useEvent()
   const { mode, enableDefaultMode } = useGlobal()
+  const viewMode = mode === 'clubCalendar' || mode === 'default'
+  const settingMode = mode === 'setCalendar' || mode === 'rental'
 
   return (
     <>
@@ -28,16 +30,16 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
       <div className={cx('sidebar', mode, { show: showSidebar })}>
         <div className={cx('body')}>
           <div className={cx('section', 'top')}>
-            {(mode === 'default' || mode === 'clubCalendar') && <Calendar setShowSidebar={setShowSidebar} />}
-            {me?.isSuper && mode === 'setCalendar' && <SetMonthlyScheduleSlot />}
-            {!me?.isSuper && mode === 'setCalendar' && (isMobile ? <AddNewEvent /> : <DragEventMenu />)}
+            {viewMode && <Calendar setShowSidebar={setShowSidebar} />}
+            {me?.isSuper && settingMode && <SetMonthlyScheduleSlot />}
+            {!me?.isSuper && settingMode && (isMobile ? <AddNewEvent /> : <DragEventMenu />)}
           </div>
           <div className={cx('section', 'bottom')}>
-            {(mode === 'default' || mode === 'clubCalendar') && <Menu setShowSidebar={setShowSidebar} />}
-            {!me?.isSuper && mode === 'setCalendar' && !isMobile && <AddNewEvent />}
+            {viewMode && <Menu setShowSidebar={setShowSidebar} />}
+            {!me?.isSuper && settingMode && !isMobile && <AddNewEvent />}
           </div>
           <div className={cx('section', 'footer')}>
-            {mode === 'setCalendar' && (
+            {settingMode && (
               <>
                 <button
                   className={cx('button', 'success')}

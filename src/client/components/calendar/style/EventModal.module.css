@@ -102,7 +102,8 @@
         background-color: var(--color-blue);
 
         &:disabled {
-          background-color: var(--color-gray-dimmed);
+          background-color: var(--color-blue-dimmed);
+          cursor: not-allowed;
         }
       }
 
