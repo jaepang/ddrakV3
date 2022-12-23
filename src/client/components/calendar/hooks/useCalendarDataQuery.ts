@@ -29,8 +29,9 @@ export function useCalendarDataQuery() {
   const defaultEventApiArgs: RecurringEventApiArg[] =
     defaultData?.defaultEvents?.map(event => {
       const eventApiArg = beResponseToEventApiArg(event)
+
       if (event.isRental) {
-        eventApiArg.backgroundColor = 'var(--color-light-dimmed)'
+        eventApiArg.backgroundColor = 'rgba(255, 255, 255, 0.65)'
         eventApiArg.borderColor = eventApiArg.color
         eventApiArg.textColor = eventApiArg.color
       }
@@ -74,7 +75,6 @@ export function useCalendarDataQuery() {
     }) ?? []
 
   const events = mode === 'default' ? defaultEventApiArgs : clubEventApiArgs
-  console.log(events)
 
   return events
 }
