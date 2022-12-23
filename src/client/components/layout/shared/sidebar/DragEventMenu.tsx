@@ -9,11 +9,11 @@ const cx = classNames.bind(styles)
 
 const clubEvents = [
   {
-    name: 'practice',
+    name: '합주',
     color: '#f76e11',
   },
   {
-    name: 'performance',
+    name: '공연',
     color: '#79A3F4',
   },
 ]
@@ -45,23 +45,23 @@ export default function DragEventMenu() {
 
   return (
     <div className={cx('menu')}>
-      <h2 className={cx('header')}>Drag Event to Calendar</h2>
+      <h2 className={cx('header')}>원하는 시간으로 드래그하세요</h2>
       <div className={cx('drag-event-menu-body')}>
         <div className={cx('duration-select')}>
-          <h3>Duration:</h3>
+          <h3>길이</h3>
           <div className={cx('duration-select-body')}>
             <select name="hour" value={duration.hour} onChange={handleDurationChange}>
               {Array.from(Array(24).keys()).map(hour => (
                 <option key={hour} value={hour}>
-                  {hour} Hour
+                  {hour}시간
                 </option>
               ))}
             </select>
           </div>
           <div className={cx('duration-select-body')}>
             <select name="minute" value={duration.minute} onChange={handleDurationChange}>
-              <option value={0}>0 Minute</option>
-              <option value={30}>30 Minutes</option>
+              <option value={0}>0분</option>
+              <option value={30}>30분</option>
             </select>
           </div>
         </div>
