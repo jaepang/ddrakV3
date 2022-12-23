@@ -82,7 +82,7 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
   return (
     <div className={cx('menu', 'padding-top')}>
       <div className={cx('header')}>
-        <h2>{isRental ? 'Add New Rental' : 'Add New Event'}</h2>
+        <h2>{isRental ? '새로운 대여 등록' : '새로운 이벤트 등록'}</h2>
         <div className={cx('buttons')}>
           <button onClick={handlePrevSlot} disabled={timeSlotIndex === 0} className={cx('icon-wrapper', 'back')}>
             <IoChevronBack size={20} />
@@ -95,7 +95,7 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
       <div className={cx('time-slots-body')}>
         <div className={cx('time-slots-header')}>
           <div className={cx('time-picker-wrapper')}>
-            <div className={cx('label')}>Start Date / Time</div>
+            <div className={cx('label')}>시작 날짜 / 시간</div>
             <DateTimePicker
               value={timeSlots[timeSlotIndex]?.start as Date}
               minuteInterval={10}
@@ -104,7 +104,7 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
             />
           </div>
           <div className={cx('time-picker-wrapper')}>
-            <div className={cx('label')}>End Date / Time</div>
+            <div className={cx('label')}>끝 날짜 / 시간</div>
             <DateTimePicker
               value={timeSlots[timeSlotIndex]?.end as Date}
               minuteInterval={10}
@@ -114,10 +114,10 @@ export default function AddNewEventsSlot({ isRental = false }: Props) {
           </div>
         </div>
         <div className={cx('new-event-title')}>
-          <div className={cx('label')}>Title</div>
+          <div className={cx('label')}>{isRental ? '대여 대상' : '제목'}</div>
           <input
             className={cx('title-input')}
-            placeholder="New Event"
+            placeholder="새로운 이벤트"
             type="text"
             value={timeSlots[timeSlotIndex]?.title ?? ''}
             onChange={handleTitleChange}

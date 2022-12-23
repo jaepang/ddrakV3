@@ -39,10 +39,8 @@ export default function Calendar() {
       const draggableCx = classNames.bind(draggableEventsStyles)
       const container = document.getElementById('draggable-events')
 
-      /** destroy existing draggable object */
       draggable?.destroy()
 
-      /** set new draggable object */
       setDraggable(
         new Draggable(container, {
           itemSelector: `.${draggableCx('draggable-event')}`,

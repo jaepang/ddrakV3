@@ -24,13 +24,13 @@ export default function SwitchCalendarButtons({ isMobile = false, setShowSidebar
   return (
     <div className={cx('switch-calendar-buttons')}>
       <button disabled={mode === 'default'} className={cx('button', 'left')} onClick={handleSwitchMode}>
-        default
+        전체
       </button>
       <button
         disabled={mode === 'clubCalendar'}
         className={cx('button', 'right', { active: mode === 'clubCalendar' })}
         onClick={handleSwitchMode}>
-        club
+        동아리
       </button>
     </div>
   )

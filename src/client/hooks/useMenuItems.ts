@@ -49,15 +49,15 @@ export function useMenuItems() {
     router.push(PATHNAME.REGISTER)
   }
 
-  const adminPage: MenuItem = { /*handler: 'adminPage',*/ label: 'Admin Page', icon: FaTools }
-  const rentalRequest: MenuItem = { /*handler: 'openBorrowRequestModal',*/ label: 'Rental Request', icon: FaPaperPlane }
-  const rentalSubmit: MenuItem = { /*handler: 'enableBorrowTimeMode',*/ label: 'Register Rental', icon: FaShare }
-  const login: MenuItem = { handler: handleLogin, label: 'Login', icon: FaSignInAlt }
-  const logout: MenuItem = { handler: handleLogout, label: 'Logout', icon: FaSignOutAlt }
-  const changePassword: MenuItem = { handler: handleChangePassword, label: 'Change Password', icon: FaKey }
-  const register: MenuItem = { handler: handleRegisterUser, label: 'Register User', icon: FaUserPlus }
-  const help: MenuItem = { /* handler: 'openHelpModal', */ label: 'Help', icon: FaQuestion }
-  const setCalendar: MenuItem = { handler: enableSetCalendarMode, label: 'Register Schedule', icon: FaCalendarPlus }
+  const adminPage: MenuItem = { /*handler: 'adminPage',*/ label: '관리자 페이지', icon: FaTools }
+  const rentalRequest: MenuItem = { /*handler: 'openBorrowRequestModal',*/ label: '대여 요청', icon: FaPaperPlane }
+  const rentalSubmit: MenuItem = { /*handler: 'enableBorrowTimeMode',*/ label: '대여 등록', icon: FaShare }
+  const login: MenuItem = { handler: handleLogin, label: '로그인', icon: FaSignInAlt }
+  const logout: MenuItem = { handler: handleLogout, label: '로그아웃', icon: FaSignOutAlt }
+  const changePassword: MenuItem = { handler: handleChangePassword, label: '비밀번호 변경', icon: FaKey }
+  const register: MenuItem = { handler: handleRegisterUser, label: '새 사용자 등록', icon: FaUserPlus }
+  const help: MenuItem = { /* handler: 'openHelpModal', */ label: '도움말', icon: FaQuestion }
+  const setCalendar: MenuItem = { handler: enableSetCalendarMode, label: '시간표 설정', icon: FaCalendarPlus }
 
   const menuItems: { [key in USER_TYPE]: MenuItem[] } = {
     [USER_TYPE.SUPER]: [setCalendar, register, changePassword, logout],

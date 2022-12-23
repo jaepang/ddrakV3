@@ -41,10 +41,10 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
                 <button
                   className={cx('button', 'success')}
                   onClick={me?.isSuper ? mutateMonthlyEvents : mutateNewEvents}>
-                  Apply
+                  적용
                 </button>
                 <button className={cx('button', 'cancel')} onClick={enableDefaultMode}>
-                  Cancel
+                  취소
                 </button>
               </>
             )}

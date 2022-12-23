@@ -14,17 +14,11 @@ export default function DayHeaderContent(
   return (
     <div className={cx('col-header')}>
       <div className={cx('day', { 'set-calendar-mode': mode === 'setCalendar' && me?.isSuper })}>
-        {arg.date.toLocaleString('en-Us', {
+        {arg.date.toLocaleString('ko-kr', {
           weekday: 'short',
         })}
       </div>
-      {!(me?.isSuper && mode === 'setCalendar') && (
-        <h2>
-          {arg.date.toLocaleString('en-Us', {
-            day: 'numeric',
-          })}
-        </h2>
-      )}
+      {!(me?.isSuper && mode === 'setCalendar') && <h2>{arg.date.getDate()}</h2>}
     </div>
   )
 }

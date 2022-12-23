@@ -35,9 +35,9 @@ export default function DragEventMenu() {
 
   useEffect(() => {
     setDraggableDuration(
-      `${duration.hour.toLocaleString('en-Us', {
+      `${duration.hour.toLocaleString('ko-kr', {
         minimumIntegerDigits: 2,
-      })}:${duration.minute.toLocaleString('en-Us', {
+      })}:${duration.minute.toLocaleString('ko-kr', {
         minimumIntegerDigits: 2,
       })}`,
     )

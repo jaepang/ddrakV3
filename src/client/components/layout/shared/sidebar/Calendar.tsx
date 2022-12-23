@@ -8,7 +8,7 @@ import classNames from 'classnames/bind'
 import styles from './style/Calendar.module.css'
 const cx = classNames.bind(styles)
 
-const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const weekdays = ['월', '화', '수', '목', '금', '토', '일']
 
 interface Props {
   setShowSidebar?: (show: boolean) => void
@@ -74,7 +74,7 @@ export default function Calendar({ setShowSidebar, isInForm = false, value, setV
           <div className={cx('icon-wrapper')}>
             <IoChevronBack size={!isInForm ? 25 : 16} onClick={handleMonthBackward} />
           </div>
-          <h2>{date.toLocaleString('en-Us', { month: 'long' })}</h2>
+          <h2>{date.toLocaleString('ko-kr', { month: 'long' })}</h2>
           <div className={cx('icon-wrapper')}>
             <IoChevronForward size={!isInForm ? 25 : 16} onClick={handleMonthForward} />
           </div>

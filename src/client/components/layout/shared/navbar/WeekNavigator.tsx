@@ -26,7 +26,7 @@ export default function WeekNavigator() {
   return (
     <div className={cx('week-navigator')}>
       <button disabled={disableTodayButton} onClick={handleToday} className={cx('today')}>
-        {adminTimeSetMode ? 'This Month' : 'Today'}
+        {adminTimeSetMode ? '이번 달' : '오늘'}
       </button>
       <div onClick={adminTimeSetMode ? handlePrevMonth : handlePrevWeek} className={cx('button', 'back')}>
         <IoChevronBackOutline size={25} />

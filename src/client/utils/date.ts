@@ -21,19 +21,18 @@ export function calendarHeaderDateString(date: Date, isMobile?: boolean): string
 
   if (yearChanged) {
     /** year change: M YYYY - M YYYY */
-    return `${firstDayOfWeek.toLocaleString('en-Us', shortOptions)} - ${lastDayOfWeek.toLocaleString(
-      'en-Us',
+    return `${firstDayOfWeek.toLocaleString('ko-kr', shortOptions)} - ${lastDayOfWeek.toLocaleString(
+      'ko-kr',
       shortOptions,
     )}`
   } else if (monthChanged) {
-    /** month change: M - M YYYY */
-    return `${firstDayOfWeek.toLocaleString('en-Us', { month: 'short' })} - ${lastDayOfWeek.toLocaleString(
-      'en-Us',
-      shortOptions,
-    )}`
+    /** month change: YYYY M - M */
+    return `${firstDayOfWeek.toLocaleString('ko-kr', shortOptions)} - ${lastDayOfWeek.toLocaleString('ko-kr', {
+      month: 'short',
+    })}`
   } else {
     /** default: MMM YYYY */
-    return `${firstDayOfWeek.toLocaleString('en-Us', isMobile ? shortOptions : longOptions)}`
+    return `${firstDayOfWeek.toLocaleString('ko-kr', isMobile ? shortOptions : longOptions)}`
   }
 }
 

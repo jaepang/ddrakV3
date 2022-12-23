@@ -29,7 +29,7 @@ export default function TimePicker({ value, setValue, hourInterval, minuteInterv
     const meridiem = hour24 >= 12 ? 'PM' : 'AM'
     const hour12 = hour24 > 12 ? hour24 - 12 : hour24
 
-    setHour(hour12.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }))
+    setHour(hour12.toLocaleString('ko-kr', { minimumIntegerDigits: 2, useGrouping: false }))
     setMinute(minute)
     setMeridiem(meridiem)
   }, [value])
@@ -66,7 +66,7 @@ export default function TimePicker({ value, setValue, hourInterval, minuteInterv
           {Array.from({ length: hourInterval ? Math.ceil(12 / hourInterval) : 12 }, (_, idx) =>
             hourInterval ? (idx + 1) * hourInterval : idx + 1,
           ).map(h => {
-            const hourString = h.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+            const hourString = h.toLocaleString('ko-kr', { minimumIntegerDigits: 2, useGrouping: false })
 
             return (
               <div
@@ -84,7 +84,7 @@ export default function TimePicker({ value, setValue, hourInterval, minuteInterv
           {Array.from({ length: minuteInterval ? Math.ceil(60 / minuteInterval) : 60 }, (_, idx) =>
             minuteInterval ? idx * minuteInterval : idx,
           ).map(m => {
-            const minuteString = m.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+            const minuteString = m.toLocaleString('ko-kr', { minimumIntegerDigits: 2, useGrouping: false })
 
             return (
               <div

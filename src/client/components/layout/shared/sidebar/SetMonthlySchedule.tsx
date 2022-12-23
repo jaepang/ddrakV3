@@ -11,7 +11,7 @@ import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'
 const cx = classNames.bind(styles)
 
-const tableHeader = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const weekdays = ['월', '화', '수', '목', '금', '토', '일']
 
 export default function SetMonthlyScheduleSlot() {
   const [timeSlotLength, setTimeSlotLength] = useState(1)
@@ -89,7 +89,7 @@ export default function SetMonthlyScheduleSlot() {
   return (
     <div className={cx('menu', 'padding-top')}>
       <div className={cx('header')}>
-        <h2>Set Monthly Schedule</h2>
+        <h2>시간대별 설정</h2>
         <div className={cx('buttons')}>
           <button onClick={handlePrevSlot} disabled={timeSlotIndex === 0} className={cx('icon-wrapper', 'back')}>
             <IoChevronBack size={20} />
@@ -102,7 +102,7 @@ export default function SetMonthlyScheduleSlot() {
       <div className={cx('time-slots-body')}>
         <div className={cx('time-slots-header')}>
           <div className={cx('time-picker-wrapper')}>
-            <div className={cx('label')}>Start Time</div>
+            <div className={cx('label')}>시작 시간</div>
             <TimePicker
               value={timeSlots[timeSlotIndex]?.start as string}
               minuteInterval={10}
@@ -110,7 +110,7 @@ export default function SetMonthlyScheduleSlot() {
             />
           </div>
           <div className={cx('time-picker-wrapper')}>
-            <div className={cx('label')}>End Time</div>
+            <div className={cx('label')}>끝 시간</div>
             <TimePicker
               value={timeSlots[timeSlotIndex]?.end as string}
               minuteInterval={10}
@@ -119,7 +119,7 @@ export default function SetMonthlyScheduleSlot() {
           </div>
         </div>
         <div className={cx('time-slots')}>
-          {tableHeader.map((day, index) => (
+          {weekdays.map((day, index) => (
             <div key={day} className={cx('time-slot')}>
               <div className={cx('day')}>{day}</div>
               {clubs?.map(club => (

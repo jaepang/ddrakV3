@@ -61,7 +61,7 @@ export default function DateTimePicker({
     <div className={cx('root')} onClick={() => setShowDropdown(true)} ref={dropdownDom}>
       <div className={cx('input')}>
         <div className={cx('data')}>
-          {value?.toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short', hour12: false })}
+          {value?.toLocaleString('ko-kr', { dateStyle: 'short', timeStyle: 'short', hour12: false })}
         </div>
         <div className={cx('icon-wrapper')}>
           <TbCalendarTime size={15} />
@@ -81,7 +81,7 @@ export default function DateTimePicker({
           {Array.from({ length: hourInterval ? Math.ceil(hours / hourInterval) : hours }, (_, idx) =>
             hourInterval ? (idx + 1) * hourInterval : idx + 1,
           ).map(hour => {
-            const hourString = hour.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+            const hourString = hour.toLocaleString('ko-kr', { minimumIntegerDigits: 2, useGrouping: false })
 
             return (
               <div
@@ -99,7 +99,7 @@ export default function DateTimePicker({
           {Array.from({ length: minuteInterval ? Math.ceil(60 / minuteInterval) : 60 }, (_, idx) =>
             minuteInterval ? idx * minuteInterval : idx,
           ).map(minute => {
-            const minuteString = minute.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+            const minuteString = minute.toLocaleString('ko-kr', { minimumIntegerDigits: 2, useGrouping: false })
 
             return (
               <div

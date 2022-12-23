@@ -32,14 +32,14 @@ export default function EventModal({ eventId, onClose }: Props) {
 
   const { mutate: updateEvent } = useMutation(updateEventMutation, {
     onSuccess: () => {
-      onClose()
       queryClient.refetchQueries(['events'])
+      onClose()
     },
   })
   const { mutate: deleteEvent } = useMutation(deleteEventMutation, {
     onSuccess: () => {
-      onClose()
       queryClient.refetchQueries(['events'])
+      onClose()
     },
   })
 
@@ -85,9 +85,9 @@ export default function EventModal({ eventId, onClose }: Props) {
       <div className={cx('header')}>
         {editable ? (
           <div className={cx('head-wrapper')}>
-            <h1>Edit Event</h1>
+            <h1>이벤트 수정</h1>
             <button className={cx('delete-button')} onClick={() => deleteEvent({ id: eventId as number })}>
-              Delete Event
+              삭제
             </button>
           </div>
         ) : (
@@ -124,7 +124,7 @@ export default function EventModal({ eventId, onClose }: Props) {
               />
             ) : (
               <div className={cx('value')}>
-                {new Date(event?.start).toLocaleString('en-Us', {
+                {new Date(event?.start).toLocaleString('ko-kr', {
                   dateStyle: 'long',
                   timeStyle: 'short',
                 })}
@@ -142,7 +142,7 @@ export default function EventModal({ eventId, onClose }: Props) {
               />
             ) : (
               <div className={cx('value')}>
-                {new Date(event?.end).toLocaleString('en-Us', {
+                {new Date(event?.end).toLocaleString('ko-kr', {
                   dateStyle: 'long',
                   timeStyle: 'short',
                 })}
@@ -154,10 +154,10 @@ export default function EventModal({ eventId, onClose }: Props) {
       {editable && (
         <div className={cx('footer')}>
           <button className={cx('button', 'success')} disabled={!changed} onClick={handleSubmit}>
-            Update
+            적용
           </button>
           <button className={cx('button', 'cancel')} onClick={onClose}>
-            Cancel
+            취소
           </button>
         </div>
       )}

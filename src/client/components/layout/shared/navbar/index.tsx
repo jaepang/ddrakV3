@@ -32,7 +32,7 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
         <div className={cx('left-area')}>
           <WeekNavigator />
           <h2 className={cx('date')}>
-            {dateString} {mode === 'setCalendar' && <div className={cx('preview')}>Preview</div>}
+            {dateString} {mode === 'setCalendar' && <div className={cx('preview')}>미리보기</div>}
           </h2>
         </div>
         <div className={cx('right-area')}>
@@ -43,11 +43,11 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
             </div>
           ) : isLoggedIn ? (
             <button className={cx('account-button')} onClick={handleLogout}>
-              Logout
+              로그아웃
             </button>
           ) : (
             <Link href={PATHNAME.LOGIN}>
-              <div className={cx('account-button')}>Login</div>
+              <div className={cx('account-button')}>로그인</div>
             </Link>
           )}
         </div>

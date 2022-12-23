@@ -3,7 +3,7 @@ import { Input } from '@components/form'
 
 import { useRouter } from 'next/router'
 import { useMutation } from 'react-query'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useAccount } from '@client/hooks'
 import { InputChangeParams } from '@shared/types'
 import { loginMutation } from '@client/shared/queries'
@@ -23,12 +23,12 @@ export default function LoginPageComponent() {
     name: undefined,
     password: undefined,
   })
-  const { isLoggedIn, login } = useAccount({
+  const { login } = useAccount({
     isUnauthRequired: true,
     unauthRequiredRedirectUrl: getRedirectUrl(),
   })
 
-  const { mutate, isLoading, isError, error, isSuccess } = useMutation(loginMutation, {
+  const { mutate, isLoading } = useMutation(loginMutation, {
     onSuccess: (data, _variables, _context) => {
       const {
         login: { token },
@@ -61,7 +61,7 @@ export default function LoginPageComponent() {
     }
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
     if (isLoading) return
 
@@ -80,11 +80,11 @@ export default function LoginPageComponent() {
     }
 
     if (formState.password.length < 1) {
-      curFormErrorState.password = 'Enter Password'
+      curFormErrorState.password = '비밀번호를 입력하세요'
       isValid = false
     }
     if (formState.name.length < 1) {
-      curFormErrorState.name = 'Enter Username'
+      curFormErrorState.name = '사용자 이름을 입력하세요'
       isValid = false
     }
 
@@ -92,7 +92,7 @@ export default function LoginPageComponent() {
     return isValid
   }
 
-  function goHome(e) {
+  function goHome(e: React.SyntheticEvent) {
     e.preventDefault()
     router.push(PATHNAME.HOME)
   }
@@ -102,40 +102,40 @@ export default function LoginPageComponent() {
       <div className={cx('root')}>
         <div className={cx('container')}>
           <div className={cx('header-title')}>
-            <h1>Login</h1>
+            <h1>로그인</h1>
           </div>
           <form className={cx('login-form')} name="login">
             <div className={cx('input-wrapper')}>
-              <label>Club Name</label>
+              <label>사용자 이름</label>
               <Input
                 value={formState.name}
                 name="name"
                 onChange={handleInputChange}
-                placeholder="enter club name"
+                placeholder="사용자 이름을 입력하세요"
                 disabled={isLoading}
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.name}
               />
             </div>
             <div className={cx('input-wrapper')}>
-              <label>Password</label>
+              <label>비밀번호</label>
               <Input
                 type="password"
                 value={formState.password}
                 name="password"
                 onChange={handleInputChange}
                 disabled={isLoading}
-                placeholder="enter password"
+                placeholder="비밀번호를 입력하세요"
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.password}
               />
             </div>
             <div className={cx('buttons-container')}>
               <button className={cx('button', 'home')} onClick={goHome}>
-                Back
+                뒤로
               </button>
               <button className={cx('button', 'login')} type="submit" onClick={handleSubmit} disabled={isLoading}>
-                Login
+                로그인
               </button>
             </div>
           </form>

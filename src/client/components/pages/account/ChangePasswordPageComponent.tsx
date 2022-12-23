@@ -1,10 +1,9 @@
-import Link from 'next/link'
 import Row from '@components/layout/shared/Row'
 import { Input } from '@components/form'
 
 import { useRouter } from 'next/router'
 import { useMutation } from 'react-query'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useAccount } from '@client/hooks'
 import { InputChangeParams } from '@shared/types'
 import { changePasswordMutation } from '@client/shared/queries'
@@ -26,15 +25,15 @@ export default function ChangePasswordPageComponent() {
     newPassword: undefined,
     newPasswordConfirm: undefined,
   })
-  const { isLoggedIn, me } = useAccount()
+  const { me } = useAccount()
 
-  const { mutate, isLoading, isError, error, isSuccess } = useMutation(changePasswordMutation, {
+  const { mutate, isLoading } = useMutation(changePasswordMutation, {
     onSuccess: (data, _variables, _context) => {
-      alert('Password successfully changed!')
+      alert('비밀번호가 변경되었습니다!')
       router.push(PATHNAME.HOME)
     },
     onError: (_error, _variables, _context) => {
-      alert('Password Change failed. Please try again.')
+      alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.')
     },
   })
 
@@ -45,7 +44,7 @@ export default function ChangePasswordPageComponent() {
     }))
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
     if (isLoading) return
 
@@ -70,19 +69,25 @@ export default function ChangePasswordPageComponent() {
       newPassword: undefined,
       newPasswordConfirm: undefined,
     }
+    const password = formState.password
+    const newPassword = formState.newPassword
+    const newPasswordConfirm = formState.newPasswordConfirm
 
-    if (formState.password.length < 1) {
-      curFormErrorState.password = 'Enter Password'
+    if (password.length < 1) {
+      curFormErrorState.password = '비밀번호를 입력하세요'
       isValid = false
     }
 
-    if (formState.newPassword.length < 1) {
-      curFormErrorState.newPassword = 'Enter New Password'
+    if (newPassword.length < 1) {
+      curFormErrorState.newPassword = '새 비밀번호를 입력하세요'
       isValid = false
     }
 
-    if (formState.newPassword !== formState.newPasswordConfirm) {
-      curFormErrorState.newPasswordConfirm = 'New Password does not match'
+    if (newPassword.search(/\s/) != -1) {
+      curFormErrorState.password = '비밀번호에는 공백이 허용되지 않습니다'
+      isValid = false
+    } else if (newPassword !== newPasswordConfirm) {
+      curFormErrorState.newPasswordConfirm = '비밀번호가 일치하지 않습니다'
       isValid = false
     }
 
@@ -90,7 +95,7 @@ export default function ChangePasswordPageComponent() {
     return isValid
   }
 
-  function goHome(e) {
+  function goHome(e: React.SyntheticEvent) {
     e.preventDefault()
     router.push(PATHNAME.HOME)
   }
@@ -100,54 +105,54 @@ export default function ChangePasswordPageComponent() {
       <div className={cx('root')}>
         <div className={cx('container')}>
           <div className={cx('header-title')}>
-            <h1>Change Password</h1>
+            <h1>비밀번호 변경</h1>
           </div>
           <form className={cx('login-form')} name="login">
             <div className={cx('input-wrapper')}>
-              <label>Password</label>
+              <label>비밀번호</label>
               <Input
                 type="password"
                 value={formState.password}
                 name="password"
                 onChange={handleInputChange}
-                placeholder="enter password"
+                placeholder="비밀번호를 입력하세요"
                 disabled={isLoading}
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.password}
               />
             </div>
             <div className={cx('input-wrapper')}>
-              <label>New Password</label>
+              <label>새 비밀번호</label>
               <Input
                 type="password"
                 value={formState.newPassword}
                 name="newPassword"
                 onChange={handleInputChange}
                 disabled={isLoading}
-                placeholder="enter new password"
+                placeholder="새로운 비밀번호를 입력하세요"
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.newPassword}
               />
             </div>
             <div className={cx('input-wrapper')}>
-              <label>New Password Confirm</label>
+              <label>새 비밀번호 확인</label>
               <Input
                 type="password"
                 value={formState.newPasswordConfirm}
                 name="newPasswordConfirm"
                 onChange={handleInputChange}
                 disabled={isLoading}
-                placeholder="enter new password again"
+                placeholder="새 비밀번호를 다시 입력해주세요"
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.newPasswordConfirm}
               />
             </div>
             <div className={cx('buttons-container')}>
               <button className={cx('button', 'home')} onClick={goHome}>
-                Back
+                뒤로
               </button>
               <button className={cx('button')} type="submit" onClick={handleSubmit} disabled={isLoading}>
-                Change Password
+                비밀번호 변경
               </button>
             </div>
           </form>

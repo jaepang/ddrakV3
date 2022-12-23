@@ -38,15 +38,12 @@ export default function RegisterPageComponent() {
     label: club.name,
   }))
 
-  const { mutate, isLoading, isError, error, isSuccess } = useMutation(signupMutation, {
-    onSuccess: (data, _variables, _context) => {
-      const {
-        signup: { token },
-      } = data
-      alert('register success!')
+  const { mutate, isLoading } = useMutation(signupMutation, {
+    onSuccess: (_, _variables, _context) => {
+      alert('사용자 등록이 완료되었습니다!')
       router.push(PATHNAME.HOME)
     },
-    onError: ({ response }, _variables, _context) => {
+    onError: (_, _variables, _context) => {
       alert('Signup failed. Please try again.')
     },
   })
@@ -66,7 +63,7 @@ export default function RegisterPageComponent() {
     }))
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
     if (isLoading) return
 
@@ -89,21 +86,12 @@ export default function RegisterPageComponent() {
     }
 
     const password = formState.password
-    var num = password.search(REG_EXP.passwordNum)
-    var eng = password.search(REG_EXP.passwordEng)
-    var spe = password.search(REG_EXP.passwordSpe)
 
-    if (password.length < 8 || password.length > 15) {
-      curFormErrorState.password = 'English, Number, Special Character 2 or more, 8 or more total'
-      isValid = false
-    } else if (password.search(/\s/) != -1) {
-      curFormErrorState.password = 'No spaces allowed in password'
-      isValid = false
-    } else if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
-      curFormErrorState.password = 'English, Number, Special Character 2 or more, 8 or more total'
+    if (password.search(/\s/) != -1) {
+      curFormErrorState.password = '비밀번호에는 공백이 허용되지 않습니다'
       isValid = false
     } else if (formState.password !== formState.passwordConfirm) {
-      curFormErrorState.passwordConfirm = 'Password does not match'
+      curFormErrorState.passwordConfirm = '비밀번호가 일치하지 않습니다'
       isValid = false
     }
 
@@ -119,7 +107,7 @@ export default function RegisterPageComponent() {
     return isValid
   }
 
-  function goHome(e) {
+  function goHome(e: React.SyntheticEvent) {
     e.preventDefault()
     router.push(PATHNAME.HOME)
   }
@@ -130,18 +118,18 @@ export default function RegisterPageComponent() {
         <div className={cx('root')}>
           <div className={cx('container')}>
             <div className={cx('header-title')}>
-              <h1>Permission Denied</h1>
+              <h1>권한이 없습니다</h1>
             </div>
             <div className={cx('buttons-container', { disabled: isLoading })}>
               <button className={cx('button', 'home')} onClick={() => router.push(PATHNAME.HOME)} disabled={isLoading}>
-                Home
+                뒤로
               </button>
               {!isLoggedIn && (
                 <button
                   className={cx('button', 'login')}
                   onClick={() => router.push(PATHNAME.LOGIN)}
                   disabled={isLoading}>
-                  Login
+                  로그인
                 </button>
               )}
             </div>
@@ -162,12 +150,12 @@ export default function RegisterPageComponent() {
       <div className={cx('root')}>
         <div className={cx('container')}>
           <div className={cx('header-title')}>
-            <h1>Register New User</h1>
+            <h1>새로운 사용자 등록</h1>
           </div>
           <form className={cx('login-form')} name="signup">
             <div className={cx('misc-container')}>
               <div className={cx('misc-wrapper')}>
-                <div>Club</div>
+                <div>동아리</div>
                 <Select
                   className={cx('select', 'short')}
                   name="club"
@@ -177,42 +165,42 @@ export default function RegisterPageComponent() {
                 />
               </div>
               <div className={cx('misc-wrapper')}>
-                <label htmlFor="admin">Admin</label>
+                <label htmlFor="admin">관리자</label>
                 <input type="checkbox" name="isAdmin" checked={formState.isAdmin} onChange={handleCheckboxChange} />
               </div>
             </div>
             <div className={cx('input-wrapper')}>
-              <label>Username</label>
+              <label>사용자 이름</label>
               <Input
                 value={formState.name}
                 name="name"
                 onChange={handleInputChange}
-                placeholder="Enter Username"
+                placeholder="사용자 이름을 입력하세요"
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.name}
               />
             </div>
             <div className={cx('input-wrapper')}>
-              <label>Password</label>
+              <label>비밀번호</label>
               <Input
                 type="password"
                 value={formState.password}
                 name="password"
                 onChange={handleInputChange}
-                placeholder="English, Number, Special Character 2 or more, 8 or more total"
+                placeholder="비밀번호를 입력하세요"
                 maxLength={PASSWORD_INPUT_MAX_LENGTH}
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.password}
               />
             </div>
             <div className={cx('input-wrapper')}>
-              <label>Confirm Password</label>
+              <label>비밀번호 확인</label>{' '}
               <Input
                 type="password"
                 value={formState.passwordConfirm}
                 name="passwordConfirm"
                 onChange={handleInputChange}
-                placeholder="Re-enter Password"
+                placeholder="비밀번호를 다시 입력하세요"
                 maxLength={PASSWORD_INPUT_MAX_LENGTH}
                 onKeyPress={handleKeyPress}
                 errorMsg={formErrorState.passwordConfirm}
@@ -220,10 +208,10 @@ export default function RegisterPageComponent() {
             </div>
             <div className={cx('buttons-container', { disabled: isLoading })}>
               <button className={cx('button', 'home')} onClick={goHome}>
-                Back
+                뒤로
               </button>
               <button className={cx('button', 'signup')} type="submit" onClick={handleSubmit} disabled={isLoading}>
-                Register
+                등록
               </button>
             </div>
           </form>
