@@ -77,6 +77,11 @@
 
           &.success {
             background-color: var(--color-blue);
+
+            &:disabled {
+              background-color: var(--color-blue-dimmed);
+              cursor: not-allowed;
+            }
           }
 
           &.cancel {

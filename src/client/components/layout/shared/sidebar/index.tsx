@@ -4,7 +4,7 @@ import Menu from './Menu'
 import SetMonthlyScheduleSlot from './SetMonthlySchedule'
 import AddNewEvent from './AddNewEvent'
 
-import { useAccount, useCalendar, useGlobal } from '@client/hooks'
+import { useAccount, useCalendar, useEvent, useGlobal } from '@client/hooks'
 
 import classNames from 'classnames/bind'
 import styles from './style/Sidebar.module.css'
@@ -19,6 +19,7 @@ interface Props {
 export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props) {
   const { me } = useAccount()
   const { mutateMonthlyEvents, mutateNewEvents } = useCalendar()
+  const { timeSlotsValid } = useEvent()
   const { mode, enableDefaultMode } = useGlobal()
 
   return (
@@ -40,7 +41,8 @@ export default function Sidebar({ showSidebar, setShowSidebar, isMobile }: Props
               <>
                 <button
                   className={cx('button', 'success')}
-                  onClick={me?.isSuper ? mutateMonthlyEvents : mutateNewEvents}>
+                  onClick={me?.isSuper ? mutateMonthlyEvents : mutateNewEvents}
+                  disabled={!timeSlotsValid}>
                   적용
                 </button>
                 <button className={cx('button', 'cancel')} onClick={enableDefaultMode}>
