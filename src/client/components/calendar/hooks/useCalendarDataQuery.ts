@@ -57,10 +57,14 @@ export function useCalendarDataQuery() {
     clubData?.clubEvents?.map(event => {
       let eventApiArg = beResponseToEventApiArg(event)
 
-      if (event.creator.isSuper || (event.isRental && event.club.id !== me?.club?.id)) {
+      if (event.creator.isSuper) {
         /** gray color; unavailable */
         eventApiArg.color = '#777'
         eventApiArg.editable = false
+      } else if (event.isRental && event.club.id !== me?.club?.id) {
+        eventApiArg.backgroundColor = '#eee'
+        eventApiArg.borderColor = '#777'
+        eventApiArg.textColor = '#777'
       } else {
         eventApiArg = {
           id: event.id,

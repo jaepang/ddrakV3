@@ -95,16 +95,13 @@ a {
 }
 
 .fc-event-main-frame {
-  padding: 0.5em;
+  padding: 0.1em;
   display: flex;
   flex-direction: column-reverse !important;
   align-items: flex-start;
   justify-content: flex-end;
   row-gap: 0.5em;
-
-  @media (max-width: 1024px) {
-    padding: 0.3em;
-  }
+  backdrop-filter: blur(2px);
 
   .fc-event-title-container {
     flex-grow: 0;

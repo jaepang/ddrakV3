@@ -44,7 +44,9 @@ export default function EventModal({ eventId, onClose }: Props) {
   })
 
   /** editable events: events created by club admin */
-  const editable = me?.isAdmin && !event?.creator?.isSuper && event?.club?.id === me?.club?.id
+  const editable =
+    me?.isAdmin && !event?.creator?.isSuper && (event?.club?.id === me?.club?.id || event?.creator?.id === me?.id)
+
   const changed =
     !isSameDateTime(new Date(event?.start), formState.start) ||
     !isSameDateTime(new Date(event?.end), formState.end) ||
