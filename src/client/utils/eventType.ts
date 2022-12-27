@@ -80,7 +80,7 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Recu
     daysOfWeek: beEvent.daysOfWeek.length > 0 ? beEvent.daysOfWeek : undefined,
     color: beEvent.color,
     desc: beEvent.desc,
-    clubId: beEvent.club.id,
+    clubId: beEvent.club?.id,
     className: undefined,
     editable: false,
 
@@ -92,7 +92,7 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Recu
       daysOfWeek: beEvent.daysOfWeek,
       color: beEvent.color,
       desc: beEvent.desc,
-      clubId: beEvent.club.id,
+      clubId: beEvent.club?.id,
       isRental: beEvent.isRental,
     },
   } as RecurringEventApiArg
