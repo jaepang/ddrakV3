@@ -14,6 +14,7 @@ export interface EventApiArg {
   clubId?: number
   className?: string
   editable?: boolean
+  isRental?: boolean
 
   extendedProps?: {
     color?: string

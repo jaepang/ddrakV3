@@ -24,6 +24,7 @@ export const EventMutation = extendType({
               daysOfWeek: eventInput.daysOfWeek,
               groupId: eventInput.groupId,
               allDay: eventInput.allDay,
+              isRental: eventInput.isRental,
               color: eventInput.color,
               desc: eventInput.desc,
 
@@ -64,6 +65,7 @@ export const EventMutation = extendType({
               daysOfWeek: event.daysOfWeek,
               groupId: event.groupId,
               allDay: event.allDay,
+              isRental: event.isRental,
               color: event.color,
               desc: event.desc,
 
@@ -101,6 +103,7 @@ export const EventMutation = extendType({
               daysOfWeek: eventInput.daysOfWeek,
               groupId: eventInput.groupId,
               allDay: eventInput.allDay,
+              isRental: eventInput.isRental,
               color: eventInput.color,
               desc: eventInput.desc,
               clubId: eventInput.clubId,

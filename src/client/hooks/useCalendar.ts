@@ -232,12 +232,13 @@ export function useCalendar() {
   }
 
   function mutateNewEvents() {
+    const isRental = mode === 'rental'
     const eventsInput = timeSlots
       ?.map(timeSlot => {
-        const rentalClubId = mode === 'rental' && clubs?.find(club => club.name === timeSlot.title)?.id
+        const rentalClubId = isRental && clubs?.find(club => club.name === timeSlot.title)?.id
 
         if (isDatesInvalid(timeSlot.start, timeSlot.end) || !timeSlot.title) return
-        return { ...timeSlot, clubId: mode === 'rental' ? rentalClubId : me?.club?.id } as EventApiArg
+        return { ...timeSlot, clubId: isRental ? rentalClubId : me?.club?.id, isRental } as EventApiArg
       })
       .filter(event => !!event)
 
