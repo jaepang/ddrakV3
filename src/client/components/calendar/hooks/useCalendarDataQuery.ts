@@ -10,10 +10,9 @@ export function useCalendarDataQuery() {
   const enableClubCalendar = mode === 'clubCalendar' || mode === 'rental' || (!!me?.club && mode === 'setCalendar')
 
   /** Query events before 3 months from current to 1 month after current */
-  let eventsApiArg: RecurringEventApiArg[] = []
 
   /** default: show monthly schedule & rental events */
-  const { data: defaultData } = useQuery(
+  const { data: defaultData, isLoading: defaultLoading } = useQuery(
     [
       'events',
       {
@@ -39,7 +38,7 @@ export function useCalendarDataQuery() {
     }) ?? []
 
   /** club: show club events and unavailable schedule */
-  const { data: clubData } = useQuery(
+  const { data: clubData, isLoading: clubLoading } = useQuery(
     [
       'events',
       {
@@ -53,32 +52,26 @@ export function useCalendarDataQuery() {
     },
   )
 
-  const clubEventApiArgs: EventApiArg[] | RecurringEventApiArg[] =
+  const clubEventApiArgs: EventApiArg[] =
     clubData?.clubEvents?.map(event => {
       let eventApiArg = beResponseToEventApiArg(event)
 
       if (event.creator.isSuper) {
         /** gray color; unavailable */
         eventApiArg.color = '#777'
-        eventApiArg.editable = false
       } else if (event.isRental && event?.club?.id !== me?.club?.id) {
         eventApiArg.backgroundColor = '#eee'
         eventApiArg.borderColor = '#777'
         eventApiArg.textColor = '#777'
-      } else {
-        eventApiArg = {
-          id: event.id,
-          title: event.title,
-          start: event.start,
-          end: event.end,
-          color: event.color,
-          editable: false,
-        }
       }
       return eventApiArg
     }) ?? []
 
   const events = mode === 'default' ? defaultEventApiArgs : clubEventApiArgs
+  const isEventsLoading = mode === 'default' ? defaultLoading : clubLoading
 
-  return events
+  return {
+    events,
+    isEventsLoading,
+  }
 }

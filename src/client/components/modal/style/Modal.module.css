@@ -12,7 +12,8 @@
   justify-content: center;
 
   &.dimmed {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: saturate(180%) blur(5px);
   }
 
   .content-wrapper {
@@ -24,6 +25,7 @@
     justify-content: center;
     background-color: var(--color-light);
     backdrop-filter: saturate(180%) blur(5px);
+    border: 1px solid var(--color-primary);
 
     .inner-wrapper {
       width: 100%;
