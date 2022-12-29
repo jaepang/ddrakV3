@@ -18,6 +18,7 @@
 
   .content-wrapper {
     width: 70%;
+    max-width: 512px;
     padding: 5%;
     border-radius: 20px;
     display: flex;
