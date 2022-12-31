@@ -1,5 +1,5 @@
 import FullCalendar, { EventSourceInput } from '@fullcalendar/react'
-import { EventClickArg } from '@fullcalendar/common'
+import { EventClickArg, EventApi } from '@fullcalendar/common'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
 
@@ -14,19 +14,21 @@ import { useWindowSize, useAccount, useCalendar, useGlobal, useEvent } from '@cl
 import { useCalendarDataQuery, useCalendarFunctions } from './hooks'
 
 import classNames from 'classnames/bind'
+import styles from './style/Calendar.module.css'
 import draggableEventsStyles from '@components/layout/shared/sidebar/style/SectionMenu.module.css'
+const cx = classNames.bind(styles)
 
 export default function Calendar() {
   const [draggable, setDraggable] = useState<Draggable>(null)
   const [openEventModal, setOpenEventModal] = useState<boolean>(false)
-  const [clickedEventId, setClickedEventId] = useState<number>(null)
+  const [clickedEvent, setClickedEvent] = useState<EventApi>(null)
   const ref = useRef<FullCalendar>(null)
   const setCalendar = useSetRecoilState(calendarState)
   const { me } = useAccount()
   const { eventReceive, eventChange } = useCalendar()
   const { mode } = useGlobal()
   const { draggableDuration } = useEvent()
-  const events = useCalendarDataQuery()
+  const { events, isEventsLoading } = useCalendarDataQuery()
   const { width } = useWindowSize()
   const isMobile = width <= 1024
 
@@ -57,14 +59,12 @@ export default function Calendar() {
   }, [mode, draggableDuration])
 
   function handleEventClick(info: EventClickArg) {
-    const event = info.event
-    console.log(info.el.getBoundingClientRect())
-    setClickedEventId(parseInt(event.id))
+    setClickedEvent(info.event)
     setOpenEventModal(true)
   }
 
   return (
-    <>
+    <div className={cx('root')}>
       <FullCalendar
         ref={ref}
         plugins={[timeGridPlugin, interactionPlugin]}
@@ -72,6 +72,7 @@ export default function Calendar() {
         firstDay={1}
         headerToolbar={false}
         allDaySlot={false}
+        displayEventEnd={false}
         height={'calc(100vh - 70px)'}
         contentHeight={'100%'}
         events={events as EventSourceInput}
@@ -88,9 +89,11 @@ export default function Calendar() {
         dayHeaderContent={args => DayHeaderContent(args, me, mode)}
         eventTimeFormat={{ hour: 'numeric', minute: '2-digit', omitZeroMinute: true, omitCommas: true }}
       />
-      <Modal onClose={() => setOpenEventModal(false)}>
-        {openEventModal && <EventModal onClose={() => setOpenEventModal(false)} eventId={clickedEventId} />}
-      </Modal>
-    </>
+      {openEventModal && (
+        <Modal onClose={() => setOpenEventModal(false)}>
+          <EventModal onClose={() => setOpenEventModal(false)} event={clickedEvent} />
+        </Modal>
+      )}
+    </div>
   )
 }

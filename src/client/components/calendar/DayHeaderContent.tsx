@@ -1,5 +1,4 @@
 import { DayHeaderContentArg } from '@fullcalendar/common'
-import { useAccount, useGlobal } from '@client/hooks'
 
 import classNames from 'classnames/bind'
 import styles from './style/Calendar.module.css'

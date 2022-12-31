@@ -12,6 +12,7 @@ export interface EventApiArg {
   textColor?: string
   desc?: string
   clubId?: number
+  creatorId?: number
   className?: string
   editable?: boolean
   isRental?: boolean
@@ -20,6 +21,7 @@ export interface EventApiArg {
     color?: string
     desc?: string
     clubId?: number
+    creatorId?: number
   }
 }
 
@@ -82,6 +84,7 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Recu
     color: beEvent.color,
     desc: beEvent.desc,
     clubId: beEvent.club?.id,
+    creatorId: beEvent.creator?.id,
     className: undefined,
     editable: false,
 
@@ -94,6 +97,7 @@ export function beResponseToEventApiArg(beEvent: NexusGenObjects['Event']): Recu
       color: beEvent.color,
       desc: beEvent.desc,
       clubId: beEvent.club?.id,
+      creatorId: beEvent.creator?.id,
       isRental: beEvent.isRental,
     },
   } as RecurringEventApiArg

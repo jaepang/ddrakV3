@@ -1,11 +1,13 @@
+import { EventApi } from '@fullcalendar/common'
 import { DateTimePicker } from '@components/form'
 import { GrClose } from 'react-icons/gr'
+import { TbCalendarEvent, TbClock } from 'react-icons/tb'
 
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-query'
-import { eventQuery, updateEventMutation, deleteEventMutation } from '@client/shared/queries'
+import { userQuery, updateEventMutation, deleteEventMutation } from '@client/shared/queries'
 import { useAccount, useWindowSize } from '@client/hooks'
-import { isSameDateTime } from '@client/utils'
+import { isSameDate, isSameDateTime } from '@client/utils'
 
 import classNames from 'classnames/bind'
 import styles from './style/EventModal.module.css'
@@ -13,22 +15,22 @@ import { queryClient } from '@client/shared/react-query'
 const cx = classNames.bind(styles)
 
 interface Props {
-  eventId: string | number
+  event: EventApi
   onClose: () => void
 }
 
-export default function EventModal({ eventId, onClose }: Props) {
+export default function EventModal({ event, onClose }: Props) {
   const [formState, setFormState] = useState({
     title: '',
     start: new Date(),
     end: new Date(),
   })
-
   const { me } = useAccount()
   const { width } = useWindowSize()
   const isMobile = width <= 1024
-  const { data } = useQuery(['event', { id: eventId }], eventQuery, { enabled: !!eventId })
-  const event = data?.event
+  const { data } = useQuery(['user', { id: event?.extendedProps?.creatorId }], userQuery, { enabled: !!event })
+  const creator = data?.user
+  const clubId = event?.extendedProps?.clubId
 
   const { mutate: updateEvent } = useMutation(updateEventMutation, {
     onSuccess: () => {
@@ -36,6 +38,7 @@ export default function EventModal({ eventId, onClose }: Props) {
       onClose()
     },
   })
+
   const { mutate: deleteEvent } = useMutation(deleteEventMutation, {
     onSuccess: () => {
       queryClient.refetchQueries(['events'])
@@ -44,8 +47,7 @@ export default function EventModal({ eventId, onClose }: Props) {
   })
 
   /** editable events: events created by club admin */
-  const editable =
-    me?.isAdmin && !event?.creator?.isSuper && (event?.club?.id === me?.club?.id || event?.creator?.id === me?.id)
+  const editable = me?.isAdmin && !creator?.isSuper && (clubId === me?.club?.id || creator?.id === me?.id)
 
   const changed =
     !isSameDateTime(new Date(event?.start), formState.start) ||
@@ -64,13 +66,17 @@ export default function EventModal({ eventId, onClose }: Props) {
 
   function handleSubmit() {
     updateEvent({
-      id: event?.id,
+      id: parseInt(event?.id),
       eventInput: {
         title: formState.title,
         start: formState.start,
         end: formState.end,
       },
     })
+  }
+
+  function handleDelete() {
+    if (confirm('정말 삭제하시겠습니까?')) deleteEvent({ id: parseInt(event?.id) })
   }
 
   function handleFormStateChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -88,7 +94,7 @@ export default function EventModal({ eventId, onClose }: Props) {
         {editable ? (
           <div className={cx('head-wrapper')}>
             <h1>이벤트 수정</h1>
-            <button className={cx('delete-button')} onClick={() => deleteEvent({ id: eventId as number })}>
+            <button className={cx('delete-button')} onClick={handleDelete}>
               삭제
             </button>
           </div>
@@ -103,7 +109,7 @@ export default function EventModal({ eventId, onClose }: Props) {
         {editable && (
           <div className={cx('row')}>
             <div className={cx('item-wrapper')}>
-              <div className={cx('label')}>Title</div>
+              <div className={cx('label')}>제목</div>
               <input
                 className={cx('title', 'input')}
                 type="text"
@@ -115,42 +121,51 @@ export default function EventModal({ eventId, onClose }: Props) {
           </div>
         )}
         <div className={cx('row')}>
-          <div className={cx('item-wrapper')}>
-            <div className={cx('label')}>Start</div>
-            {editable ? (
-              <DateTimePicker
-                rightAlignDropdown={isMobile}
-                value={formState.start}
-                setValue={date => handleDateChange('start', date)}
-                use24Hour={isMobile}
-              />
-            ) : (
-              <div className={cx('value')}>
-                {new Date(event?.start).toLocaleString('ko-kr', {
-                  dateStyle: 'long',
-                  timeStyle: 'short',
-                })}
+          {editable ? (
+            <>
+              <div className={cx('item-wrapper')}>
+                <div className={cx('label')}>시작</div>
+                <DateTimePicker
+                  rightAlignDropdown={isMobile}
+                  value={formState.start}
+                  setValue={date => handleDateChange('start', date)}
+                  use24Hour={isMobile}
+                />
               </div>
-            )}
-          </div>
-          <div className={cx('item-wrapper')}>
-            <div className={cx('label')}>End</div>
-            {editable ? (
-              <DateTimePicker
-                rightAlignDropdown={isMobile}
-                value={formState.end}
-                setValue={date => handleDateChange('end', date)}
-                use24Hour={isMobile}
-              />
-            ) : (
-              <div className={cx('value')}>
-                {new Date(event?.end).toLocaleString('ko-kr', {
-                  dateStyle: 'long',
-                  timeStyle: 'short',
-                })}
+              <div className={cx('item-wrapper')}>
+                <div className={cx('label')}>끝</div>
+                <DateTimePicker
+                  rightAlignDropdown={isMobile}
+                  value={formState.end}
+                  setValue={date => handleDateChange('end', date)}
+                  use24Hour={isMobile}
+                />
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <>
+              <div className={cx('item-wrapper')}>
+                <div className={cx('item')}>
+                  <TbCalendarEvent size={20} />
+                  {new Date(event?.start).toLocaleString('ko-kr', {
+                    dateStyle: 'long',
+                  })}
+                </div>
+              </div>
+              <div className={cx('item-wrapper')}>
+                <div className={cx('item')}>
+                  <TbClock size={20} />
+                  {new Date(event?.start).toLocaleString('ko-kr', {
+                    timeStyle: 'short',
+                  })}
+                  {' - '}
+                  {new Date(event?.end).toLocaleString('ko-kr', {
+                    timeStyle: 'short',
+                  })}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
       {editable && (
