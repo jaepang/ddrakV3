@@ -72,6 +72,7 @@ export default function Calendar() {
         firstDay={1}
         headerToolbar={false}
         allDaySlot={false}
+        displayEventEnd={false}
         height={'calc(100vh - 70px)'}
         contentHeight={'100%'}
         events={events as EventSourceInput}

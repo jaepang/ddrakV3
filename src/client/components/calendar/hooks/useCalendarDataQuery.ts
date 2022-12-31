@@ -63,6 +63,13 @@ export function useCalendarDataQuery() {
         eventApiArg.backgroundColor = '#eee'
         eventApiArg.borderColor = '#777'
         eventApiArg.textColor = '#777'
+      } else if (event?.club?.id !== me?.club?.id) {
+        eventApiArg.color = event?.club?.color
+        /*
+        eventApiArg.backgroundColor = 'rgba(255, 255, 255, 0.65)'
+        eventApiArg.borderColor = event?.club?.color
+        eventApiArg.textColor = event?.club?.color
+        */
       }
       return eventApiArg
     }) ?? []

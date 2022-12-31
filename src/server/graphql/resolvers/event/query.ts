@@ -104,10 +104,8 @@ export const EventQuery = extendType({
                   lte: to,
                 },
                 creator: {
-                  // isAdmin: true,
-                  club: {
-                    id: me.club.id,
-                  },
+                  isSuper: false,
+                  isAdmin: true,
                 },
               },
               /** monthly events whose club is not user's; Thus not available */
