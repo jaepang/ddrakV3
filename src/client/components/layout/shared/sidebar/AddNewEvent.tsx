@@ -20,8 +20,8 @@ export default function AddNewEventsSlot() {
   useEffect(() => {
     setTimeSlots([
       {
-        start: date,
-        end: date,
+        start: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
+        end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
         title: '',
       },
     ])
@@ -79,7 +79,7 @@ export default function AddNewEventsSlot() {
   return (
     <div className={cx('menu', 'padding-top')}>
       <div className={cx('header')}>
-        <h2>{isRental ? '새로운 대여 등록' : '새로운 이벤트 등록'}</h2>
+        <h2>{isRental ? '새로운 대여 등록' : '새로운 일정 등록'}</h2>
         <div className={cx('buttons')}>
           <button onClick={handlePrevSlot} disabled={timeSlotIndex === 0} className={cx('icon-wrapper', 'back')}>
             <IoChevronBack size={20} />
