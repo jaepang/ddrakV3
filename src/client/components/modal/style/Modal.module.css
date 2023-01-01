@@ -13,7 +13,7 @@
 
   &.dimmed {
     background-color: rgba(0, 0, 0, 0.2);
-    backdrop-filter: saturate(180%) blur(5px);
+    backdrop-filter: blur(5px);
   }
 
   .content-wrapper {
