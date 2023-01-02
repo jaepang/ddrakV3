@@ -2,7 +2,9 @@ import { DateTimePicker } from '@components/form'
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
 import React, { useEffect, useState } from 'react'
-import { useCalendar, useEvent, useGlobal, useWindowSize } from '@client/hooks'
+import { useAccount, useCalendar, useEvent, useGlobal, useWindowSize } from '@client/hooks'
+import { useQuery } from 'react-query'
+import { clubsQuery } from '@client/shared/queries'
 
 import classNames from 'classnames/bind'
 import styles from './style/SectionMenu.module.css'
@@ -16,6 +18,15 @@ export default function AddNewEventsSlot() {
   const { width } = useWindowSize()
   const isMobile = width <= 670
   const isRental = mode === 'rental'
+  const { me } = useAccount()
+  const { data } = useQuery('clubs', clubsQuery, { enabled: isRental })
+  const clubs = data?.clubs?.filter(club => club.id !== me?.club?.id)
+  const clubOptions = [
+    ...clubs?.map(club => {
+      return { label: club.name, value: club.id }
+    }),
+    { label: '기타', value: undefined },
+  ]
 
   useEffect(() => {
     setTimeSlots([
@@ -23,6 +34,7 @@ export default function AddNewEventsSlot() {
         start: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
         end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
         title: '',
+        rentalClubId: clubs?.[0].id,
       },
     ])
   }, [])
@@ -43,6 +55,7 @@ export default function AddNewEventsSlot() {
           start: timeSlots[timeSlotIndex].end,
           end: timeSlots[timeSlotIndex].end,
           title: '',
+          rentalClubId: clubs?.[0].id,
         },
       ])
     }
@@ -72,6 +85,17 @@ export default function AddNewEventsSlot() {
     newSlot[timeSlotIndex] = {
       ...newSlot[timeSlotIndex],
       title: e.target.value,
+    }
+    setTimeSlots(newSlot)
+  }
+
+  function handleRentalClubChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const value = e.target.value === '기타' ? undefined : parseInt(e.target.value)
+
+    const newSlot = [...timeSlots]
+    newSlot[timeSlotIndex] = {
+      ...newSlot[timeSlotIndex],
+      rentalClubId: value,
     }
     setTimeSlots(newSlot)
   }
@@ -112,13 +136,29 @@ export default function AddNewEventsSlot() {
         </div>
         <div className={cx('new-event-title')}>
           <div className={cx('label')}>{isRental ? '대여 대상' : '제목'}</div>
-          <input
-            className={cx('title-input')}
-            placeholder={isRental ? '타 동아리 / 단체에 뜨락을 대여합니다' : '동아리 내 새로운 일정을 설정합니다'}
-            type="text"
-            value={timeSlots[timeSlotIndex]?.title ?? ''}
-            onChange={handleTitleChange}
-          />
+          {isRental && (
+            <div className={cx('rental-club-select-wrapper')}>
+              <select
+                className={cx('select')}
+                value={timeSlots[timeSlotIndex]?.rentalClubId}
+                onChange={handleRentalClubChange}>
+                {clubOptions.map(({ label, value }, idx) => (
+                  <option key={idx} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          {(!isRental || timeSlots[timeSlotIndex]?.rentalClubId === undefined) && (
+            <input
+              className={cx('title-input')}
+              placeholder={isRental ? '타 동아리 / 단체에 뜨락을 대여합니다' : '동아리 내 새로운 일정을 설정합니다'}
+              type="text"
+              value={timeSlots[timeSlotIndex]?.title ?? ''}
+              onChange={handleTitleChange}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ export interface TimeSlot {
   end: string | Date
   club?: string[]
   title?: string
+  rentalClubId?: number
   color?: string
 }
 
