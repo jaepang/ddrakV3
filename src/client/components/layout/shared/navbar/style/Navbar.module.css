@@ -43,6 +43,7 @@
         }
 
         .today {
+          width: 4em;
           padding: 0 0.5em;
           height: 2.5em;
           margin-right: 5px;
@@ -77,6 +78,7 @@
       .date {
         display: flex;
         column-gap: 0.5em;
+        line-height: 1;
 
         .preview {
           color: var(--color-primary);

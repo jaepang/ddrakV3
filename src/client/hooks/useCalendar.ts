@@ -214,6 +214,7 @@ export function useCalendar() {
           return
         }
         target.setProp('title', timeSlot.title)
+        target.setProp('color', timeSlot.color)
         target.setStart(timeSlot.start)
         target.setEnd(timeSlot.end)
         return
@@ -235,10 +236,11 @@ export function useCalendar() {
     const isRental = mode === 'rental'
     const eventsInput = timeSlots
       ?.map(timeSlot => {
-        const rentalClubId = isRental && clubs?.find(club => club.name === timeSlot.title)?.id
+        const rentalClubId = isRental && timeSlot.rentalClubId
+        const title = isRental ? timeSlot.title ?? clubs?.find(club => club.id === rentalClubId)?.name : timeSlot.title
 
         if (isDatesInvalid(timeSlot.start, timeSlot.end) || !timeSlot.title) return
-        return { ...timeSlot, clubId: isRental ? rentalClubId : me?.club?.id, isRental } as EventApiArg
+        return { ...timeSlot, clubId: isRental ? rentalClubId : me?.club?.id, isRental, title } as EventApiArg
       })
       .filter(event => !!event)
 

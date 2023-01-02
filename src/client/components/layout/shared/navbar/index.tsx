@@ -20,6 +20,7 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
   const { isLoggedIn, me, logout } = useAccount()
   const { date, mode, enableDefaultMode } = useGlobal()
   const dateString = calendarHeaderDateString(date, isMobile)
+  const settingMode = mode === 'setCalendar' || mode === 'rental'
 
   function handleLogout() {
     logout()
@@ -32,7 +33,7 @@ export default function Navbar({ isMobile, setShowSidebar }: Props) {
         <div className={cx('left-area')}>
           <WeekNavigator />
           <h2 className={cx('date')}>
-            {dateString} {mode === 'setCalendar' && <div className={cx('preview')}>미리보기</div>}
+            {dateString} {settingMode && <div className={cx('preview')}>미리보기</div>}
           </h2>
         </div>
         <div className={cx('right-area')}>
