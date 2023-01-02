@@ -33,9 +33,9 @@ export default function AddNewEventsSlot() {
       {
         start: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
         end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
-        title: clubs?.[0]?.name ?? '기타',
-        rentalClubId: clubs?.[0].id,
-        color: clubs?.[0]?.color,
+        title: isRental ? clubs?.[0]?.name ?? '기타' : '',
+        rentalClubId: isRental && clubs?.[0].id,
+        color: isRental ? clubs?.[0]?.color : me?.club?.color,
       },
     ])
   }, [])
@@ -55,8 +55,9 @@ export default function AddNewEventsSlot() {
         {
           start: timeSlots[timeSlotIndex].end,
           end: timeSlots[timeSlotIndex].end,
-          title: '',
-          rentalClubId: clubs?.[0].id,
+          title: isRental ? clubs?.[0]?.name ?? '기타' : '',
+          rentalClubId: isRental && clubs?.[0].id,
+          color: isRental ? clubs?.[0]?.color : me?.club?.color,
         },
       ])
     }
