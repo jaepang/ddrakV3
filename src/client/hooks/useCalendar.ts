@@ -214,6 +214,7 @@ export function useCalendar() {
           return
         }
         target.setProp('title', timeSlot.title)
+        target.setProp('color', timeSlot.color)
         target.setStart(timeSlot.start)
         target.setEnd(timeSlot.end)
         return

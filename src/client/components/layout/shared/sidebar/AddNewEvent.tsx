@@ -33,8 +33,9 @@ export default function AddNewEventsSlot() {
       {
         start: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
         end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 0),
-        title: '',
+        title: clubs?.[0]?.name ?? '기타',
         rentalClubId: clubs?.[0].id,
+        color: clubs?.[0]?.color,
       },
     ])
   }, [])
@@ -91,11 +92,14 @@ export default function AddNewEventsSlot() {
 
   function handleRentalClubChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value === '기타' ? undefined : parseInt(e.target.value)
+    const targetClub = clubs?.find(club => club.id === value)
 
     const newSlot = [...timeSlots]
     newSlot[timeSlotIndex] = {
       ...newSlot[timeSlotIndex],
+      title: targetClub?.name ?? '',
       rentalClubId: value,
+      color: targetClub?.color,
     }
     setTimeSlots(newSlot)
   }
@@ -137,18 +141,16 @@ export default function AddNewEventsSlot() {
         <div className={cx('new-event-title')}>
           <div className={cx('label')}>{isRental ? '대여 대상' : '제목'}</div>
           {isRental && (
-            <div className={cx('rental-club-select-wrapper')}>
-              <select
-                className={cx('select')}
-                value={timeSlots[timeSlotIndex]?.rentalClubId}
-                onChange={handleRentalClubChange}>
-                {clubOptions.map(({ label, value }, idx) => (
-                  <option key={idx} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <select
+              className={cx('rental-club-select')}
+              value={timeSlots[timeSlotIndex]?.rentalClubId}
+              onChange={handleRentalClubChange}>
+              {clubOptions.map(({ label, value }, idx) => (
+                <option key={idx} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
           )}
           {(!isRental || timeSlots[timeSlotIndex]?.rentalClubId === undefined) && (
             <input
