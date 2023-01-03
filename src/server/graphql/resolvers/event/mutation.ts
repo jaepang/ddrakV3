@@ -106,7 +106,7 @@ export const EventMutation = extendType({
               isRental: eventInput.isRental,
               color: eventInput.color,
               desc: eventInput.desc,
-              clubId: eventInput.clubId,
+              clubId: eventInput.clubId || null,
             },
           })
           return event

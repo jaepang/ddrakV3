@@ -91,6 +91,7 @@ export default function EventModal({ event, onClose }: Props) {
         start: formState.start,
         end: formState.end,
         clubId: formState.clubId,
+        color: clubs?.find(club => club.id === formState.clubId)?.color ?? 'var(--color-primary)',
       },
     })
   }
@@ -172,7 +173,7 @@ export default function EventModal({ event, onClose }: Props) {
                 <select
                   className={cx('select')}
                   name={'clubId'}
-                  value={formState.clubId}
+                  value={formState.clubId ?? '기타'}
                   onChange={handleRentalClubChange}>
                   {clubOptions.map(({ label, value }, idx) => (
                     <option key={idx} value={value}>
