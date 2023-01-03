@@ -27,7 +27,7 @@ export default function EventModal({ event, onClose }: Props) {
     clubId: undefined,
   })
   const [showRentalTooltip, setShowRentalTooltip] = useState(false)
-  const { me } = useAccount()
+  const { isLoggedIn, me } = useAccount()
   const { width } = useWindowSize()
   const isMobile = width <= 1024
   const { data: creatorData } = useQuery(['user', { id: event?.extendedProps?.creatorId }], userQuery, {
@@ -35,11 +35,19 @@ export default function EventModal({ event, onClose }: Props) {
   })
   const creator = creatorData?.user
 
-  const { data: clubsData } = useQuery(['club', { id: event?.extendedProps?.clubId }], clubsQuery, { enabled: !!event })
+  const { data: clubsData } = useQuery(['clubs'], clubsQuery, {
+    enabled: !!event,
+  })
   const clubId = event?.extendedProps?.clubId
   const { clubs } = clubsData ?? {}
   const club = clubs?.find(club => club.id === clubId)
-  const clubsWithoutMe = clubs?.filter(club => club.id !== me?.club?.id)
+  const clubsWithoutMe = clubs?.filter(club => club.id !== me?.club?.id) ?? []
+  const clubOptions = [
+    ...clubsWithoutMe?.map(club => {
+      return { label: club.name, value: club.id }
+    }),
+    { label: '기타', value: undefined },
+  ]
 
   const { mutate: updateEvent } = useMutation(updateEventMutation, {
     onSuccess: () => {
@@ -55,20 +63,14 @@ export default function EventModal({ event, onClose }: Props) {
     },
   })
 
-  const editable = me?.isAdmin && !creator?.isSuper && (clubId === me?.club?.id || creator?.id === me?.id)
+  const editable = isLoggedIn && me?.isAdmin && !creator?.isSuper && (clubId === me?.club?.id || creator?.id === me?.id)
   const isRental = event?.extendedProps?.isRental
-
-  const clubOptions = isRental && [
-    ...clubsWithoutMe?.map(club => {
-      return { label: club.name, value: club.id }
-    }),
-    { label: '기타', value: undefined },
-  ]
 
   const changed =
     !isSameDateTime(new Date(event?.start), formState.start) ||
     !isSameDateTime(new Date(event?.end), formState.end) ||
-    event?.title !== formState.title
+    event?.title !== formState.title ||
+    event?.extendedProps?.clubId !== formState.clubId
 
   useEffect(() => {
     if (event) {
@@ -88,6 +90,7 @@ export default function EventModal({ event, onClose }: Props) {
         title: formState.title,
         start: formState.start,
         end: formState.end,
+        clubId: formState.clubId,
       },
     })
   }
