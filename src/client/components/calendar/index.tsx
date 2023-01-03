@@ -51,6 +51,9 @@ export default function Calendar() {
               title: eventEl.innerText,
               color: eventEl.style.backgroundColor,
               duration: draggableDuration,
+              extendedProps: {
+                rentalClubId: parseInt(eventEl.dataset.clubid),
+              },
             }
           },
         }),
