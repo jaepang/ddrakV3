@@ -5,9 +5,9 @@ import { TbCalendarEvent, TbClock } from 'react-icons/tb'
 
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-query'
-import { userQuery, updateEventMutation, deleteEventMutation } from '@client/shared/queries'
+import { userQuery, clubsQuery, updateEventMutation, deleteEventMutation } from '@client/shared/queries'
 import { useAccount, useWindowSize } from '@client/hooks'
-import { isSameDate, isSameDateTime } from '@client/utils'
+import { isSameDateTime } from '@client/utils'
 
 import classNames from 'classnames/bind'
 import styles from './style/EventModal.module.css'
@@ -24,13 +24,22 @@ export default function EventModal({ event, onClose }: Props) {
     title: '',
     start: new Date(),
     end: new Date(),
+    clubId: undefined,
   })
+  const [showRentalTooltip, setShowRentalTooltip] = useState(false)
   const { me } = useAccount()
   const { width } = useWindowSize()
   const isMobile = width <= 1024
-  const { data } = useQuery(['user', { id: event?.extendedProps?.creatorId }], userQuery, { enabled: !!event })
-  const creator = data?.user
+  const { data: creatorData } = useQuery(['user', { id: event?.extendedProps?.creatorId }], userQuery, {
+    enabled: !!event,
+  })
+  const creator = creatorData?.user
+
+  const { data: clubsData } = useQuery(['club', { id: event?.extendedProps?.clubId }], clubsQuery, { enabled: !!event })
   const clubId = event?.extendedProps?.clubId
+  const { clubs } = clubsData ?? {}
+  const club = clubs?.find(club => club.id === clubId)
+  const clubsWithoutMe = clubs?.filter(club => club.id !== me?.club?.id)
 
   const { mutate: updateEvent } = useMutation(updateEventMutation, {
     onSuccess: () => {
@@ -46,8 +55,15 @@ export default function EventModal({ event, onClose }: Props) {
     },
   })
 
-  /** editable events: events created by club admin */
   const editable = me?.isAdmin && !creator?.isSuper && (clubId === me?.club?.id || creator?.id === me?.id)
+  const isRental = event?.extendedProps?.isRental
+
+  const clubOptions = isRental && [
+    ...clubsWithoutMe?.map(club => {
+      return { label: club.name, value: club.id }
+    }),
+    { label: '기타', value: undefined },
+  ]
 
   const changed =
     !isSameDateTime(new Date(event?.start), formState.start) ||
@@ -60,9 +76,10 @@ export default function EventModal({ event, onClose }: Props) {
         title: event.title,
         start: new Date(event.start),
         end: new Date(event.end),
+        clubId: club?.id,
       })
     }
-  }, [event])
+  }, [event, club])
 
   function handleSubmit() {
     updateEvent({
@@ -84,6 +101,15 @@ export default function EventModal({ event, onClose }: Props) {
     setFormState(prev => ({ ...prev, [name]: value }))
   }
 
+  function handleRentalClubChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const value = e.target.value === '기타' ? undefined : parseInt(e.target.value)
+    setFormState(prev => ({
+      ...prev,
+      title: value ? clubs.find(club => club.id === value)?.name : '기타',
+      clubId: value,
+    }))
+  }
+
   function handleDateChange(name: string, date: Date) {
     setFormState(prev => ({ ...prev, [name]: date }))
   }
@@ -92,14 +118,33 @@ export default function EventModal({ event, onClose }: Props) {
     <div className={cx('root')}>
       <div className={cx('header')}>
         {editable ? (
-          <div className={cx('head-wrapper')}>
+          <div className={cx('head-wrapper', 'editable')}>
             <h1>이벤트 수정</h1>
             <button className={cx('delete-button')} onClick={handleDelete}>
               삭제
             </button>
           </div>
         ) : (
-          <h1>{event?.title}</h1>
+          <div className={cx('head-wrapper')}>
+            <h1>{event?.title}</h1>
+            {isRental && (
+              <>
+                <div
+                  onMouseEnter={() => setShowRentalTooltip(true)}
+                  onMouseLeave={() => setShowRentalTooltip(false)}
+                  className={cx('rental-badge')}>
+                  대여
+                  {showRentalTooltip && (
+                    <div className={cx('rental-tooltip')}>
+                      {creator?.club?.name}
+                      {' → '}
+                      {club?.name ?? event?.title}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
         )}
         <div className={cx('close')} onClick={onClose}>
           <GrClose size={30} />
@@ -118,6 +163,22 @@ export default function EventModal({ event, onClose }: Props) {
                 onChange={handleFormStateChange}
               />
             </div>
+            {isRental && (
+              <div className={cx('item-wrapper')}>
+                <div className={cx('label')}>대여 대상</div>
+                <select
+                  className={cx('select')}
+                  name={'clubId'}
+                  value={formState.clubId}
+                  onChange={handleRentalClubChange}>
+                  {clubOptions.map(({ label, value }, idx) => (
+                    <option key={idx} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         )}
         <div className={cx('row')}>

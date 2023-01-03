@@ -14,6 +14,9 @@ export const UserQuery = extendType({
           where: {
             id,
           },
+          include: {
+            club: true,
+          },
         })
       },
     })

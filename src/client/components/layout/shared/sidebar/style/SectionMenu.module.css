@@ -164,6 +164,8 @@
       cursor: pointer;
       outline: none;
       appearance: none;
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-default);
 
       &:focus {
         outline: none;

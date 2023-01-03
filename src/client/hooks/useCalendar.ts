@@ -236,11 +236,13 @@ export function useCalendar() {
     const isRental = mode === 'rental'
     const eventsInput = timeSlots
       ?.map(timeSlot => {
-        const rentalClubId = isRental && timeSlot.rentalClubId
-        const title = isRental ? timeSlot.title ?? clubs?.find(club => club.id === rentalClubId)?.name : timeSlot.title
+        const { rentalClubId, ...eventInput } = timeSlot
+        const title = isRental
+          ? eventInput.title ?? clubs?.find(club => club.id === rentalClubId)?.name
+          : timeSlot.title
 
-        if (isDatesInvalid(timeSlot.start, timeSlot.end) || !timeSlot.title) return
-        return { ...timeSlot, clubId: isRental ? rentalClubId : me?.club?.id, isRental, title } as EventApiArg
+        if (isDatesInvalid(eventInput.start, eventInput.end) || !eventInput.title) return
+        return { ...eventInput, clubId: isRental ? rentalClubId : me?.club?.id, isRental, title } as EventApiArg
       })
       .filter(event => !!event)
 
