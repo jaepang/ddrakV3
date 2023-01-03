@@ -115,6 +115,7 @@
           background: transparent;
           outline: none;
           appearance: none;
+          color: var(--color-text-default);
           border: 1px solid var(--color-primary);
           border-radius: 10px;
           cursor: pointer;

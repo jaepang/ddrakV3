@@ -61,7 +61,7 @@ export default function DateTimePicker({
     <div className={cx('root')} onClick={() => setShowDropdown(true)} ref={dropdownDom}>
       <div className={cx('input')}>
         <div className={cx('data')}>
-          {value?.toLocaleString('ko-kr', { dateStyle: 'short', timeStyle: 'short', hour12: false })}
+          {value?.toLocaleString('ko-kr', { dateStyle: 'short', timeStyle: 'short', hour12: !use24Hour })}
         </div>
         <div className={cx('icon-wrapper')}>
           <TbCalendarTime size={15} />
@@ -106,6 +106,7 @@ export default function DateTimePicker({
                 key={minute}
                 className={cx('dropdown-item', {
                   selected: minute === value?.getMinutes(),
+                  'top-right': use24Hour,
                 })}
                 onClick={() => handleMinuteChange(minute)}>
                 {minuteString}
