@@ -29,7 +29,7 @@ export default function Calendar({ setShowSidebar, isInForm = false, value, setV
   const prevMonthLength = new Date(year, month, 0).getDate()
 
   const lastDay = new Date(year, month + 1, 0).getDay()
-  const nextPadding = 6 - (lastDay > 0 ? lastDay - 1 : 5)
+  const nextPadding = 6 - (lastDay > 0 ? lastDay - 1 : 6)
 
   useEffect(() => {
     !isInForm && setDate(globalDate)

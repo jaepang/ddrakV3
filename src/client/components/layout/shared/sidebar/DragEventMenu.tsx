@@ -71,6 +71,7 @@ export default function DragEventMenu() {
             ? clubs?.map(club => (
                 <div
                   key={club.name}
+                  data-clubid={club.id}
                   draggable
                   style={{
                     backgroundColor: club.color,

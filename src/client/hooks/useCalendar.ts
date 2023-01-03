@@ -80,6 +80,7 @@ export function useCalendar() {
         end: event.end,
         title: event.title,
         color: event.backgroundColor,
+        rentalClubId: event.extendedProps.rentalClubId,
       },
     ])
     event.remove()

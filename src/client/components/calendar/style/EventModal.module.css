@@ -22,6 +22,34 @@
       display: flex;
       align-items: center;
       column-gap: 1em;
+      row-gap: 1em;
+      flex-wrap: wrap;
+
+      .rental-badge {
+        padding: 0.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background-color: var(--color-primary);
+        cursor: pointer;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        position: relative;
+
+        .rental-tooltip {
+          width: max-content;
+          padding: 0.5em;
+          position: absolute;
+          bottom: calc(100% + 0.7em);
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 5px;
+          font-size: 0.6em;
+        }
+      }
 
       .delete-button {
         padding: 0.5em;
@@ -78,6 +106,26 @@
           background: transparent;
           border: 1px solid var(--color-primary);
           border-radius: 10px;
+        }
+
+        .select {
+          padding: 0.5em;
+          font-size: 1.5rem;
+          font-weight: 500;
+          background: transparent;
+          outline: none;
+          appearance: none;
+          border: 1px solid var(--color-primary);
+          border-radius: 10px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+
+          &:focus {
+            outline: none;
+          }
         }
 
         .item {
