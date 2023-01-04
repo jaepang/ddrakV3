@@ -157,16 +157,18 @@ export default function EventModal({ event, onClose }: Props) {
       <div className={cx('body')}>
         {editable && (
           <div className={cx('row')}>
-            <div className={cx('item-wrapper')}>
-              <div className={cx('label')}>제목</div>
-              <input
-                className={cx('title', 'input')}
-                type="text"
-                name="title"
-                value={formState.title}
-                onChange={handleFormStateChange}
-              />
-            </div>
+            {(!isRental || formState.clubId === undefined) && (
+              <div className={cx('item-wrapper')}>
+                <div className={cx('label')}>제목</div>
+                <input
+                  className={cx('title', 'input')}
+                  type="text"
+                  name="title"
+                  value={formState.title}
+                  onChange={handleFormStateChange}
+                />
+              </div>
+            )}
             {isRental && (
               <div className={cx('item-wrapper')}>
                 <div className={cx('label')}>대여 대상</div>
