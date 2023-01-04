@@ -43,7 +43,8 @@
         }
 
         .today {
-          width: 3.1em;
+          width: max-content;
+          min-width: 3.1em;
           padding: 0 0.5em;
           height: 2.5em;
           margin-right: 5px;
