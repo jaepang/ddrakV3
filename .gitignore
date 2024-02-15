@@ -8,3 +8,5 @@ src/shared/generated/
 **/public/sw.js.map
 **/public/worker-*.js
 .DS_Store
+.vercel
+.env*.local
